@@ -6,10 +6,10 @@
 //  Copyright (c) 2012 Adam Preble. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "APLevelDB.h"
 
-@interface APLevelDBTests : SenTestCase {
+@interface APLevelDBTests : XCTestCase {
 	APLevelDB *_db;
 	NSData *_largeData;
 }
@@ -26,6 +26,7 @@
 	
 	NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"test.leveldb"];
 	
+  //NSLog(@"Created test file %@", path);
 	if ([[NSFileManager defaultManager] fileExistsAtPath:path])
 		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 	
@@ -48,7 +49,7 @@
 	NSString *key = @"key";
 	[_db setString:text forKey:key];
 	
-	STAssertEqualObjects(text, [_db stringForKey:key], @"Error retrieving string for key.");
+	XCTAssertEqualObjects(text, [_db stringForKey:key], @"Error retrieving string for key.");
 }
 
 - (void)testSetDataForKey
@@ -59,14 +60,14 @@
 	[_db setData:data forKey:key];
 	
 	NSData *fetched = [_db dataForKey:key];
-	STAssertNotNil(fetched, @"Key for data not found.");
-	STAssertEqualObjects(data, fetched, @"Fetched data doesn't match original data.");
+	XCTAssertNotNil(fetched, @"Key for data not found.");
+	XCTAssertEqualObjects(data, fetched, @"Fetched data doesn't match original data.");
 }
 
 - (void)testNilForUnknownKey
 {
-	STAssertNil([_db stringForKey:@"made up key"], @"stringForKey: should return nil if a key doesn't exist");
-	STAssertNil([_db dataForKey:@"another made up key"], @"dataForKey: should return nil if a key doesn't exist");
+	XCTAssertNil([_db stringForKey:@"made up key"], @"stringForKey: should return nil if a key doesn't exist");
+	XCTAssertNil([_db dataForKey:@"another made up key"], @"dataForKey: should return nil if a key doesn't exist");
 }
 
 - (void)testRemoveKey
@@ -75,12 +76,12 @@
 	NSString *key = @"key";
 	[_db setString:text forKey:key];
 	
-	STAssertEqualObjects(text, [_db stringForKey:key], @"stringForKey should have returned the original text");
+	XCTAssertEqualObjects(text, [_db stringForKey:key], @"stringForKey should have returned the original text");
 	
 	[_db removeKey:key];
 	
-	STAssertNil([_db stringForKey:key], @"stringForKey should return nil after removal of key");
-	STAssertNil([_db dataForKey:key], @"dataForKey should return nil after removal of key");
+	XCTAssertNil([_db stringForKey:key], @"stringForKey should return nil after removal of key");
+	XCTAssertNil([_db dataForKey:key], @"dataForKey should return nil after removal of key");
 }
 
 - (void)testAllKeys
@@ -88,7 +89,7 @@
 	NSDictionary *keysAndValues = [self populateWithUUIDsAndReturnDictionary];
 
 	NSArray *sortedOriginalKeys = [keysAndValues.allKeys sortedArrayUsingSelector:@selector(compare:)];
-	STAssertEqualObjects(sortedOriginalKeys, [_db allKeys], @"");
+	XCTAssertEqualObjects(sortedOriginalKeys, [_db allKeys], @"");
 }
 
 - (void)testEnumeration
@@ -98,7 +99,7 @@
 	
 	__block NSUInteger keyIndex = 0;
 	[_db enumerateKeys:^(NSString *key, BOOL *stop) {
-		STAssertEqualObjects(key, sortedOriginalKeys[keyIndex], @"enumerated key does not match");
+		XCTAssertEqualObjects(key, sortedOriginalKeys[keyIndex], @"enumerated key does not match");
 		keyIndex++;
 	}];
 }
@@ -112,8 +113,8 @@
 	[_db enumerateKeysAndValuesAsStrings:^(NSString *key, NSString *value, BOOL *stop) {
 		
 		NSString *originalKey = sortedOriginalKeys[keyIndex];
-		STAssertEqualObjects(key, originalKey, @"enumerated key does not match");
-		STAssertEqualObjects(value, keysAndValues[originalKey], @"enumerated value does not match");
+		XCTAssertEqualObjects(key, originalKey, @"enumerated key does not match");
+		XCTAssertEqualObjects(value, keysAndValues[originalKey], @"enumerated value does not match");
 		
 		keyIndex++;
 	}];
@@ -125,26 +126,26 @@
 	NSString *key = @"key";
 	_db[key] = text;
 	
-	STAssertEqualObjects(text, _db[key], @"Error retrieving string for key.");
+	XCTAssertEqualObjects(text, _db[key], @"Error retrieving string for key.");
 }
 
 - (void)testSubscriptingNilForUnknownKey
 {
-	STAssertNil(_db[@"no such key as this key"], @"Subscripting access should return nil for an unknown key.");
+	XCTAssertNil(_db[@"no such key as this key"], @"Subscripting access should return nil for an unknown key.");
 }
 
 - (void)testSubscriptingAccessException
 {
 	id output;
-	STAssertThrowsSpecificNamed(output = _db[ [NSDate date] ], NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
+	XCTAssertThrowsSpecificNamed(output = _db[ [NSDate date] ], NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
 }
 - (void)testSubscriptingAssignmentException
 {
 	NSData *someData = [NSKeyedArchiver archivedDataWithRootObject:[NSDate date]];
-	STAssertThrowsSpecificNamed(_db[ [NSDate date] ] = @"hello", NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
-	STAssertThrowsSpecificNamed(_db[ @"valid key" ] = [NSDate date], NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
-	STAssertNoThrow(_db[ @"valid key" ] = @"hello", @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
-	STAssertNoThrow(_db[ @"valid key" ] = someData, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
+	XCTAssertThrowsSpecificNamed(_db[ [NSDate date] ] = @"hello", NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
+	XCTAssertThrowsSpecificNamed(_db[ @"valid key" ] = [NSDate date], NSException, NSInvalidArgumentException, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
+	XCTAssertNoThrow(_db[ @"valid key" ] = @"hello", @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
+	XCTAssertNoThrow(_db[ @"valid key" ] = someData, @"Subscripting with non-NSString type should raise an NSInvalidArgumentException.");
 }
 
 - (void)testLargeValue
@@ -153,7 +154,7 @@
 	NSData *data = [self largeData];
 	
 	[_db setData:data forKey:key];
-	STAssertEqualObjects(data, [_db dataForKey:key], @"Data read from database does not match original.");
+	XCTAssertEqualObjects(data, [_db dataForKey:key], @"Data read from database does not match original.");
 }
 
 #pragma mark - Tests - Iterators
@@ -161,14 +162,14 @@
 - (void)testIteratorNilOnEmptyDatabase
 {
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
-	STAssertNil(iter, @"Iterator should be nil for an empty database.");
+	XCTAssertNil(iter, @"Iterator should be nil for an empty database.");
 }
 
 - (void)testIteratorNotNilOnPopulatedDatabase
 {
 	_db[@"a"] = @"1";
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
-	STAssertNotNil(iter, @"Iterator should not be nil if the database contains anything.");
+	XCTAssertNotNil(iter, @"Iterator should not be nil if the database contains anything.");
 }
 
 - (void)testIteratorStartsAtFirstKey
@@ -176,9 +177,9 @@
 	_db[@"b"] = @"2";
 	_db[@"a"] = @"1";
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
-	STAssertEqualObjects([iter key], @"a", @"Iterator should start at the first key.");
+	XCTAssertEqualObjects([iter key], @"a", @"Iterator should start at the first key.");
 	
-	STAssertEqualObjects([iter nextKey], @"b", @"Iterator should progress to the second key.");
+	XCTAssertEqualObjects([iter nextKey], @"b", @"Iterator should progress to the second key.");
 }
 
 - (void)testIteratorSeek
@@ -190,11 +191,11 @@
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"ab"];
 	
-	STAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
-	STAssertEqualObjects([iter valueAsString], @"2", @"Iterator value incorrect.");
+	XCTAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
+	XCTAssertEqualObjects([iter valueAsString], @"2", @"Iterator value incorrect.");
 	
-	STAssertEqualObjects([iter nextKey], @"abc", @"Iterator did not seek properly.");
-	STAssertEqualObjects([iter valueAsString], @"3", @"Iterator value incorrect.");
+	XCTAssertEqualObjects([iter nextKey], @"abc", @"Iterator did not seek properly.");
+	XCTAssertEqualObjects([iter valueAsString], @"3", @"Iterator value incorrect.");
 }
 
 - (void)testIteratorSeekToNonExistentKey
@@ -206,11 +207,11 @@
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"aa"]; // seeking to a key that doesn't exist should jump us to the next possible key.
 	
-	STAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
-	STAssertEqualObjects([iter valueAsString], @"2", @"Iterator value incorrect.");
+	XCTAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
+	XCTAssertEqualObjects([iter valueAsString], @"2", @"Iterator value incorrect.");
 	
-	STAssertEqualObjects([iter nextKey], @"abc", @"Iterator did not advance properly.");
-	STAssertEqualObjects([iter valueAsString], @"3", @"Iterator value incorrect.");
+	XCTAssertEqualObjects([iter nextKey], @"abc", @"Iterator did not advance properly.");
+	XCTAssertEqualObjects([iter valueAsString], @"3", @"Iterator value incorrect.");
 }
 
 - (void)testIteratorStepPastEnd
@@ -222,9 +223,9 @@
 	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"ab"];
 	[iter nextKey]; // abc
-	STAssertNil([iter nextKey], @"Iterator should return nil at end of keys.");
-	STAssertNil([iter valueAsData], @"Iterator should return nil at end of keys.");
-	STAssertNil([iter valueAsString], @"Iterator should return nil at end of keys.");
+	XCTAssertNil([iter nextKey], @"Iterator should return nil at end of keys.");
+	XCTAssertNil([iter valueAsData], @"Iterator should return nil at end of keys.");
+	XCTAssertNil([iter valueAsString], @"Iterator should return nil at end of keys.");
 }
 
 
@@ -240,9 +241,9 @@
 	[batch removeKey:@"c"];
 	[_db commitWriteBatch:batch];
 	
-	STAssertEqualObjects(_db[@"a"], @"1", @"Batch write did not execute");
-	STAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute");
-	STAssertNil(_db[@"c"], @"Batch write did not remove key");
+	XCTAssertEqualObjects(_db[@"a"], @"1", @"Batch write did not execute");
+	XCTAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute");
+	XCTAssertNil(_db[@"c"], @"Batch write did not remove key");
 }
 
 - (void)testAtomicWithClear
@@ -256,9 +257,9 @@
 	[batch clear];
 	[_db commitWriteBatch:batch];
 	
-	STAssertNil(_db[@"a"], @"Batch write did not clear buffered write");
-	STAssertNil(_db[@"b"], @"Batch write did not clear buffered write");
-	STAssertEqualObjects(_db[@"c"], @"3", @"Batch clear buffered remove");
+	XCTAssertNil(_db[@"a"], @"Batch write did not clear buffered write");
+	XCTAssertNil(_db[@"b"], @"Batch write did not clear buffered write");
+	XCTAssertEqualObjects(_db[@"c"], @"3", @"Batch clear buffered remove");
 }
 
 - (void)testAtomicWithClearThenMutate
@@ -272,9 +273,9 @@
 	[batch removeKey:@"c"];
 	[_db commitWriteBatch:batch];
 	
-	STAssertNil(_db[@"a"], @"Batch write did not clear buffered write");
-	STAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute after clear");
-	STAssertNil(_db[@"c"], @"Batch write did not remove key after clear");
+	XCTAssertNil(_db[@"a"], @"Batch write did not clear buffered write");
+	XCTAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute after clear");
+	XCTAssertNil(_db[@"c"], @"Batch write did not remove key after clear");
 }
 
 - (void)testAtomicAsync
@@ -293,9 +294,9 @@
 	[batch setString:@"1" forKey:@"a"];
 	[batch setString:@"2" forKey:@"b"];
 	
-	STAssertNil(_db[@"a"], @"Precondition failed");
-	STAssertNil(_db[@"b"], @"Precondition failed");
-	STAssertEqualObjects(_db[@"c"], @"3", @"Precondition failed");
+	XCTAssertNil(_db[@"a"], @"Precondition failed");
+	XCTAssertNil(_db[@"b"], @"Precondition failed");
+	XCTAssertEqualObjects(_db[@"c"], @"3", @"Precondition failed");
 	
 	// Demonstrate, to the extent that we can, that the batch object
 	// can be passed on to other areas of the program.  We don't have
@@ -315,9 +316,9 @@
 	
 	dispatch_semaphore_wait(sem, DISPATCH_TIME_FOREVER);
 	
-	STAssertEqualObjects(_db[@"a"], @"1", @"Batch write did not execute");
-	STAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute");
-	STAssertNil(_db[@"c"], @"Batch write did not remove key");
+	XCTAssertEqualObjects(_db[@"a"], @"1", @"Batch write did not execute");
+	XCTAssertEqualObjects(_db[@"b"], @"2", @"Batch write did not execute");
+	XCTAssertNil(_db[@"c"], @"Batch write did not remove key");
 }
 
 
