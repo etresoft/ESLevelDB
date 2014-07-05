@@ -16,7 +16,7 @@ LevelDB/
 
 Open `APLevelDB.xcodeproj` and run the unit tests (Product, Test) or compile the APLevelDB framework and add it to your project.
 
-Note: I also have an [LevelDB Xcode wrapper]: https://github.com/etresoft/LevelDB-Xcode and a [Snappy Xcode wrapper]: https://github.com/etresoft/Snappy-Xcode . Due to the bundled nature of this project, the other wrappers are not required. But they were useful in building this project.
+Note: I also have an [LevelDB Xcode wrapper][] and a [Snappy Xcode wrapper][]. Due to the bundled nature of this project, the other wrappers are not required. But they were useful in building this project.
 
 ### Creating An Instance
 
@@ -98,3 +98,5 @@ Portions of APLevelDB are based on [LevelDB-ObjC][].  Its license can be found i
 [Adam Preble]: http://adampreble.net/
 [LevelDB-ObjC]: https://github.com/hoisie/LevelDB-ObjC
 [New BSD License]: http://www.opensource.org/licenses/bsd-license.php
+[LevelDB Xcode wrapper]: https://github.com/etresoft/LevelDB-Xcode
+[Snappy Xcode wrapper]: https://github.com/etresoft/Snappy-Xcode
