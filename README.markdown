@@ -4,28 +4,19 @@ A stylish Objective-C wrapper for [LevelDB][].  What's LevelDB?  It describes it
 
 APLevelDB is comprised of two classes, `APLevelDB` and `APLevelDBIterator`.  It is written to be compiled under ARC.  APLevelDB was written by [Adam Preble][].
 
+This is an Xcode project to build APLevelDB as a standalong framework or iOS library. It includes leveldb and snappy. It is meant to be used as part of a Xcode app workspace. Xcode is very picky about things. Modern Xcode is designed to work with with workspaces and workspaces require a very specific construction and build process. Traditional open-source methods won't work.
+
 ## Usage
 
-testing.
-
-Fetch the LevelDB submodule:
-
-	git submodule init
-	git submodule update
-
-Compile LevelDB for Mac:
-
-	cd leveldb
-	CXXFLAGS=-stdlib=libc++ make
-
-Or for iOS:
-
-	cd leveldb
-	CXXFLAGS=-stdlib=libc++ make PLATFORM=IOS
+Create the following directory hierarchy:
+LevelDB/
+  APLevelDB (this project)
+  leveldb (the original LevelDB project)
+  snappy (the original Snappy project)
 
 Open `APLevelDB.xcodeproj` and run the unit tests (Product, Test) or compile the APLevelDB framework and add it to your project.
 
-Note about the `CXXFLAGS` variable: By default leveldb appears to build with libstdc++, where Xcode projects build with libc++. In order to avoid setting the C++ Standard Library build setting, I build leveldb this way.
+Note: I also have an [LevelDB Xcode wrapper]: https://github.com/etresoft/LevelDB-Xcode and a [Snappy Xcode wrapper]: https://github.com/etresoft/Snappy-Xcode . Due to the bundled nature of this project, the other wrappers are not required. But they were useful in building this project.
 
 ### Creating An Instance
 
