@@ -6,4 +6,6 @@
 	#import <Foundation/Foundation.h>
 #endif
 
-#include "../leveldb/port/port.h"
+#ifdef __cplusplus
+  #include "../leveldb/port/port.h"
+#endif
