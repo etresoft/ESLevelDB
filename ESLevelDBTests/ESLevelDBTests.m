@@ -1,22 +1,22 @@
 //
-//  APLevelDBTests.m
-//  APLevelDBTests
+//  ESLevelDBTests.m
+//  ESLevelDBTests
 //
 //  Created by Adam Preble on 8/14/12.
 //  Copyright (c) 2012 Adam Preble. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
-#import "APLevelDB.h"
+#import "ESLevelDB.h"
 
-@interface APLevelDBTests : XCTestCase {
-	APLevelDB *_db;
+@interface ESLevelDBTests : XCTestCase {
+	ESLevelDB *_db;
 	NSData *_largeData;
 }
 
 @end
 
-@implementation APLevelDBTests
+@implementation ESLevelDBTests
 
 - (void)setUp
 {
@@ -30,7 +30,7 @@
 	if ([[NSFileManager defaultManager] fileExistsAtPath:path])
 		[[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 	
-	_db = [APLevelDB levelDBWithPath:path error:nil];
+	_db = [ESLevelDB levelDBWithPath:path error:nil];
 }
 
 - (void)tearDown
@@ -161,14 +161,14 @@
 
 - (void)testIteratorNilOnEmptyDatabase
 {
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	XCTAssertNil(iter, @"Iterator should be nil for an empty database.");
 }
 
 - (void)testIteratorNotNilOnPopulatedDatabase
 {
 	_db[@"a"] = @"1";
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	XCTAssertNotNil(iter, @"Iterator should not be nil if the database contains anything.");
 }
 
@@ -176,7 +176,7 @@
 {
 	_db[@"b"] = @"2";
 	_db[@"a"] = @"1";
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	XCTAssertEqualObjects([iter key], @"a", @"Iterator should start at the first key.");
 	
 	XCTAssertEqualObjects([iter nextKey], @"b", @"Iterator should progress to the second key.");
@@ -188,7 +188,7 @@
 	_db[@"ab"] = @"2";
 	_db[@"abc"] = @"3";
 	
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"ab"];
 	
 	XCTAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
@@ -204,7 +204,7 @@
 	_db[@"ab"] = @"2";
 	_db[@"abc"] = @"3";
 	
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"aa"]; // seeking to a key that doesn't exist should jump us to the next possible key.
 	
 	XCTAssertEqualObjects([iter key], @"ab", @"Iterator did not seek properly.");
@@ -220,7 +220,7 @@
 	_db[@"ab"] = @"2";
 	_db[@"abc"] = @"3";
 	
-	APLevelDBIterator *iter = [APLevelDBIterator iteratorWithLevelDB:_db];
+	ESLevelDBIterator *iter = [ESLevelDBIterator iteratorWithLevelDB:_db];
 	[iter seekToKey:@"ab"];
 	[iter nextKey]; // abc
 	XCTAssertNil([iter nextKey], @"Iterator should return nil at end of keys.");
@@ -235,7 +235,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 	
-	id<APLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch setString:@"2" forKey:@"b"];
 	[batch removeKey:@"c"];
@@ -250,7 +250,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 
-	id<APLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch setString:@"2" forKey:@"b"];
 	[batch removeKey:@"c"];
@@ -266,7 +266,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 
-	id<APLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch clear];
 	[batch setString:@"2" forKey:@"b"];
@@ -288,7 +288,7 @@
 	
 	[_db setString:@"3" forKey:@"c"];
 	
-	id<APLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
 
 	// Batch a few writes immediately:
 	[batch setString:@"1" forKey:@"a"];

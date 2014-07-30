@@ -8,16 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		573F1807178C6F8D00E66DED /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573F1806178C6F8D00E66DED /* Foundation.framework */; };
-		573F182A178C852F00E66DED /* APLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* APLevelDB.mm */; };
-		573F182C178C856E00E66DED /* APLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* APLevelDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		573F182A178C852F00E66DED /* ESLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* ESLevelDB.mm */; };
+		573F182C178C856E00E66DED /* ESLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* ESLevelDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		663190A115DD798A001AC21A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6631909F15DD798A001AC21A /* InfoPlist.strings */; };
 		663190AE15DD798A001AC21A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6631909615DD798A001AC21A /* Cocoa.framework */; };
-		663190B115DD798A001AC21A /* APLevelDBFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* APLevelDBFramework.framework */; };
+		663190B115DD798A001AC21A /* ESLevelDBFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; };
 		663190B715DD798A001AC21A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 663190B515DD798A001AC21A /* InfoPlist.strings */; };
-		663190BA15DD798A001AC21A /* APLevelDBTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663190B915DD798A001AC21A /* APLevelDBTests.m */; };
-		663190C515DD7A8D001AC21A /* APLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* APLevelDB.h */; };
-		663190C615DD7A8D001AC21A /* APLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* APLevelDB.mm */; };
-		6698E04815F82D3000B74390 /* APLevelDBFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* APLevelDBFramework.framework */; };
+		663190BA15DD798A001AC21A /* ESLevelDBTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663190B915DD798A001AC21A /* ESLevelDBTests.m */; };
+		663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* ESLevelDB.h */; };
+		663190C615DD7A8D001AC21A /* ESLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* ESLevelDB.mm */; };
+		6698E04815F82D3000B74390 /* ESLevelDBFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; };
 		A513F053196881E4007F3905 /* builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F039196881E4007F3905 /* builder.cc */; };
 		A513F055196881E4007F3905 /* builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F039196881E4007F3905 /* builder.cc */; };
 		A513F056196881E4007F3905 /* c.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F03A196881E4007F3905 /* c.cc */; };
@@ -166,6 +166,34 @@
 		A513F17D19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17E19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17F19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
+		A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; };
+		A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; };
+		A59BD048196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
+		A59BD049196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
+		A59BD04F196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */; };
+		A59BD050196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */; };
+		A59BD053196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
+		A59BD054196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
+		A59BD06C196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
+		A59BD06D196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
+		A59BD074196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
+		A59BD075196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
+		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
+		A5C8BAFF197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
+		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
+		A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
+		A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
+		A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
+		A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; };
+		A5C8BB0D1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; };
+		A5C8BB0E1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
+		A5C8BB0F1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
+		A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB161975D1C30062A2BF /* snapshot.h */; };
+		A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB161975D1C30062A2BF /* snapshot.h */; };
+		A5D1340C1986F73C00B5356C /* ESLevelDBValueEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */; };
+		A5D1340D1986F73C00B5356C /* ESLevelDBValueEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */; };
+		A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */; };
+		A5D134111986F83500B5356C /* ESLevelDBValueEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -194,29 +222,29 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6698E04815F82D3000B74390 /* APLevelDBFramework.framework in CopyFiles */,
+				6698E04815F82D3000B74390 /* ESLevelDBFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		573F1805178C6F8C00E66DED /* libAPLevelDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAPLevelDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		573F1805178C6F8C00E66DED /* libESLevelDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libESLevelDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		573F1806178C6F8D00E66DED /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		6631909315DD798A001AC21A /* APLevelDBFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = APLevelDBFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6631909315DD798A001AC21A /* ESLevelDBFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ESLevelDBFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6631909615DD798A001AC21A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		6631909915DD798A001AC21A /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		6631909A15DD798A001AC21A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		6631909B15DD798A001AC21A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		6631909E15DD798A001AC21A /* APLevelDB-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APLevelDB-Info.plist"; sourceTree = "<group>"; };
+		6631909E15DD798A001AC21A /* ESLevelDB-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ESLevelDB-Info.plist"; sourceTree = "<group>"; };
 		663190A015DD798A001AC21A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		663190A215DD798A001AC21A /* APLevelDB-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "APLevelDB-Prefix.pch"; sourceTree = "<group>"; };
-		663190AB15DD798A001AC21A /* APLevelDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = APLevelDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		663190B415DD798A001AC21A /* APLevelDBTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "APLevelDBTests-Info.plist"; sourceTree = "<group>"; };
+		663190A215DD798A001AC21A /* ESLevelDB-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ESLevelDB-Prefix.pch"; sourceTree = "<group>"; };
+		663190AB15DD798A001AC21A /* ESLevelDBTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ESLevelDBTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		663190B415DD798A001AC21A /* ESLevelDBTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ESLevelDBTests-Info.plist"; sourceTree = "<group>"; };
 		663190B615DD798A001AC21A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		663190B915DD798A001AC21A /* APLevelDBTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = APLevelDBTests.m; sourceTree = "<group>"; };
-		663190C315DD7A8D001AC21A /* APLevelDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APLevelDB.h; sourceTree = "<group>"; };
-		663190C415DD7A8D001AC21A /* APLevelDB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = APLevelDB.mm; sourceTree = "<group>"; };
+		663190B915DD798A001AC21A /* ESLevelDBTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ESLevelDBTests.m; sourceTree = "<group>"; };
+		663190C315DD7A8D001AC21A /* ESLevelDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDB.h; sourceTree = "<group>"; };
+		663190C415DD7A8D001AC21A /* ESLevelDB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDB.mm; sourceTree = "<group>"; };
 		663190C815DD7CE0001AC21A /* README.markdown */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		A513F038196881E4007F3905 /* builder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = builder.h; path = ../leveldb/db/builder.h; sourceTree = "<group>"; };
 		A513F039196881E4007F3905 /* builder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = builder.cc; path = ../leveldb/db/builder.cc; sourceTree = "<group>"; };
@@ -307,6 +335,33 @@
 		A513F16C19688D44007F3905 /* snappy.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = snappy.cc; path = ../snappy/snappy.cc; sourceTree = "<group>"; };
 		A513F16D19688D44007F3905 /* snappy-c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-c.h"; path = "../snappy/snappy-c.h"; sourceTree = "<group>"; };
 		A513F16E19688D44007F3905 /* snappy-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-internal.h"; path = "../snappy/snappy-internal.h"; sourceTree = "<group>"; };
+		A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshot.h; sourceTree = "<group>"; };
+		A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBSnapshot.mm; sourceTree = "<group>"; };
+		A59BD04A196C0FA200B11D63 /* ESLevelDBWriteBatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBWriteBatch.h; sourceTree = "<group>"; };
+		A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBWriteBatch.mm; sourceTree = "<group>"; };
+		A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshotPrivate.h; sourceTree = "<group>"; };
+		A59BD055196C12C300B11D63 /* ESLevelDBWriteBatchPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBWriteBatchPrivate.h; sourceTree = "<group>"; };
+		A59BD066196CC7C500B11D63 /* db.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = db.h; path = ../leveldb/include/leveldb/db.h; sourceTree = "<group>"; };
+		A59BD067196CC7F700B11D63 /* iterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iterator.h; path = ../leveldb/include/leveldb/iterator.h; sourceTree = "<group>"; };
+		A59BD068196CC80500B11D63 /* options.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = options.h; path = ../leveldb/include/leveldb/options.h; sourceTree = "<group>"; };
+		A59BD069196CC82600B11D63 /* slice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = slice.h; path = ../leveldb/include/leveldb/slice.h; sourceTree = "<group>"; };
+		A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSlice.h; sourceTree = "<group>"; };
+		A59BD071196EB59700B11D63 /* ESLevelDBValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBValue.h; sourceTree = "<group>"; };
+		A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSerializer.h; sourceTree = "<group>"; };
+		A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDictionary.h; sourceTree = "<group>"; };
+		A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBMutableDictionary.h; sourceTree = "<group>"; };
+		A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBArchiveSerializer.h; sourceTree = "<group>"; };
+		A5C8BB03197543640062A2BF /* ESLevelDBView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBView.h; sourceTree = "<group>"; };
+		A5C8BB04197543640062A2BF /* ESLevelDBView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBView.mm; sourceTree = "<group>"; };
+		A5C8BB09197545300062A2BF /* ESLevelDBViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBViewPrivate.h; sourceTree = "<group>"; };
+		A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBEnumerator.h; sourceTree = "<group>"; };
+		A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBEnumerator.mm; sourceTree = "<group>"; };
+		A5C8BB161975D1C30062A2BF /* snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snapshot.h; path = ../leveldb/db/snapshot.h; sourceTree = "<group>"; };
+		A5D1340919866CC100B5356C /* ESLevelDBEnumeratorPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBEnumeratorPrivate.h; sourceTree = "<group>"; };
+		A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBValueEnumerator.h; sourceTree = "<group>"; };
+		A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBValueEnumerator.mm; sourceTree = "<group>"; };
+		A5D1340E1986F78800B5356C /* ESLevelDBValueEnumeratorPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBValueEnumeratorPrivate.h; sourceTree = "<group>"; };
+		A5D1341419887C9700B5356C /* ESLevelDBType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBType.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,7 +386,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				663190AE15DD798A001AC21A /* Cocoa.framework in Frameworks */,
-				663190B115DD798A001AC21A /* APLevelDBFramework.framework in Frameworks */,
+				663190B115DD798A001AC21A /* ESLevelDBFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,8 +399,8 @@
 				A513F15819688C58007F3905 /* snappy */,
 				A513F0331968819D007F3905 /* leveldb */,
 				663190C815DD7CE0001AC21A /* README.markdown */,
-				6631909C15DD798A001AC21A /* APLevelDB */,
-				663190B215DD798A001AC21A /* APLevelDBTests */,
+				6631909C15DD798A001AC21A /* ESLevelDB */,
+				663190B215DD798A001AC21A /* ESLevelDBTests */,
 				6631909515DD798A001AC21A /* Frameworks */,
 				6631909415DD798A001AC21A /* Products */,
 			);
@@ -354,9 +409,9 @@
 		6631909415DD798A001AC21A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6631909315DD798A001AC21A /* APLevelDBFramework.framework */,
-				663190AB15DD798A001AC21A /* APLevelDBTests.xctest */,
-				573F1805178C6F8C00E66DED /* libAPLevelDB.a */,
+				6631909315DD798A001AC21A /* ESLevelDBFramework.framework */,
+				663190AB15DD798A001AC21A /* ESLevelDBTests.xctest */,
+				573F1805178C6F8C00E66DED /* libESLevelDB.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -381,39 +436,62 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		6631909C15DD798A001AC21A /* APLevelDB */ = {
+		6631909C15DD798A001AC21A /* ESLevelDB */ = {
 			isa = PBXGroup;
 			children = (
-				663190C315DD7A8D001AC21A /* APLevelDB.h */,
-				663190C415DD7A8D001AC21A /* APLevelDB.mm */,
+				A59BD05F196C137600B11D63 /* Categories */,
+				A5D1341419887C9700B5356C /* ESLevelDBType.h */,
+				A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */,
+				A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */,
+				A59BD071196EB59700B11D63 /* ESLevelDBValue.h */,
+				A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */,
+				A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */,
+				A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */,
+				A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */,
+				A5D1340919866CC100B5356C /* ESLevelDBEnumeratorPrivate.h */,
+				A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */,
+				A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */,
+				A5D1340E1986F78800B5356C /* ESLevelDBValueEnumeratorPrivate.h */,
+				A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */,
+				A5C8BB03197543640062A2BF /* ESLevelDBView.h */,
+				A5C8BB09197545300062A2BF /* ESLevelDBViewPrivate.h */,
+				A5C8BB04197543640062A2BF /* ESLevelDBView.mm */,
+				A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */,
+				A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */,
+				A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */,
+				A59BD04A196C0FA200B11D63 /* ESLevelDBWriteBatch.h */,
+				A59BD055196C12C300B11D63 /* ESLevelDBWriteBatchPrivate.h */,
+				A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */,
+				663190C315DD7A8D001AC21A /* ESLevelDB.h */,
+				663190C415DD7A8D001AC21A /* ESLevelDB.mm */,
 				6631909D15DD798A001AC21A /* Supporting Files */,
 			);
-			path = APLevelDB;
+			path = ESLevelDB;
 			sourceTree = "<group>";
 		};
 		6631909D15DD798A001AC21A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				6631909E15DD798A001AC21A /* APLevelDB-Info.plist */,
+				6631909E15DD798A001AC21A /* ESLevelDB-Info.plist */,
 				6631909F15DD798A001AC21A /* InfoPlist.strings */,
-				663190A215DD798A001AC21A /* APLevelDB-Prefix.pch */,
+				663190A215DD798A001AC21A /* ESLevelDB-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		663190B215DD798A001AC21A /* APLevelDBTests */ = {
+		663190B215DD798A001AC21A /* ESLevelDBTests */ = {
 			isa = PBXGroup;
 			children = (
-				663190B915DD798A001AC21A /* APLevelDBTests.m */,
+				663190B915DD798A001AC21A /* ESLevelDBTests.m */,
 				663190B315DD798A001AC21A /* Supporting Files */,
 			);
-			path = APLevelDBTests;
+			path = ESLevelDBTests;
 			sourceTree = "<group>";
 		};
 		663190B315DD798A001AC21A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				663190B415DD798A001AC21A /* APLevelDBTests-Info.plist */,
+				663190B415DD798A001AC21A /* ESLevelDBTests-Info.plist */,
 				663190B515DD798A001AC21A /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -433,6 +511,11 @@
 		A513F034196881B1007F3905 /* db */ = {
 			isa = PBXGroup;
 			children = (
+				A5C8BB161975D1C30062A2BF /* snapshot.h */,
+				A59BD066196CC7C500B11D63 /* db.h */,
+				A59BD069196CC82600B11D63 /* slice.h */,
+				A59BD067196CC7F700B11D63 /* iterator.h */,
+				A59BD068196CC80500B11D63 /* options.h */,
 				A513F038196881E4007F3905 /* builder.h */,
 				A513F039196881E4007F3905 /* builder.cc */,
 				A513F03A196881E4007F3905 /* c.cc */,
@@ -554,6 +637,13 @@
 			name = snappy;
 			sourceTree = "<group>";
 		};
+		A59BD05F196C137600B11D63 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -561,7 +651,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				573F182C178C856E00E66DED /* APLevelDB.h in Headers */,
+				A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */,
+				A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */,
+				A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
+				A5D1340C1986F73C00B5356C /* ESLevelDBValueEnumerator.h in Headers */,
+				A59BD075196EB59700B11D63 /* ESLevelDBValue.h in Headers */,
+				A5C8BAFF197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
+				A59BD054196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */,
+				573F182C178C856E00E66DED /* ESLevelDB.h in Headers */,
+				A59BD06D196D63C500B11D63 /* ESLevelDBSlice.h in Headers */,
+				A5C8BB0D1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,16 +668,25 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				663190C515DD7A8D001AC21A /* APLevelDB.h in Headers */,
+				A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */,
+				A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */,
+				A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
+				A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */,
+				A59BD074196EB59700B11D63 /* ESLevelDBValue.h in Headers */,
+				A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
+				A59BD053196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */,
+				663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */,
+				A59BD06C196D63C500B11D63 /* ESLevelDBSlice.h in Headers */,
+				A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		573F1804178C6F8C00E66DED /* APLevelDB */ = {
+		573F1804178C6F8C00E66DED /* ESLevelDB */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 573F1811178C6F8D00E66DED /* Build configuration list for PBXNativeTarget "APLevelDB" */;
+			buildConfigurationList = 573F1811178C6F8D00E66DED /* Build configuration list for PBXNativeTarget "ESLevelDB" */;
 			buildPhases = (
 				573F1801178C6F8C00E66DED /* Sources */,
 				573F1802178C6F8C00E66DED /* Frameworks */,
@@ -589,14 +697,14 @@
 			);
 			dependencies = (
 			);
-			name = APLevelDB;
+			name = ESLevelDB;
 			productName = APLevelDBiOS;
-			productReference = 573F1805178C6F8C00E66DED /* libAPLevelDB.a */;
+			productReference = 573F1805178C6F8C00E66DED /* libESLevelDB.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		6631909215DD798A001AC21A /* APLevelDBFramework */ = {
+		6631909215DD798A001AC21A /* ESLevelDBFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 663190BD15DD798A001AC21A /* Build configuration list for PBXNativeTarget "APLevelDBFramework" */;
+			buildConfigurationList = 663190BD15DD798A001AC21A /* Build configuration list for PBXNativeTarget "ESLevelDBFramework" */;
 			buildPhases = (
 				6631908E15DD798A001AC21A /* Sources */,
 				6631908F15DD798A001AC21A /* Frameworks */,
@@ -607,14 +715,14 @@
 			);
 			dependencies = (
 			);
-			name = APLevelDBFramework;
+			name = ESLevelDBFramework;
 			productName = APLevelDB;
-			productReference = 6631909315DD798A001AC21A /* APLevelDBFramework.framework */;
+			productReference = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		663190AA15DD798A001AC21A /* APLevelDBTests */ = {
+		663190AA15DD798A001AC21A /* ESLevelDBTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 663190C015DD798A001AC21A /* Build configuration list for PBXNativeTarget "APLevelDBTests" */;
+			buildConfigurationList = 663190C015DD798A001AC21A /* Build configuration list for PBXNativeTarget "ESLevelDBTests" */;
 			buildPhases = (
 				663190A615DD798A001AC21A /* Sources */,
 				6698E04715F82D2300B74390 /* CopyFiles */,
@@ -627,9 +735,9 @@
 			dependencies = (
 				663190B015DD798A001AC21A /* PBXTargetDependency */,
 			);
-			name = APLevelDBTests;
+			name = ESLevelDBTests;
 			productName = APLevelDBTests;
-			productReference = 663190AB15DD798A001AC21A /* APLevelDBTests.xctest */;
+			productReference = 663190AB15DD798A001AC21A /* ESLevelDBTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -642,7 +750,7 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Adam Preble";
 			};
-			buildConfigurationList = 6631908C15DD798A001AC21A /* Build configuration list for PBXProject "APLevelDB" */;
+			buildConfigurationList = 6631908C15DD798A001AC21A /* Build configuration list for PBXProject "ESLevelDB" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -654,9 +762,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6631909215DD798A001AC21A /* APLevelDBFramework */,
-				663190AA15DD798A001AC21A /* APLevelDBTests */,
-				573F1804178C6F8C00E66DED /* APLevelDB */,
+				6631909215DD798A001AC21A /* ESLevelDBFramework */,
+				663190AA15DD798A001AC21A /* ESLevelDBTests */,
+				573F1804178C6F8C00E66DED /* ESLevelDB */,
 			);
 		};
 /* End PBXProject section */
@@ -701,7 +809,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				573F182A178C852F00E66DED /* APLevelDB.mm in Sources */,
+				573F182A178C852F00E66DED /* ESLevelDB.mm in Sources */,
 				A513F05D196881E4007F3905 /* db_impl.cc in Sources */,
 				A513F0BB1968820A007F3905 /* format.cc in Sources */,
 				A513F06C196881E4007F3905 /* filename.cc in Sources */,
@@ -709,10 +817,12 @@
 				A513F055196881E4007F3905 /* builder.cc in Sources */,
 				A513F062196881E4007F3905 /* db_iter.cc in Sources */,
 				A513F081196881E4007F3905 /* table_cache.cc in Sources */,
+				A59BD049196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */,
 				A513F076196881E4007F3905 /* log_writer.cc in Sources */,
 				A513F11519688218007F3905 /* crc32c.cc in Sources */,
 				A513F090196881E4007F3905 /* write_batch.cc in Sources */,
 				A513F0FA19688218007F3905 /* arena.cc in Sources */,
+				A59BD050196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */,
 				A513F097196881FC007F3905 /* port_posix.cc in Sources */,
 				A513F071196881E4007F3905 /* log_reader.cc in Sources */,
 				A513F17319688D44007F3905 /* snappy-c.cc in Sources */,
@@ -720,6 +830,7 @@
 				A513F07E196881E4007F3905 /* repair.cc in Sources */,
 				A513F13719688218007F3905 /* hot_threads.cc in Sources */,
 				A513F0C81968820A007F3905 /* table_builder.cc in Sources */,
+				A5C8BB0F1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */,
 				A513F11D19688218007F3905 /* env_posix.cc in Sources */,
 				A513F08D196881E4007F3905 /* version_set.cc in Sources */,
 				A513F12319688218007F3905 /* filter_policy.cc in Sources */,
@@ -743,6 +854,7 @@
 				A513F14919688218007F3905 /* perf_count.cc in Sources */,
 				A513F11019688218007F3905 /* comparator.cc in Sources */,
 				A513F15019688218007F3905 /* status.cc in Sources */,
+				A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */,
 				A513F10819688218007F3905 /* cache2.cc in Sources */,
 				A513F10D19688218007F3905 /* coding.cc in Sources */,
 				A513F10319688218007F3905 /* cache.cc in Sources */,
@@ -750,6 +862,7 @@
 				A513F12D19688218007F3905 /* hash.cc in Sources */,
 				A513F0FD19688218007F3905 /* bloom.cc in Sources */,
 				A513F13219688218007F3905 /* histogram.cc in Sources */,
+				A5D1340D1986F73C00B5356C /* ESLevelDBValueEnumerator.mm in Sources */,
 				A513F0B11968820A007F3905 /* block.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -758,7 +871,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				663190C615DD7A8D001AC21A /* APLevelDB.mm in Sources */,
+				663190C615DD7A8D001AC21A /* ESLevelDB.mm in Sources */,
 				A513F05B196881E4007F3905 /* db_impl.cc in Sources */,
 				A513F0B91968820A007F3905 /* format.cc in Sources */,
 				A513F06A196881E4007F3905 /* filename.cc in Sources */,
@@ -766,10 +879,12 @@
 				A513F053196881E4007F3905 /* builder.cc in Sources */,
 				A513F060196881E4007F3905 /* db_iter.cc in Sources */,
 				A513F07F196881E4007F3905 /* table_cache.cc in Sources */,
+				A59BD048196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */,
 				A513F074196881E4007F3905 /* log_writer.cc in Sources */,
 				A513F11319688218007F3905 /* crc32c.cc in Sources */,
 				A513F08E196881E4007F3905 /* write_batch.cc in Sources */,
 				A513F0F819688218007F3905 /* arena.cc in Sources */,
+				A59BD04F196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */,
 				A513F095196881FC007F3905 /* port_posix.cc in Sources */,
 				A513F06F196881E4007F3905 /* log_reader.cc in Sources */,
 				A513F17119688D44007F3905 /* snappy-c.cc in Sources */,
@@ -777,6 +892,7 @@
 				A513F07C196881E4007F3905 /* repair.cc in Sources */,
 				A513F13519688218007F3905 /* hot_threads.cc in Sources */,
 				A513F0C61968820A007F3905 /* table_builder.cc in Sources */,
+				A5C8BB0E1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */,
 				A513F11B19688218007F3905 /* env_posix.cc in Sources */,
 				A513F08B196881E4007F3905 /* version_set.cc in Sources */,
 				A513F12119688218007F3905 /* filter_policy.cc in Sources */,
@@ -789,6 +905,7 @@
 				A513F13A19688218007F3905 /* logging.cc in Sources */,
 				A513F15319688218007F3905 /* throttle.cc in Sources */,
 				A513F13F19688218007F3905 /* murmurhash.cc in Sources */,
+				A5D134111986F83500B5356C /* ESLevelDBValueEnumerator.mm in Sources */,
 				A513F079196881E4007F3905 /* memtable.cc in Sources */,
 				A513F11819688218007F3905 /* db_list.cc in Sources */,
 				A513F0C91968820A007F3905 /* table.cc in Sources */,
@@ -800,6 +917,7 @@
 				A513F14719688218007F3905 /* perf_count.cc in Sources */,
 				A513F10E19688218007F3905 /* comparator.cc in Sources */,
 				A513F14E19688218007F3905 /* status.cc in Sources */,
+				A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */,
 				A513F10619688218007F3905 /* cache2.cc in Sources */,
 				A513F10B19688218007F3905 /* coding.cc in Sources */,
 				A513F10119688218007F3905 /* cache.cc in Sources */,
@@ -815,7 +933,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				663190BA15DD798A001AC21A /* APLevelDBTests.m in Sources */,
+				663190BA15DD798A001AC21A /* ESLevelDBTests.m in Sources */,
 				A513F05C196881E4007F3905 /* db_impl.cc in Sources */,
 				A513F0BA1968820A007F3905 /* format.cc in Sources */,
 				A513F06B196881E4007F3905 /* filename.cc in Sources */,
@@ -873,7 +991,7 @@
 /* Begin PBXTargetDependency section */
 		663190B015DD798A001AC21A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 6631909215DD798A001AC21A /* APLevelDBFramework */;
+			target = 6631909215DD798A001AC21A /* ESLevelDBFramework */;
 			targetProxy = 663190AF15DD798A001AC21A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -908,14 +1026,14 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
 				MACH_O_TYPE = staticlib;
 				ONLY_ACTIVE_ARCH = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = "$(PUBLIC_HEADERS_FOLDER_PATH)/Private";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/APLevelDB;
+				PRODUCT_NAME = ESLevelDB;
+				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/ESLevelDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALID_ARCHS = "armv7 armv7s i386";
@@ -932,14 +1050,14 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				DEAD_CODE_STRIPPING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				KEEP_PRIVATE_EXTERNS = NO;
 				MACH_O_TYPE = staticlib;
 				ONLY_ACTIVE_ARCH = NO;
 				PRIVATE_HEADERS_FOLDER_PATH = "$(PUBLIC_HEADERS_FOLDER_PATH)/Private";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/APLevelDB;
+				PRODUCT_NAME = ESLevelDB;
+				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/ESLevelDB;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
@@ -1028,9 +1146,9 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
-				INFOPLIST_FILE = "APLevelDB/APLevelDB-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
+				INFOPLIST_FILE = "ESLevelDB/ESLevelDB-Info.plist";
+				PRODUCT_NAME = ESLevelDBFramework;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
@@ -1043,9 +1161,9 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
-				INFOPLIST_FILE = "APLevelDB/APLevelDB-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
+				INFOPLIST_FILE = "ESLevelDB/ESLevelDB-Info.plist";
+				PRODUCT_NAME = ESLevelDBFramework;
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Release;
@@ -1060,9 +1178,9 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
-				INFOPLIST_FILE = "APLevelDBTests/APLevelDBTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
+				INFOPLIST_FILE = "ESLevelDBTests/ESLevelDBTests-Info.plist";
+				PRODUCT_NAME = ESLevelDBTests;
 			};
 			name = Debug;
 		};
@@ -1076,16 +1194,16 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "APLevelDB/APLevelDB-Prefix.pch";
-				INFOPLIST_FILE = "APLevelDBTests/APLevelDBTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "ESLevelDB/ESLevelDB-Prefix.pch";
+				INFOPLIST_FILE = "ESLevelDBTests/ESLevelDBTests-Info.plist";
+				PRODUCT_NAME = ESLevelDBTests;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		573F1811178C6F8D00E66DED /* Build configuration list for PBXNativeTarget "APLevelDB" */ = {
+		573F1811178C6F8D00E66DED /* Build configuration list for PBXNativeTarget "ESLevelDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				573F180F178C6F8D00E66DED /* Debug */,
@@ -1094,7 +1212,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6631908C15DD798A001AC21A /* Build configuration list for PBXProject "APLevelDB" */ = {
+		6631908C15DD798A001AC21A /* Build configuration list for PBXProject "ESLevelDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				663190BB15DD798A001AC21A /* Debug */,
@@ -1103,7 +1221,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		663190BD15DD798A001AC21A /* Build configuration list for PBXNativeTarget "APLevelDBFramework" */ = {
+		663190BD15DD798A001AC21A /* Build configuration list for PBXNativeTarget "ESLevelDBFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				663190BE15DD798A001AC21A /* Debug */,
@@ -1112,7 +1230,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		663190C015DD798A001AC21A /* Build configuration list for PBXNativeTarget "APLevelDBTests" */ = {
+		663190C015DD798A001AC21A /* Build configuration list for PBXNativeTarget "ESLevelDBTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				663190C115DD798A001AC21A /* Debug */,

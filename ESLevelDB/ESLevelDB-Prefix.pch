@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'APLevelDB' target in the 'APLevelDB' project
+// Prefix header for all source files of the 'ESLevelDB' target in the 'ESLevelDB' project
 //
 
 #ifdef __OBJC__
