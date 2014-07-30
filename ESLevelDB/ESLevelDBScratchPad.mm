@@ -4,38 +4,22 @@
  ** Copyright (c) 2014. All rights reserved.
  **********************************************************************/
 
-#import "ESLevelDBWriteBatch.h"
-#import "ESLevelDBWriteBatchPrivate.h"
-
 #import "leveldb/db.h"
 #import "leveldb/options.h"
 #import "leveldb/write_batch.h"
+
+#import "ESLevelDBScratchPad.h"
+#import "ESLevelDBScratchPadPrivate.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
 #import "ESLevelDBSerializer.h"
 #import "ESLevelDB.h"
 #import "ESLevelDBViewPrivate.h"
 
-@implementation ESLevelDBWriteBatch
+@implementation ESLevelDBScratchPad
 
 @synthesize batch = myBatch;
-@synthesize serializer = mySerializer;
-@synthesize queue = myQueue;
 @synthesize keysChanged = myKeysChanged;
-
-- (dispatch_queue_t) queue
-  {
-  if(!myQueue)
-    {
-    NSString * label =
-      [NSString stringWithFormat: @"ESLevelDBBatchQ%p", self];
-    
-    myQueue =
-      dispatch_queue_create([label UTF8String], DISPATCH_QUEUE_SERIAL);
-    }
-    
-  return myQueue;
-  }
 
 - (NSMutableArray *) keysChanged
   {
@@ -64,7 +48,7 @@
 
 - (BOOL) commit
   {
-  return [self.db commit: self];
+  return [self.parentDB commit: self];
   }
 
 - (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBType) key
@@ -86,7 +70,7 @@
         ESleveldb::Slice(key, *self.serializer),
         ESleveldb::Slice(object, *self.serializer));
         
-      [myKeysChanged addObject: @{kESLevelDBWriteBatchKeyAdded: key}];
+      [myKeysChanged addObject: @{kESLevelDBScratchPadKeyAdded: key}];
     });
   }
 
@@ -110,7 +94,7 @@
         ESleveldb::Slice(key, *self.serializer),
         ESleveldb::Slice(object, *self.serializer));
         
-      [myKeysChanged addObject: @{kESLevelDBWriteBatchKeyAdded: key}];
+      [myKeysChanged addObject: @{kESLevelDBScratchPadKeyAdded: key}];
     });
   }
 
@@ -133,7 +117,7 @@
           ESleveldb::Slice(key, *self.serializer),
           ESleveldb::Slice(dictionary[key], *self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBWriteBatchKeyAdded}];
+        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
         }
     });
   }
@@ -143,11 +127,11 @@
   dispatch_sync(
     self.queue,
     ^{
-      for(ESLevelDBType key in [self.db allKeys])
+      for(ESLevelDBType key in [self.parentDB allKeys])
         {
         self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBWriteBatchKeyRemoved}];
+        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
         }
       
       for(ESLevelDBType key in dictionary)
@@ -156,7 +140,7 @@
           ESleveldb::Slice(key, *self.serializer),
           ESleveldb::Slice(dictionary[key], *self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBWriteBatchKeyAdded}];
+        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
         }
     });
   }
@@ -170,12 +154,12 @@
     
   self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
   
-  [myKeysChanged addObject: @{key: kESLevelDBWriteBatchKeyRemoved}];
+  [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
   }
 
 - (void) removeAllObjects
   {
-  [self removeObjectsForKeys: [self.db allKeys]];
+  [self removeObjectsForKeys: [self.parentDB allKeys]];
   }
 
 - (void) removeObjectsForKeys: (NSArray *) keys
@@ -187,7 +171,7 @@
         {
         self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBWriteBatchKeyRemoved}];
+        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
         }
     });
   }

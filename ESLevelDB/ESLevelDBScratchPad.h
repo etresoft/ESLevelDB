@@ -25,12 +25,16 @@
 //	THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "ESLevelDBMutableDictionary.h"
+
 #import "leveldb/db.h"
 #import "leveldb/options.h"
 #import "leveldb/write_batch.h"
 
-@interface ESLevelDBWriteBatch : NSObject <ESLevelDBMutableDictionary>
+#import "ESLevelDBSnapshot.h"
+#import "ESLevelDBMutableDictionary.h"
+
+@interface ESLevelDBScratchPad :
+  ESLevelDBSnapshot <ESLevelDBMutableDictionary>
 
 // The leveldb batch object.
 @property (readonly) leveldb::WriteBatch * batch;

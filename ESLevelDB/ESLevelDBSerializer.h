@@ -8,6 +8,7 @@
 #define __ESLevelDB__Serializer__
 
 #import <Foundation/Foundation.h>
+
 #import "ESLevelDBType.h"
 
 // Abstract base class for serializers.

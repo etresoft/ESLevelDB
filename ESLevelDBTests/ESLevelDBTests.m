@@ -235,7 +235,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 	
-	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBScratchPad> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch setString:@"2" forKey:@"b"];
 	[batch removeKey:@"c"];
@@ -250,7 +250,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 
-	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBScratchPad> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch setString:@"2" forKey:@"b"];
 	[batch removeKey:@"c"];
@@ -266,7 +266,7 @@
 {
 	[_db setString:@"3" forKey:@"c"];
 
-	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBScratchPad> batch = [_db beginWriteBatch];
 	[batch setString:@"1" forKey:@"a"];
 	[batch clear];
 	[batch setString:@"2" forKey:@"b"];
@@ -288,7 +288,7 @@
 	
 	[_db setString:@"3" forKey:@"c"];
 	
-	id<ESLevelDBWriteBatch> batch = [_db beginWriteBatch];
+	id<ESLevelDBScratchPad> batch = [_db beginWriteBatch];
 
 	// Batch a few writes immediately:
 	[batch setString:@"1" forKey:@"a"];

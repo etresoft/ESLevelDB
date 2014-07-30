@@ -24,10 +24,11 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
+#import "leveldb/db.h"
+
 #import "ESLevelDBSnapshot.h"
 #import "ESLevelDBSnapshotPrivate.h"
 #import "ESLevelDBViewPrivate.h"
-#import "leveldb/db.h"
 
 @implementation ESLevelDBSnapshot
 

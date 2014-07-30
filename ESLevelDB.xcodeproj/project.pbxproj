@@ -170,8 +170,8 @@
 		A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; };
 		A59BD048196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
 		A59BD049196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
-		A59BD04F196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */; };
-		A59BD050196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */; };
+		A59BD04F196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */; };
+		A59BD050196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */; };
 		A59BD053196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
 		A59BD054196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
 		A59BD06C196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
@@ -337,10 +337,10 @@
 		A513F16E19688D44007F3905 /* snappy-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-internal.h"; path = "../snappy/snappy-internal.h"; sourceTree = "<group>"; };
 		A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshot.h; sourceTree = "<group>"; };
 		A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBSnapshot.mm; sourceTree = "<group>"; };
-		A59BD04A196C0FA200B11D63 /* ESLevelDBWriteBatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBWriteBatch.h; sourceTree = "<group>"; };
-		A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBWriteBatch.mm; sourceTree = "<group>"; };
+		A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBScratchPad.h; sourceTree = "<group>"; };
+		A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBScratchPad.mm; sourceTree = "<group>"; };
 		A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshotPrivate.h; sourceTree = "<group>"; };
-		A59BD055196C12C300B11D63 /* ESLevelDBWriteBatchPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBWriteBatchPrivate.h; sourceTree = "<group>"; };
+		A59BD055196C12C300B11D63 /* ESLevelDBScratchPadPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBScratchPadPrivate.h; sourceTree = "<group>"; };
 		A59BD066196CC7C500B11D63 /* db.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = db.h; path = ../leveldb/include/leveldb/db.h; sourceTree = "<group>"; };
 		A59BD067196CC7F700B11D63 /* iterator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = iterator.h; path = ../leveldb/include/leveldb/iterator.h; sourceTree = "<group>"; };
 		A59BD068196CC80500B11D63 /* options.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = options.h; path = ../leveldb/include/leveldb/options.h; sourceTree = "<group>"; };
@@ -459,9 +459,9 @@
 				A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */,
 				A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */,
 				A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */,
-				A59BD04A196C0FA200B11D63 /* ESLevelDBWriteBatch.h */,
-				A59BD055196C12C300B11D63 /* ESLevelDBWriteBatchPrivate.h */,
-				A59BD04C196C10D900B11D63 /* ESLevelDBWriteBatch.mm */,
+				A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */,
+				A59BD055196C12C300B11D63 /* ESLevelDBScratchPadPrivate.h */,
+				A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */,
 				663190C315DD7A8D001AC21A /* ESLevelDB.h */,
 				663190C415DD7A8D001AC21A /* ESLevelDB.mm */,
 				6631909D15DD798A001AC21A /* Supporting Files */,
@@ -822,7 +822,7 @@
 				A513F11519688218007F3905 /* crc32c.cc in Sources */,
 				A513F090196881E4007F3905 /* write_batch.cc in Sources */,
 				A513F0FA19688218007F3905 /* arena.cc in Sources */,
-				A59BD050196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */,
+				A59BD050196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */,
 				A513F097196881FC007F3905 /* port_posix.cc in Sources */,
 				A513F071196881E4007F3905 /* log_reader.cc in Sources */,
 				A513F17319688D44007F3905 /* snappy-c.cc in Sources */,
@@ -884,7 +884,7 @@
 				A513F11319688218007F3905 /* crc32c.cc in Sources */,
 				A513F08E196881E4007F3905 /* write_batch.cc in Sources */,
 				A513F0F819688218007F3905 /* arena.cc in Sources */,
-				A59BD04F196C10D900B11D63 /* ESLevelDBWriteBatch.mm in Sources */,
+				A59BD04F196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */,
 				A513F095196881FC007F3905 /* port_posix.cc in Sources */,
 				A513F06F196881E4007F3905 /* log_reader.cc in Sources */,
 				A513F17119688D44007F3905 /* snappy-c.cc in Sources */,

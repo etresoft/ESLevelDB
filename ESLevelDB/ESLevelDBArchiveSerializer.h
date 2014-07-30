@@ -8,6 +8,7 @@
 #define __ESLevelDB__ArchiveSerializer__
 
 #import <Foundation/Foundation.h>
+
 #import "ESLevelDBType.h"
 
 // An archive serializer.

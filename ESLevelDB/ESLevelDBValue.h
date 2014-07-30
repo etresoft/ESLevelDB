@@ -7,9 +7,12 @@
 #ifndef __ESLevelDB__Value__
 #define __ESLevelDB__Value__
 
-#import <Foundation/Foundation.h>
-#import "leveldb/db.h"
 #import <functional>
+
+#import <Foundation/Foundation.h>
+
+#import "leveldb/db.h"
+
 #import "ESLevelDBType.h"
 #import "ESLevelDBSerializer.h"
 #import "ESLevelDBArchiveSerializer.h"

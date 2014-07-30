@@ -5,9 +5,10 @@
  **********************************************************************/
 
 #import <Foundation/Foundation.h>
+
 #import "ESLevelDBType.h"
 
-@class ESLevelDBWriteBatch;
+@class ESLevelDBScratchPad;
 
 @protocol ESLevelDBMutableDictionary <NSObject>
 

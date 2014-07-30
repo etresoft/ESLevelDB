@@ -26,14 +26,15 @@
 //	THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
+#import "leveldb/options.h"
+
 #import "ESLevelDBView.h"
 #import "ESLevelDBMutableDictionary.h"
-#import <leveldb/options.h>
 
 #define kESLevelDBErrorDomain @"com.etresoft.ESLevelDB"
 
 @class ESLevelDBSnapshot;
-@class ESLevelDBWriteBatch;
+@class ESLevelDBScratchPad;
 
 @interface ESLevelDB : ESLevelDBView <ESLevelDBMutableDictionary>
 
@@ -44,10 +45,10 @@
   error: (NSError **) errorOut;
 
 // Batch write/atomic update support.
-- (ESLevelDBWriteBatch *) batch;
+- (ESLevelDBScratchPad *) batch;
 
 // Commit a batch.
-- (BOOL) commit: (ESLevelDBWriteBatch *) batch;
+- (BOOL) commit: (ESLevelDBScratchPad *) batch;
 
 // Snapshot support.
 - (ESLevelDBSnapshot *) snapshot;

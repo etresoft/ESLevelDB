@@ -35,17 +35,16 @@
 //
 //  Same license as above.
 
+#import "leveldb/db.h"
+#import "leveldb/options.h"
+#import "leveldb/write_batch.h"
+
 #import "ESLevelDB.h"
 #import "ESLevelDBViewPrivate.h"
 #import "ESLevelDBSnapshot.h"
 #import "ESLevelDBSnapshotPrivate.h"
-#import "ESLevelDBWriteBatch.h"
-#import "ESLevelDBWriteBatchPrivate.h"
-
-#import <leveldb/db.h>
-#import <leveldb/options.h>
-#import <leveldb/write_batch.h>
-
+#import "ESLevelDBScratchPad.h"
+#import "ESLevelDBScratchPadPrivate.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
 #import "ESLevelDBValue.h"
@@ -180,7 +179,7 @@
 
 - (void) addEntriesFromDictionary: (NSDictionary *) dictionary
   {
-  ESLevelDBWriteBatch * batch = [self batch];
+  ESLevelDBScratchPad * batch = [self batch];
   
   [batch addEntriesFromDictionary: dictionary];
   
@@ -189,7 +188,7 @@
 
 - (void) setDictionary: (NSDictionary *) dictionary
   {
-  ESLevelDBWriteBatch * batch = [self batch];
+  ESLevelDBScratchPad * batch = [self batch];
   
   [batch removeAllObjects];
   [batch addEntriesFromDictionary: dictionary];
@@ -215,7 +214,7 @@
 
 - (void) removeAllObjects
   {
-  ESLevelDBWriteBatch * batch = [self batch];
+  ESLevelDBScratchPad * batch = [self batch];
   
   [batch removeAllObjects];
   
@@ -224,7 +223,7 @@
 
 - (void) removeObjectsForKeys: (NSArray *) keys
   {
-  ESLevelDBWriteBatch * batch = [self batch];
+  ESLevelDBScratchPad * batch = [self batch];
   
   [batch removeObjectsForKeys: keys];
   
@@ -232,24 +231,22 @@
   }
 
 // Batch write/atomic update support:
-- (ESLevelDBWriteBatch *) batch
+- (ESLevelDBScratchPad *) batch
   {
-	ESLevelDBWriteBatch * batch = [[ESLevelDBWriteBatch alloc] init];
+	ESLevelDBScratchPad * batch = [[ESLevelDBScratchPad alloc] init];
 	
-  batch.db = self;
+  batch.parentDB = self;
   
   return batch;
   }
 
 // Commit a batch.
-- (BOOL) commit: (ESLevelDBWriteBatch *) batch
+- (BOOL) commit: (ESLevelDBScratchPad *) batch
   {
   return
     [self mutatingOperation:
       ^BOOL
         {
-        NSInteger changeCount = 0;
-        
         // Create a list of all keys being modified. Initialize each with
         // 1 if it exists, 0 othewise.
         NSMutableDictionary * current = [NSMutableDictionary dictionary];
@@ -278,7 +275,7 @@
             
             NSString * operation = change[changedKey];
             
-            if([operation isEqualToString: kESLevelDBWriteBatchKeyAdded])
+            if([operation isEqualToString: kESLevelDBScratchPadKeyAdded])
               {
               if(currentValue == 0)
                 currentValue = 1;
