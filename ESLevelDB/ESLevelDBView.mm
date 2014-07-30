@@ -52,7 +52,7 @@
   
   if(self)
     {
-    myFastCount = YES;
+    myFastCount = NO;
     immutable = [super hash];
     
     // I will need to calculate the count at least once.
