@@ -27,16 +27,16 @@ namespace ESleveldb
     
       // Constructor.
       Value(ESLevelDBType __strong & object,
-        const ESleveldb::Serializer & serializer =
-          ESleveldb::ArchiveSerializer()) :
+        ESLevelDBSerializer * serializer =
+          [ESLevelDBArchiveSerializer new]) :
         serializer(serializer), object(object)
         {
         }
       
       // Assign from data and length.
-      Value & assign(const char * data, NSUInteger size)
+      leveldb::Value & assign(const char * data, size_t size)
         {
-        object = serializer.deserialize(data, size);
+        object = [serializer deserialize: data length: size];
         
         return *this;
         }
@@ -44,7 +44,7 @@ namespace ESleveldb
     private:
     
       // A serializer.
-      const ESleveldb::Serializer & serializer;
+      ESLevelDBSerializer * serializer;
       
       // My actual object.
       ESLevelDBType __strong & object;

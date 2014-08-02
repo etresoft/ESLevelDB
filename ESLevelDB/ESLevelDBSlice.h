@@ -25,16 +25,17 @@ namespace ESleveldb
     
       // Constructor with NSCoding object.
       Slice(ESLevelDBType object,
-        const ESleveldb::Serializer & serializer =
-          ESleveldb::ArchiveSerializer()) :
-        leveldb::Slice(makeSlice(object)), serializer(serializer)
+        ESLevelDBSerializer * serializer =
+          [ESLevelDBArchiveSerializer new]) :
+        leveldb::Slice(makeSlice(object, serializer)),
+        serializer(serializer)
         {
         }
 
       // Copy constructor with leveldb slice.
       Slice(const leveldb::Slice & slice,
-        const ESleveldb::Serializer & serializer =
-          ESleveldb::ArchiveSerializer()) :
+        ESLevelDBSerializer * serializer =
+          [ESLevelDBArchiveSerializer new]) :
         leveldb::Slice(slice), serializer(serializer)
         {
         }
@@ -42,21 +43,22 @@ namespace ESleveldb
       // Cast to NSCoding object.
       operator ESLevelDBType (void) const
         {
-        return serializer.deserialize(data(), size());
+        return [serializer deserialize: data() length: size()];
         }
 
     private:
     
       // Create a slice from an NSCoding object.
-      leveldb::Slice makeSlice(ESLevelDBType object)
+      leveldb::Slice makeSlice(
+        ESLevelDBType object, ESLevelDBSerializer * serializer)
         {
-        NSData * data = serializer.serialize(object);
+        NSData * data = [serializer serialize: object];
         
         return leveldb::Slice((const char *)[data bytes], [data length]);
         }
       
       // A serializer.
-      const ESleveldb::Serializer & serializer;
+      ESLevelDBSerializer * serializer;
     };
   }
 

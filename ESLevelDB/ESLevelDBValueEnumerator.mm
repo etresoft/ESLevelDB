@@ -38,6 +38,12 @@
   return self;
   }
 
+- (void) dealloc
+  {
+  delete myIter;
+  myIter = 0;
+  }
+
 - (NSArray *) allObjects
   {
   NSMutableArray * allObjects = [NSMutableArray array];
@@ -48,6 +54,8 @@
   for(allIter->Seek(myIter->value()); allIter->Valid(); allIter->Next())
     [allObjects addObject: ESleveldb::Slice(allIter->key())];
     
+  delete allIter;
+  
   return [allObjects copy];
   }
 

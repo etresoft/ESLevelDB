@@ -8,9 +8,14 @@
 #import "leveldb/options.h"
 #import "leveldb/write_batch.h"
 
+@class ESLevelDB;
+
 @interface ESLevelDBSnapshot ()
 
 @property (assign) const leveldb::Snapshot * snapshot;
+
+// Constructor.
+- (instancetype) initWithESLevelDB: (ESLevelDB *) db;
 
 @end
 

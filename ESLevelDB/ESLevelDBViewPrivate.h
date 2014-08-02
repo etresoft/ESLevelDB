@@ -27,4 +27,7 @@
 // I need to know if the database changes.
 @property (readonly) NSUInteger lastHash;
 
+// Constructor.
+- (instancetype) initWithDb: (leveldb::DB *) db;
+
 @end

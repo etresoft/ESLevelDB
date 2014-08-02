@@ -26,8 +26,7 @@
 //	THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#import "leveldb/options.h"
-
+#
 #import "ESLevelDBView.h"
 #import "ESLevelDBMutableDictionary.h"
 
@@ -37,8 +36,6 @@
 @class ESLevelDBScratchPad;
 
 @interface ESLevelDB : ESLevelDBView <ESLevelDBMutableDictionary>
-
-@property (assign) leveldb::WriteOptions writeOptions;
 
 // Factory constructor with path.
 + (ESLevelDB *) levelDBWithPath: (NSString *) path

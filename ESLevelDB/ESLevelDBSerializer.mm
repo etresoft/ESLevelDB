@@ -4,18 +4,26 @@
  ** Copyright (c) 2014. All rights reserved.
  **********************************************************************/
 
-#import <Foundation/Foundation.h>
-
+#import "ESLevelDBSerializer.h"
 #import "ESLevelDBType.h"
 
 // Abstract base class for serializers.
-@interface ESLevelDBSerializer : NSObject
+@implementation ESLevelDBSerializer
 
-- (NSData *) serialize: (ESLevelDBType) object;
+- (NSData *) serialize: (ESLevelDBType) object
+  {
+  return nil;
+  }
 
 - (ESLevelDBType) deserialize: (const char *) data
-  length: (NSUInteger) length;
+  length: (NSUInteger) length
+  {
+  return nil;
+  }
 
-- (ESLevelDBType) deserialize: (NSData *) data;
+- (ESLevelDBType) deserialize: (NSData *) data
+  {
+  return nil;
+  }
 
 @end

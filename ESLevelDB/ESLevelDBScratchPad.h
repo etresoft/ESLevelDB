@@ -26,18 +26,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "leveldb/db.h"
-#import "leveldb/options.h"
-#import "leveldb/write_batch.h"
-
 #import "ESLevelDBSnapshot.h"
 #import "ESLevelDBMutableDictionary.h"
 
 @interface ESLevelDBScratchPad :
   ESLevelDBSnapshot <ESLevelDBMutableDictionary>
-
-// The leveldb batch object.
-@property (readonly) leveldb::WriteBatch * batch;
 
 // Commit the batch.
 - (BOOL) commit;

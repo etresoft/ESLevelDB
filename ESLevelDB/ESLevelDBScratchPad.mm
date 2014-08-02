@@ -18,6 +18,7 @@
 
 @implementation ESLevelDBScratchPad
 
+@synthesize parentDB = myParentDB;
 @synthesize batch = myBatch;
 @synthesize keysChanged = myKeysChanged;
 
@@ -30,12 +31,15 @@
   }
 
 // Constructor.
-- (instancetype) init
+- (instancetype) initWithESLevelDB: (ESLevelDB *) db
   {
-  self = [super init];
+  self = [super initWithDb: db.db];
   
   if(self)
+    {
+    myParentDB = db;
     myBatch = new leveldb::WriteBatch();
+    }
     
   return self;
   }
@@ -67,10 +71,10 @@
     self.queue,
     ^{
       self.batch->Put(
-        ESleveldb::Slice(key, *self.serializer),
-        ESleveldb::Slice(object, *self.serializer));
+        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::Slice(object, self.serializer));
         
-      [myKeysChanged addObject: @{kESLevelDBScratchPadKeyAdded: key}];
+      [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
     });
   }
 
@@ -91,10 +95,10 @@
     self.queue,
     ^{
       self.batch->Put(
-        ESleveldb::Slice(key, *self.serializer),
-        ESleveldb::Slice(object, *self.serializer));
+        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::Slice(object, self.serializer));
         
-      [myKeysChanged addObject: @{kESLevelDBScratchPadKeyAdded: key}];
+      [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
     });
   }
 
@@ -114,10 +118,10 @@
       for(ESLevelDBType key in dictionary)
         {
         self.batch->Put(
-          ESleveldb::Slice(key, *self.serializer),
-          ESleveldb::Slice(dictionary[key], *self.serializer));
+          ESleveldb::Slice(key, self.serializer),
+          ESleveldb::Slice(dictionary[key], self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+        [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
         }
     });
   }
@@ -129,18 +133,19 @@
     ^{
       for(ESLevelDBType key in [self.parentDB allKeys])
         {
-        self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
+        self.batch->Delete(ESleveldb::Slice(key, self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+        [self.keysChanged
+          addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
         }
       
       for(ESLevelDBType key in dictionary)
         {
         self.batch->Put(
-          ESleveldb::Slice(key, *self.serializer),
-          ESleveldb::Slice(dictionary[key], *self.serializer));
+          ESleveldb::Slice(key, self.serializer),
+          ESleveldb::Slice(dictionary[key], self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+        [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
         }
     });
   }
@@ -152,14 +157,26 @@
       raise: NSInvalidArgumentException
       format: NSLocalizedString(@"Nil key provided", NULL)];
     
-  self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
+  self.batch->Delete(ESleveldb::Slice(key, self.serializer));
   
-  [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+  [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
   }
 
 - (void) removeAllObjects
   {
   [self removeObjectsForKeys: [self.parentDB allKeys]];
+  [self.keysChanged
+    enumerateObjectsUsingBlock:
+      ^(id obj, NSUInteger idx, BOOL * stop)
+      {
+        for(id key in obj)
+          {
+          NSString * operation = obj[key];
+          
+          if([operation isEqualToString: kESLevelDBScratchPadKeyAdded])
+            [self removeObjectForKey: key];
+          }
+      }];
   }
 
 - (void) removeObjectsForKeys: (NSArray *) keys
@@ -169,9 +186,11 @@
     ^{
       for(ESLevelDBType key in keys)
         {
-        self.batch->Delete(ESleveldb::Slice(key, *self.serializer));
+        NSLog(@"Deleting object from batch: %@", key);
+        self.batch->Delete(ESleveldb::Slice(key, self.serializer));
         
-        [myKeysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+        [self.keysChanged
+          addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
         }
     });
   }

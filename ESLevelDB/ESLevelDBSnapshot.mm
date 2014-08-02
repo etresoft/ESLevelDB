@@ -29,12 +29,27 @@
 #import "ESLevelDBSnapshot.h"
 #import "ESLevelDBSnapshotPrivate.h"
 #import "ESLevelDBViewPrivate.h"
+#import "ESLevelDB.h"
 
 @implementation ESLevelDBSnapshot
 
+// Constructor.
+- (instancetype) initWithESLevelDB: (ESLevelDB *) db
+  {
+  self = [super initWithDb: db.db];
+  
+  if(self)
+    {
+    self.snapshot = self.db->GetSnapshot();
+    }
+    
+  return self;
+  }
+
 - (void) dealloc
   {
-  self.db->ReleaseSnapshot(self.snapshot);
+  if(self.db && self.snapshot)
+    self.db->ReleaseSnapshot(self.snapshot);
   }
 
 @end

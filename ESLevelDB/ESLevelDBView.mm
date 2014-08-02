@@ -16,6 +16,7 @@
 #import "ESLevelDBEnumeratorPrivate.h"
 #import "ESLevelDBValueEnumerator.h"
 #import "ESLevelDBValueEnumeratorPrivate.h"
+#import "ESLevelDBArchiveSerializer.h"
 
 // To support NSFastEnumeration.
 @interface ESLevelDBView ()
@@ -33,9 +34,13 @@
 
 @synthesize count = myCount;
 
+@synthesize serializer = mySerializer;
+
 @synthesize fastCount = myFastCount;
 
 @synthesize queue = myQueue;
+
+@synthesize db = myDb;
 
 @synthesize readOptions = myReadOptions;
 
@@ -46,12 +51,14 @@
 @synthesize nextEnumeratorIndex = myNextEnumeratorIndex;
 
 // Constructor.
-- (instancetype) init
+- (instancetype) initWithDb: (leveldb::DB *) db
   {
   self = [super init];
   
   if(self)
     {
+    myDb = db;
+    mySerializer = [ESLevelDBArchiveSerializer new];
     myFastCount = NO;
     immutable = [super hash];
     
@@ -80,7 +87,7 @@
 - (NSMutableDictionary *) enumerators
   {
   if(!myEnumerators)
-    myEnumerators = [[NSMutableDictionary alloc] init];
+    myEnumerators = [NSMutableDictionary new];
     
   return myEnumerators;
   }
@@ -129,6 +136,8 @@
         
         for(iter->SeekToFirst(); iter->Valid(); iter->Next())
           ++newCount;
+          
+        delete iter;
         }
     });
   
@@ -166,10 +175,12 @@
 	for(iter->SeekToFirst(); iter->Valid(); iter->Next())
 		[keys addObject: ESleveldb::Slice(iter->key())];
     
+  delete iter;
+  
 	return [keys copy];
   }
 
-- (NSArray *) allKeysForObject: (NSObject<NSCoding> *) object
+- (NSArray *) allKeysForObject: (ESLevelDBType) object
   {
 	NSMutableArray * keys = [NSMutableArray array];
   
@@ -181,8 +192,8 @@
 		ESleveldb::Slice key = iter->key();
     ESleveldb::Slice value = iter->value();
     
-    if([object isEqualTo: static_cast<NSObject<NSCoding> *>(value)])
-      [keys addObject: static_cast<NSObject<NSCoding> *>(key)];
+    if([object isEqual: static_cast<ESLevelDBType>(value)])
+      [keys addObject: static_cast<ESLevelDBType>(key)];
 	  }
 
 	delete iter;
@@ -244,7 +255,7 @@
   
 	leveldb::Status status =
     self.db->Get(
-      options, ESleveldb::Slice(key, *self.serializer), & result);
+      options, ESleveldb::Slice(key, self.serializer), & result);
 
 	if(!status.ok())
 		return nil;
@@ -262,7 +273,7 @@
   
 	leveldb::Status status =
     self.db->Get(
-      options, ESleveldb::Slice(key, *self.serializer), & result);
+      options, ESleveldb::Slice(key, self.serializer), & result);
 
 	if(!status.ok())
 		return nil;
@@ -325,6 +336,8 @@
     if(stop)
       break;
 	  }
+    
+  delete iter;
   }
 
 - (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) opts

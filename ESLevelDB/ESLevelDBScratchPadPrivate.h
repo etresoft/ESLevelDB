@@ -19,6 +19,9 @@
 
 @property (strong) ESLevelDB * parentDB;
 
+// The leveldb batch object.
+@property (readonly) leveldb::WriteBatch * batch;
+
 // Keep track of the keys added and deleted so the count can be updated.
 @property (readonly) NSMutableArray * keysChanged;
 

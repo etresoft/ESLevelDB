@@ -178,6 +178,10 @@
 		A59BD06D196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
 		A59BD074196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
 		A59BD075196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
+		A59FB89D198AEB6500CD6072 /* ESLevelDBSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */; };
+		A59FB89F198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */; };
+		A59FB8A0198AEEF300CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */; };
+		A59FB8A1198AEF0000CD6072 /* ESLevelDBSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */; };
 		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
 		A5C8BAFF197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
 		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
@@ -347,6 +351,8 @@
 		A59BD069196CC82600B11D63 /* slice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = slice.h; path = ../leveldb/include/leveldb/slice.h; sourceTree = "<group>"; };
 		A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSlice.h; sourceTree = "<group>"; };
 		A59BD071196EB59700B11D63 /* ESLevelDBValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBValue.h; sourceTree = "<group>"; };
+		A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBSerializer.mm; sourceTree = "<group>"; };
+		A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBArchiveSerializer.mm; sourceTree = "<group>"; };
 		A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSerializer.h; sourceTree = "<group>"; };
 		A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDictionary.h; sourceTree = "<group>"; };
 		A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBMutableDictionary.h; sourceTree = "<group>"; };
@@ -442,7 +448,9 @@
 				A59BD05F196C137600B11D63 /* Categories */,
 				A5D1341419887C9700B5356C /* ESLevelDBType.h */,
 				A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */,
+				A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */,
 				A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */,
+				A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */,
 				A59BD071196EB59700B11D63 /* ESLevelDBValue.h */,
 				A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */,
 				A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */,
@@ -848,6 +856,7 @@
 				A513F0CB1968820A007F3905 /* table.cc in Sources */,
 				A513F12819688218007F3905 /* flexcache.cc in Sources */,
 				A513F058196881E4007F3905 /* c.cc in Sources */,
+				A59FB89F198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */,
 				A513F12019688218007F3905 /* env.cc in Sources */,
 				A513F0D01968820A007F3905 /* two_level_iterator.cc in Sources */,
 				A513F17819688D44007F3905 /* snappy-sinksource.cc in Sources */,
@@ -855,6 +864,7 @@
 				A513F11019688218007F3905 /* comparator.cc in Sources */,
 				A513F15019688218007F3905 /* status.cc in Sources */,
 				A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */,
+				A59FB89D198AEB6500CD6072 /* ESLevelDBSerializer.mm in Sources */,
 				A513F10819688218007F3905 /* cache2.cc in Sources */,
 				A513F10D19688218007F3905 /* coding.cc in Sources */,
 				A513F10319688218007F3905 /* cache.cc in Sources */,
@@ -886,6 +896,7 @@
 				A513F0F819688218007F3905 /* arena.cc in Sources */,
 				A59BD04F196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */,
 				A513F095196881FC007F3905 /* port_posix.cc in Sources */,
+				A59FB8A0198AEEF300CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */,
 				A513F06F196881E4007F3905 /* log_reader.cc in Sources */,
 				A513F17119688D44007F3905 /* snappy-c.cc in Sources */,
 				A513F14419688218007F3905 /* options.cc in Sources */,
@@ -904,6 +915,7 @@
 				A513F17D19688D44007F3905 /* snappy.cc in Sources */,
 				A513F13A19688218007F3905 /* logging.cc in Sources */,
 				A513F15319688218007F3905 /* throttle.cc in Sources */,
+				A59FB8A1198AEF0000CD6072 /* ESLevelDBSerializer.mm in Sources */,
 				A513F13F19688218007F3905 /* murmurhash.cc in Sources */,
 				A5D134111986F83500B5356C /* ESLevelDBValueEnumerator.mm in Sources */,
 				A513F079196881E4007F3905 /* memtable.cc in Sources */,

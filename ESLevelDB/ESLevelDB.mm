@@ -49,6 +49,12 @@
 #import "ESLevelDBSlice.h"
 #import "ESLevelDBValue.h"
 
+@interface ESLevelDB ()
+
+@property (assign) leveldb::WriteOptions writeOptions;
+
+@end
+
 @implementation ESLevelDB
   {
   // I need to know if the database changes.
@@ -67,37 +73,37 @@
 // Constructor.
 - (id) initWithPath: (NSString *) path error: (NSError **) errorOut
   {
-	if((self = [super init]))
-	  {
-		leveldb::Options options = [[self class] defaultCreateOptions];
+  leveldb::Options options = [[self class] defaultCreateOptions];
+
+  leveldb::DB * db;
   
-    leveldb::DB * db;
+  leveldb::Status status =
+    leveldb::DB::Open(options, [path fileSystemRepresentation], & db);
+
+  if(!status.ok())
+    {
+    if(errorOut)
+      {
+      NSString * statusString =
+        [[NSString alloc]
+          initWithCString: status.ToString().c_str()
+          encoding: NSUTF8StringEncoding];
+      
+      *errorOut =
+        [NSError
+          errorWithDomain: kESLevelDBErrorDomain
+          code: 0
+          userInfo:
+            [NSDictionary
+              dictionaryWithObjectsAndKeys:
+                statusString, NSLocalizedDescriptionKey, nil]];
+      }
     
-		leveldb::Status status =
-      leveldb::DB::Open(options, [path fileSystemRepresentation], & db);
-
-		if(!status.ok())
-		  {
-			if(errorOut)
-			  {
-				NSString * statusString =
-          [[NSString alloc]
-            initWithCString: status.ToString().c_str()
-            encoding: NSUTF8StringEncoding];
-				
-        *errorOut =
-          [NSError
-            errorWithDomain: kESLevelDBErrorDomain
-            code: 0
-            userInfo:
-              [NSDictionary
-                dictionaryWithObjectsAndKeys:
-                  statusString, NSLocalizedDescriptionKey, nil]];
-			  }
-			
-      return nil;
-		  }
-
+    return nil;
+    }
+    
+	if((self = [super initWithDb: db]))
+	  {
     self.db = db;
 		writeOptions.sync = false;
     myHash = [super hash];
@@ -110,6 +116,7 @@
 - (void) dealloc
   {
 	delete self.db;
+  self.db = nil;
   }
 
 // Convenience constructor.
@@ -138,8 +145,8 @@
       
       self.db->Put(
         writeOptions,
-        ESleveldb::Slice(key, *self.serializer),
-        ESleveldb::Slice(object, *self.serializer)).ok();
+        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::Slice(object, self.serializer)).ok();
         
       [self updateCount: adding];
       
@@ -157,8 +164,8 @@
       
       self.db->Put(
         writeOptions,
-        ESleveldb::Slice(key, *self.serializer),
-        ESleveldb::Slice(object, *self.serializer)).ok();
+        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::Slice(object, self.serializer)).ok();
         
       [self updateCount: adding];
       
@@ -204,7 +211,7 @@
       BOOL removing = ([self objectForKey: key] != nil);
       
       self.db->Delete(
-        writeOptions, ESleveldb::Slice(key, *self.serializer)).ok();
+        writeOptions, ESleveldb::Slice(key, self.serializer)).ok();
         
       [self updateCount: -removing];
       
@@ -233,11 +240,8 @@
 // Batch write/atomic update support:
 - (ESLevelDBScratchPad *) batch
   {
-	ESLevelDBScratchPad * batch = [[ESLevelDBScratchPad alloc] init];
-	
-  batch.parentDB = self;
-  
-  return batch;
+	return
+    [[ESLevelDBScratchPad alloc] initWithESLevelDB: self];
   }
 
 // Commit a batch.
@@ -308,7 +312,7 @@
 // Snapshot support:
 - (ESLevelDBSnapshot *) snapshot
   {
-  ESLevelDBSnapshot * snapshot = [[ESLevelDBSnapshot alloc] init];
+  ESLevelDBSnapshot * snapshot = [ESLevelDBSnapshot new];
   
   snapshot.db = self.db;
   snapshot.snapshot = self.db->GetSnapshot();
@@ -335,10 +339,24 @@
 
 - (void) setCount: (NSInteger) count
   {
+  if(self.fastCount)
+    [self
+      setObject: [NSNumber numberWithInteger: count] forKey: kCountKey];
   }
 
 - (void) updateCount: (NSInteger) count
   {
+  if(self.fastCount)
+    {
+    NSInteger currentCount =
+      [(NSNumber *)[self objectForKey: kCountKey] integerValue];
+    
+    currentCount += count;
+    
+    [self
+      setObject: [NSNumber numberWithInteger: currentCount]
+      forKey: kCountKey];
+    }
   }
   
 @end
