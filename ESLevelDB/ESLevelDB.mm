@@ -25,16 +25,6 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-//
-//  Portions of ESLevelDB are based on LevelDB-ObjC:
-//	https://github.com/hoisie/LevelDB-ObjC
-//  Specifically the SliceFromString/StringFromSlice macros, and the structure of
-//  the enumeration methods.  License for those potions follows:
-//
-//	Copyright (c) 2011 Pave Labs
-//
-//  Same license as above.
-
 #import "leveldb/db.h"
 #import "leveldb/options.h"
 #import "leveldb/write_batch.h"
