@@ -84,8 +84,8 @@
     // Force (as with a rubber hose) the extracted object into a pointer
     // so that fast enumeration can access it.
     CFTypeRef ref = (__bridge CFTypeRef)self.ref;
-    id __unsafe_unretained unsafeId = (__bridge id __unsafe_unretained)ref;
-    myObjectPtr = (id __unsafe_unretained *)& unsafeId;
+    myObject = (__bridge id __unsafe_unretained)ref;
+    myObjectPtr = (id __unsafe_unretained *)& myObject;
     
     [self didChangeValueForKey: @"objectPtr"];
     [self didChangeValueForKey: @"object"];

@@ -54,15 +54,15 @@
 
 - (void) testSetStringForKey
   {
-	NSString *text = @"Hello";
-	NSString *key = @"key";
-	[db setObject:text forKey:key];
+	NSString * text = @"Hello";
+	NSString * key = @"key";
+	[db setObject: text forKey: key];
 	
 	XCTAssertEqualObjects(
-    text, [db objectForKey:key], @"Error retrieving string for key.");
+    text, [db objectForKey: key], @"Error retrieving string for key.");
   }
 
-- (void)testSetDataForKey
+- (void) testSetDataForKey
   {
 	// Create some test data using NSKeyedArchiver:
 	NSData * data =
@@ -88,6 +88,91 @@
     @"dataForKey: should return nil if a key doesn't exist");
   }
 
+- (void) testObjectForData
+  {
+	// Create some test data using NSKeyedArchiver:
+	NSDate * now = [NSDate date];
+  NSDate * then = [now dateByAddingTimeInterval: -100];
+  
+	[db setObject: now forKey: @"now"];
+  [db setObject: then forKey: @"then"];
+	
+  NSDate * whenever = [now copy];
+  
+	XCTAssertEqualObjects(
+    db[@"now"], whenever, @"Fetched data doesn't match original data.");
+  
+  XCTAssertNotEqualObjects(db[@"then"], db[@"now"], @"Then wasn't now");
+  }
+
+- (void) testObjectForKey
+  {
+	// Create some test data using NSKeyedArchiver:
+	NSDate * now = [NSDate date];
+  NSDate * then = [now dateByAddingTimeInterval: -100];
+  
+	[db setObject: @"now" forKey: now];
+  [db setObject: @"then" forKey: then];
+	
+  __block int count = 0;
+  
+  [db
+    enumerateKeysAndObjectsUsingBlock:
+      ^(id<NSObject,NSSecureCoding,NSCopying> key,
+      id<NSObject,NSSecureCoding,NSCopying> obj,
+      BOOL * stop)
+      {
+      if([obj isEqual: @"now"])
+        {
+        }
+      else if([obj isEqual: @"then"])
+        {
+        }
+      else
+        {
+        XCTAssert(YES, @"Unexpected object: %@", obj);
+        }
+		  
+      ++count;
+      }];
+  
+	XCTAssertEqual(count, 2, @"Count is wrong");
+  }
+
+/* - (void) testFastEnumeration
+  {
+	// Create some test data using NSKeyedArchiver:
+	[db
+    setObject:
+      @{
+        @"key1" : @"This is a key",
+        @"key2" : [NSDate date],
+        @"key3" : @4.5
+      }
+    forKey: @"dict 1"];
+    
+	[db
+    setObject:
+      @{
+        @"key1" : @"This is another key",
+        @"key2" : [db[@"dict 1"][@"key2"] dateByAddingTimeInterval: -1],
+        @"key3" : @4.51
+      }
+    forKey: @"dict 2"];
+	
+ [db
+    enumerateKeysAndObjectsUsingBlock:
+      ^(id<NSObject,NSSecureCoding,NSCopying> key,
+      id<NSObject,NSSecureCoding,NSCopying> obj,
+      BOOL * stop)
+  for(NSString * key in db)
+    {
+    NSLog(@"%@.key1: %@", key, db[key][@"key1"]);
+    NSLog(@"%@.key2: %@", key, db[key][@"key2"]);
+    NSLog(@"%@.key3: %@", key, db[key][@"key3"]);
+    } // ];
+  } */
+
 - (void) testRemoveKey
   {
 	NSString * text = @"Hello";
@@ -104,6 +189,7 @@
 	XCTAssertNil(
     [db objectForKey:key],
     @"stringForKey should return nil after removal of key");
+    
 	XCTAssertNil(
     [db objectForKey:key],
     @"dataForKey should return nil after removal of key");
@@ -125,7 +211,7 @@
 	NSDictionary * keysAndValues =
     [self populateWithUUIDsAndReturnDictionary];
 	NSArray * sortedOriginalKeys =
-    [keysAndValues.allKeys sortedArrayUsingSelector:@selector(compare:)];
+    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
 	
 	__block NSUInteger keyIndex = 0;
   
@@ -218,9 +304,9 @@
     @"Iterator should progress to the second key.");
   }
 
-- (void) testIteratorSeek
+/* - (void) testIteratorSeek
   {
-	/* db[@"a"] = @"1";
+	db[@"a"] = @"1";
 	db[@"ab"] = @"2";
 	db[@"abc"] = @"3";
 	
@@ -239,12 +325,12 @@
     [iter nextKey], @"abc", @"Iterator did not seek properly.");
 	
   XCTAssertEqualObjects(
-    [iter valueAsString], @"3", @"Iterator value incorrect."); */
-  }
+    [iter valueAsString], @"3", @"Iterator value incorrect.");
+  } */
 
-- (void) testIteratorSeekToNonExistentKey
+/* - (void) testIteratorSeekToNonExistentKey
   {
-	/* db[@"a"] = @"1";
+	db[@"a"] = @"1";
 	db[@"ab"] = @"2";
 	db[@"abc"] = @"3";
 	
@@ -264,12 +350,12 @@
     [iter nextKey], @"abc", @"Iterator did not advance properly.");
 	
   XCTAssertEqualObjects(
-    [iter valueAsString], @"3", @"Iterator value incorrect."); */
-  }
+    [iter valueAsString], @"3", @"Iterator value incorrect.");
+  } */
 
-- (void)testIteratorStepPastEnd
+/* - (void) testIteratorStepPastEnd
   {
-	/* db[@"a"] = @"1";
+	db[@"a"] = @"1";
 	db[@"ab"] = @"2";
 	db[@"abc"] = @"3";
 	
@@ -285,8 +371,8 @@
 	XCTAssertNil(
     [iter valueAsData], @"Iterator should return nil at end of keys.");
 	XCTAssertNil(
-    [iter valueAsString], @"Iterator should return nil at end of keys."); */
-  }
+    [iter valueAsString], @"Iterator should return nil at end of keys.");
+  } */
 
 #pragma mark - Atomic Updates
 
