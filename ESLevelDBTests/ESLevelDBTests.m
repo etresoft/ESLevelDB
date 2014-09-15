@@ -39,7 +39,11 @@
 	if([[NSFileManager defaultManager] fileExistsAtPath:path])
 		[[NSFileManager defaultManager] removeItemAtPath:path error: nil];
 	
-	db = [ESLevelDB levelDBWithPath:path error:nil];
+  NSError * error = nil;
+  
+	db = [ESLevelDB levelDBWithPath:path error: & error];
+  
+  XCTAssertNotNil(db, @"Failed to create DB: %@", [error description]);
   }
 
 - (void) tearDown
@@ -139,7 +143,7 @@
 	XCTAssertEqual(count, 2, @"Count is wrong");
   }
 
-/* - (void) testFastEnumeration
+- (void) testFastEnumeration
   {
 	// Create some test data using NSKeyedArchiver:
 	[db
@@ -160,18 +164,13 @@
       }
     forKey: @"dict 2"];
 	
- [db
-    enumerateKeysAndObjectsUsingBlock:
-      ^(id<NSObject,NSSecureCoding,NSCopying> key,
-      id<NSObject,NSSecureCoding,NSCopying> obj,
-      BOOL * stop)
   for(NSString * key in db)
     {
     NSLog(@"%@.key1: %@", key, db[key][@"key1"]);
     NSLog(@"%@.key2: %@", key, db[key][@"key2"]);
     NSLog(@"%@.key3: %@", key, db[key][@"key3"]);
-    } // ];
-  } */
+    }
+  }
 
 - (void) testRemoveKey
   {

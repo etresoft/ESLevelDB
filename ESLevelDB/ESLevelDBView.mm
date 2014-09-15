@@ -457,7 +457,12 @@
   
   // Try to increment.
   if(![enumerator nextObject])
+    {
+    // The raw pointer in state->extra[0] holds a reference.
+    [self.enumerators removeObjectForKey: index];
+    
     return 0;
+    }
     
   state->itemsPtr = enumerator.objectPtr;
   
