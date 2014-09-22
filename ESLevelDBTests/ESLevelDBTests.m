@@ -15,6 +15,7 @@
 #import <XCTest/XCTest.h>
 #import "ESLevelDB.h"
 #import "ESLevelDBScratchPad.h"
+#import "ESLevelDBEnumerator.h"
 
 @interface ESLevelDBTests : XCTestCase
   {
@@ -85,11 +86,7 @@
   {
 	XCTAssertNil(
     [db objectForKey: @"made up key"],
-    @"stringForKey: should return nil if a key doesn't exist");
-    
-	XCTAssertNil(
-    [db objectForKey: @"another made up key"],
-    @"dataForKey: should return nil if a key doesn't exist");
+    @"objectForKey: should return nil if a key doesn't exist");
   }
 
 - (void) testObjectForData
@@ -107,40 +104,6 @@
     db[@"now"], whenever, @"Fetched data doesn't match original data.");
   
   XCTAssertNotEqualObjects(db[@"then"], db[@"now"], @"Then wasn't now");
-  }
-
-- (void) testObjectForKey
-  {
-	// Create some test data using NSKeyedArchiver:
-	NSDate * now = [NSDate date];
-  NSDate * then = [now dateByAddingTimeInterval: -100];
-  
-	[db setObject: @"now" forKey: now];
-  [db setObject: @"then" forKey: then];
-	
-  __block int count = 0;
-  
-  [db
-    enumerateKeysAndObjectsUsingBlock:
-      ^(id<NSObject,NSSecureCoding,NSCopying> key,
-      id<NSObject,NSSecureCoding,NSCopying> obj,
-      BOOL * stop)
-      {
-      if([obj isEqual: @"now"])
-        {
-        }
-      else if([obj isEqual: @"then"])
-        {
-        }
-      else
-        {
-        XCTAssert(YES, @"Unexpected object: %@", obj);
-        }
-		  
-      ++count;
-      }];
-  
-	XCTAssertEqual(count, 2, @"Count is wrong");
   }
 
 - (void) testFastEnumeration
@@ -216,9 +179,7 @@
   
   [db
     enumerateKeysAndObjectsUsingBlock:
-      ^(id<NSObject,NSSecureCoding,NSCopying> key,
-      id<NSObject,NSSecureCoding,NSCopying> obj,
-      BOOL * stop)
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
       {
 		  XCTAssertEqualObjects(
         key,
@@ -239,9 +200,7 @@
   
   [db
     enumerateKeysAndObjectsUsingBlock:
-      ^(id<NSObject,NSSecureCoding,NSCopying> key,
-        id<NSObject,NSSecureCoding,NSCopying> obj,
-        BOOL * stop)
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
         {
         NSString * originalKey = sortedOriginalKeys[keyIndex];
         XCTAssertEqualObjects(
@@ -277,6 +236,7 @@
 	NSData * data = [self largeData];
 	
 	[db setObject: data forKey: key];
+  
 	XCTAssertEqualObjects(
     data,
     [db objectForKey:key],
@@ -303,75 +263,91 @@
     @"Iterator should progress to the second key.");
   }
 
-/* - (void) testIteratorSeek
+- (void) testIteratorSeek
   {
 	db[@"a"] = @"1";
 	db[@"ab"] = @"2";
 	db[@"abc"] = @"3";
 	
-	ESLevelDBIterator * iter =
-    [ESLevelDBIterator iteratorWithLevelDB:db];
-	
-  [iter seekToKey:@"ab"];
-	
-	XCTAssertEqualObjects(
-    [iter key], @"ab", @"Iterator did not seek properly.");
-	
-  XCTAssertEqualObjects(
-    [iter valueAsString], @"2", @"Iterator value incorrect.");
-	
-	XCTAssertEqualObjects(
-    [iter nextKey], @"abc", @"Iterator did not seek properly.");
-	
-  XCTAssertEqualObjects(
-    [iter valueAsString], @"3", @"Iterator value incorrect.");
-  } */
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: db];
 
-/* - (void) testIteratorSeekToNonExistentKey
-  {
-	db[@"a"] = @"1";
-	db[@"ab"] = @"2";
-	db[@"abc"] = @"3";
-	
-	ESLevelDBIterator * iter = [ESLevelDBIterator iteratorWithLevelDB:db];
-	
-  // seeking to a key that doesn't exist should jump us to the next 
-  // possible key.
-  [iter seekToKey:@"aa"];
-	
+  enumerator.start = @"ab";
+  
+  ESLevelDBType key = [enumerator nextObject];
+  
 	XCTAssertEqualObjects(
-    [iter key], @"ab", @"Iterator did not seek properly.");
-	
-  XCTAssertEqualObjects(
-    [iter valueAsString], @"2", @"Iterator value incorrect.");
-	
-	XCTAssertEqualObjects(
-    [iter nextKey], @"abc", @"Iterator did not advance properly.");
-	
-  XCTAssertEqualObjects(
-    [iter valueAsString], @"3", @"Iterator value incorrect.");
-  } */
+    key, @"ab", @"Iterator did not seek properly.");
+  }
 
-/* - (void) testIteratorStepPastEnd
+- (void) testIteratorSeekToNonExistentKey
   {
 	db[@"a"] = @"1";
 	db[@"ab"] = @"2";
 	db[@"abc"] = @"3";
 	
-	ESLevelDBIterator * iter = [ESLevelDBIterator iteratorWithLevelDB: db];
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: db];
+
+  enumerator.start = @"aa";
+  
+  ESLevelDBType key = [enumerator nextObject];
+  
+  NSLog(@"The key is %@", key);
+  
+	XCTAssertEqualObjects(
+    key, @"ab", @"Iterator did not seek properly.");
+  }
+
+- (void) testIteratorStepPastEnd
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
 	
-  [iter seekToKey:@"ab"];
-	
-  // abc
-  [iter nextKey];
-	
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: db];
+
+  enumerator.start = @"ab";
+  
+  [enumerator nextObject];
+  [enumerator nextObject];
+
   XCTAssertNil(
-    [iter nextKey], @"Iterator should return nil at end of keys.");
-	XCTAssertNil(
-    [iter valueAsData], @"Iterator should return nil at end of keys.");
-	XCTAssertNil(
-    [iter valueAsString], @"Iterator should return nil at end of keys.");
-  } */
+    [enumerator nextObject], @"Iterator should return nil at end of keys.");
+  }
+
+- (void) testIteratorRange
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"6";
+	db[@"cde"] = @"7";
+	
+  __block NSMutableArray * found = [NSMutableArray array];
+  
+  [db
+    enumerateKeysAndObjectsFrom: @"ab"
+    to: @"cd"
+    usingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        [found addObject: obj];
+        }];
+  
+  XCTAssertEqualObjects(
+    @"2",
+    [found firstObject],
+    @"First iterator result is %@ but should be 2", [found firstObject]);
+
+  XCTAssertEqualObjects(
+    @"5",
+    [found lastObject],
+    @"Last iterator result is %@ but should be 5", [found lastObject]);
+  }
 
 #pragma mark - Atomic Updates
 

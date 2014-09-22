@@ -12,6 +12,7 @@
 #import "ESLevelDBScratchPadPrivate.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
+#import "ESLevelDBKeySlice.h"
 #import "ESLevelDBSerializer.h"
 #import "ESLevelDB.h"
 #import "ESLevelDBViewPrivate.h"
@@ -55,7 +56,7 @@
   return [self.parentDB commit: self];
   }
 
-- (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBType) key
+- (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBKey) key
   {
   if(!key)
     [NSException
@@ -71,7 +72,7 @@
     self.queue,
     ^{
       self.batch->Put(
-        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer));
         
       [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
@@ -79,7 +80,7 @@
   }
 
 - (void) setObject: (ESLevelDBType) object
-  forKeyedSubscript: (ESLevelDBType) key
+  forKeyedSubscript: (ESLevelDBKey) key
   {
   if(!key)
     [NSException
@@ -95,7 +96,7 @@
     self.queue,
     ^{
       self.batch->Put(
-        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer));
         
       [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
@@ -115,10 +116,10 @@
   dispatch_sync(
     self.queue,
     ^{
-      for(ESLevelDBType key in dictionary)
+      for(ESLevelDBKey key in dictionary)
         {
         self.batch->Put(
-          ESleveldb::Slice(key, self.serializer),
+          ESleveldb::KeySlice(key),
           ESleveldb::Slice(dictionary[key], self.serializer));
         
         [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
@@ -131,18 +132,18 @@
   dispatch_sync(
     self.queue,
     ^{
-      for(ESLevelDBType key in [self.parentDB allKeys])
+      for(ESLevelDBKey key in [self.parentDB allKeys])
         {
-        self.batch->Delete(ESleveldb::Slice(key, self.serializer));
+        self.batch->Delete(ESleveldb::KeySlice(key));
         
         [self.keysChanged
           addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
         }
       
-      for(ESLevelDBType key in dictionary)
+      for(ESLevelDBKey key in dictionary)
         {
         self.batch->Put(
-          ESleveldb::Slice(key, self.serializer),
+          ESleveldb::KeySlice(key),
           ESleveldb::Slice(dictionary[key], self.serializer));
         
         [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
@@ -150,14 +151,14 @@
     });
   }
 
-- (void) removeObjectForKey: (ESLevelDBType) key
+- (void) removeObjectForKey: (ESLevelDBKey) key
   {
   if(!key)
     [NSException
       raise: NSInvalidArgumentException
       format: NSLocalizedString(@"Nil key provided", NULL)];
     
-  self.batch->Delete(ESleveldb::Slice(key, self.serializer));
+  self.batch->Delete(ESleveldb::KeySlice(key));
   
   [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
   }
@@ -184,10 +185,9 @@
   dispatch_sync(
     self.queue,
     ^{
-      for(ESLevelDBType key in keys)
+      for(ESLevelDBKey key in keys)
         {
-        NSLog(@"Deleting object from batch: %@", key);
-        self.batch->Delete(ESleveldb::Slice(key, self.serializer));
+        self.batch->Delete(ESleveldb::KeySlice(key));
         
         [self.keysChanged
           addObject: @{key: kESLevelDBScratchPadKeyRemoved}];

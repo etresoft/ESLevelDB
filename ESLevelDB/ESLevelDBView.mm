@@ -11,6 +11,7 @@
 #import "ESLevelDBViewPrivate.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
+#import "ESLevelDBKeySlice.h"
 #import "ESLevelDBValue.h"
 #import "ESLevelDBEnumerator.h"
 #import "ESLevelDBEnumeratorPrivate.h"
@@ -115,7 +116,7 @@
       if(self.fastCount)
         {
         NSNumber * count =
-          (NSNumber *)[self objectForKey: (ESLevelDBType)kCountKey];
+          (NSNumber *)[self objectForKey: (ESLevelDBKey)kCountKey];
       
         if(count)
           {
@@ -173,7 +174,7 @@
     self.db->NewIterator(leveldb::ReadOptions());
   
 	for(iter->SeekToFirst(); iter->Valid(); iter->Next())
-		[keys addObject: ESleveldb::Slice(iter->key())];
+		[keys addObject: ESleveldb::KeySlice(iter->key())];
     
   delete iter;
   
@@ -193,7 +194,7 @@
     ESleveldb::Slice value = iter->value();
     
     if([object isEqual: static_cast<ESLevelDBType>(value)])
-      [keys addObject: static_cast<ESLevelDBType>(key)];
+      [keys addObject: static_cast<ESLevelDBKey>(key)];
 	  }
 
 	delete iter;
@@ -221,10 +222,10 @@
   }
 
 - (void) getObjects: (__strong ESLevelDBType []) objects
-  andKeys: (__strong ESLevelDBType []) keys
+  andKeys: (__strong ESLevelDBKey []) keys
   {
   *keys =
-    (__bridge ESLevelDBType)malloc(sizeof(ESLevelDBType) * [self count]);
+    (__bridge ESLevelDBKey)malloc(sizeof(ESLevelDBKey) * [self count]);
   *objects =
     (__bridge ESLevelDBType)malloc(sizeof(ESLevelDBType) * [self count]);
   
@@ -238,14 +239,14 @@
 		ESleveldb::Slice key = iter->key();
     ESleveldb::Slice value = iter->value();
     
-    keys[index] = static_cast<ESLevelDBType>(key);
+    keys[index] = static_cast<ESLevelDBKey>(key);
     objects[index] = static_cast<ESLevelDBType>(value);
 	  }
 
 	delete iter;
   }
 
-- (ESLevelDBType) objectForKey: (ESLevelDBType) key
+- (ESLevelDBType) objectForKey: (ESLevelDBKey) key
   {
   leveldb::ReadOptions options = leveldb::ReadOptions();
   
@@ -254,8 +255,7 @@
   ESleveldb::Value result(value);
   
 	leveldb::Status status =
-    self.db->Get(
-      options, ESleveldb::Slice(key, self.serializer), & result);
+    self.db->Get(options, ESleveldb::KeySlice(key), & result);
 
 	if(!status.ok())
 		return nil;
@@ -263,7 +263,7 @@
 	return value;
   }
 
-- (ESLevelDBType) objectForKeyedSubscript: (ESLevelDBType) key
+- (ESLevelDBType) objectForKeyedSubscript: (ESLevelDBKey) key
   {
   leveldb::ReadOptions options = leveldb::ReadOptions();
   
@@ -272,8 +272,7 @@
   ESleveldb::Value result(value);
   
 	leveldb::Status status =
-    self.db->Get(
-      options, ESleveldb::Slice(key, self.serializer), & result);
+    self.db->Get(options, ESleveldb::KeySlice(key), & result);
 
 	if(!status.ok())
 		return nil;
@@ -286,7 +285,7 @@
   {
   NSMutableArray * objects = [NSMutableArray array];
   
-  for(NSObject<NSCoding> * key in keys)
+  for(ESLevelDBKey key in keys)
     {
     ESLevelDBType value = [self objectForKey: key];
     
@@ -319,32 +318,34 @@
   }
 
 - (void) enumerateKeysAndObjectsUsingBlock:
-  (void (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) block
+  (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
   {
-  leveldb::Iterator * iter =
-    self.db->NewIterator(leveldb::ReadOptions());
+  NSEnumerator * enumerator = [self keyEnumerator];
   
   BOOL stop = NO;
   
-	for(iter->SeekToFirst(); iter->Valid(); iter->Next())
+	while(YES)
     {
-		ESleveldb::Slice key = iter->key();
-    ESleveldb::Slice value = iter->value();
+    ESLevelDBKey key = [enumerator nextObject];
+    
+    if(!key)
+      break;
+      
+    ESLevelDBType value = self[key];
     
     block(key, value, & stop);
     
     if(stop)
       break;
 	  }
-    
-  delete iter;
   }
 
 - (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) opts
   usingBlock:
-    (void (^)(ESLevelDBType key, ESLevelDBType obj, BOOL *stop)) block
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL *stop)) block
   {
   // According to the docs, I can just ignore this one for NSDictionary.
+  // TODO: I don't want to ignore this.
   [self enumerateKeysAndObjectsUsingBlock: block];
   }
 
@@ -367,7 +368,7 @@
   }
 
 - (NSSet *) keysOfEntriesPassingTest:
-  (BOOL (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) predicate
+  (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate
   {
   return
     [NSSet setWithArray:
@@ -380,7 +381,7 @@
 
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
   passingTest:
-    (BOOL (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) predicate
+    (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate
   {
   return
     [NSSet setWithArray:
@@ -467,6 +468,120 @@
   state->itemsPtr = enumerator.objectPtr;
   
   return 1;
+  }
+
+#pragma mark - leveldb seekable iterator support
+
+// Enumerate a range [start, limit) of keys and objects.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
+  {
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: self];
+  
+  enumerator.start = from;
+  enumerator.limit = limit;
+  
+  BOOL stop = NO;
+  
+	while(YES)
+    {
+    ESLevelDBKey key = [enumerator nextObject];
+    
+    if(!key)
+      break;
+      
+    ESLevelDBType value = self[key];
+    
+    block(key, value, & stop);
+    
+    if(stop)
+      break;
+	  }
+  }
+
+// Enumerator a range [start, limit) of keys and objects with options.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  withOptions: (NSEnumerationOptions) options
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
+  {
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: self];
+  
+  enumerator.start = from;
+  enumerator.limit = limit;
+  enumerator.options = options;
+  
+  BOOL stop = NO;
+  
+	while(YES)
+    {
+    ESLevelDBKey key = [enumerator nextObject];
+    
+    if(!key)
+      break;
+      
+    ESLevelDBType value = self[key];
+    
+    block(key, value, & stop);
+    
+    if(stop)
+      break;
+	  }
+  }
+
+// Get keys in range [start, limit).
+- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  {
+  NSMutableArray * keys = [NSMutableArray array];
+  
+  [self
+    enumerateKeysAndObjectsFrom: from
+    to: limit
+    usingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        [keys addObject: key];
+        }];
+    
+  return [keys copy];
+  }
+
+// Get keys in range [start, limit) with options.
+- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  withOptions: (NSEnumerationOptions) options
+  {
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: self];
+  
+  enumerator.start = from;
+  enumerator.limit = limit;
+  enumerator.options = options;
+  
+  NSMutableArray * keys = [NSMutableArray array];
+  
+  BOOL stop = NO;
+  
+	while(YES)
+    {
+    ESLevelDBKey key = [enumerator nextObject];
+    
+    if(!key)
+      break;
+      
+    [keys addObject: key];
+    
+    if(stop)
+      break;
+	  }
+    
+  return [keys copy];
   }
 
 @end

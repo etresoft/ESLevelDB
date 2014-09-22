@@ -4,5 +4,11 @@
  ** Copyright (c) 2014. All rights reserved.
  **********************************************************************/
 
-#define ESLevelDBType id<NSObject, NSSecureCoding, NSCopying>
-#define ESLevelDBKey NSString *
+#import <Foundation/Foundation.h>
+
+#import "ESLevelDBSerializer.h"
+
+// Abstract base class for serializers.
+@interface ESLevelDBKeySerializer : ESLevelDBSerializer
+
+@end

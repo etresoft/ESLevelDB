@@ -16,6 +16,4 @@
 - (ESLevelDBType) deserialize: (const char *) data
   length: (NSUInteger) length;
 
-- (ESLevelDBType) deserialize: (NSData *) data;
-
 @end

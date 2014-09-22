@@ -20,11 +20,11 @@
 - (NSArray *) allValues;
  
 - (void) getObjects: (__strong ESLevelDBType []) objects
-  andKeys: (__strong ESLevelDBType []) keys;
+  andKeys: (__strong ESLevelDBKey []) keys;
 
-- (ESLevelDBType) objectForKey: (ESLevelDBType) key;
+- (ESLevelDBType) objectForKey: (ESLevelDBKey) key;
 
-- (ESLevelDBType) objectForKeyedSubscript: (ESLevelDBType) key;
+- (ESLevelDBType) objectForKeyedSubscript: (ESLevelDBKey) key;
 
 - (NSArray *) objectsForKeys: (NSArray *) keys
   notFoundMarker: (id) anObject;
@@ -36,11 +36,11 @@
 - (NSEnumerator *) objectEnumerator;
 
 - (void) enumerateKeysAndObjectsUsingBlock:
-  (void (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) block;
+  (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
 - (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) options
   usingBlock:
-    (void (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) block;
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
 - (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator;
 
@@ -50,13 +50,37 @@
   usingComparator: (NSComparator) comparator;
 
 - (NSSet *) keysOfEntriesPassingTest:
-  (BOOL (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) predicate;
+  (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate;
 
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
   passingTest:
-    (BOOL (^)(ESLevelDBType key, ESLevelDBType obj, BOOL * stop)) predicate;
+    (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate;
 
 // To support NSFastEnumeration.
 - (unsigned long *) mutationPtr;
+
+// To support leveldb's seekable enumerators.
+
+// Enumerate a range [start, limit) of keys and objects.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
+
+// Enumerator a range [start, limit) of keys and objects with options.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  withOptions: (NSEnumerationOptions) options
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
+
+// Get keys in range [start, limit).
+- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit;
+
+// Get keys in range [start, limit) with options.
+- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
+  to: (ESLevelDBKey) limit
+  withOptions: (NSEnumerationOptions) options;
 
 @end

@@ -37,6 +37,7 @@
 #import "ESLevelDBScratchPadPrivate.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
+#import "ESLevelDBKeySlice.h"
 #import "ESLevelDBValue.h"
 
 @interface ESLevelDB ()
@@ -126,7 +127,7 @@
 
 #pragma mark - NSLevelDBMutableDictionary interface
 
-- (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBType) key
+- (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBKey) key
   {
   [self mutatingOperation:
     ^BOOL
@@ -135,7 +136,7 @@
       
       self.db->Put(
         writeOptions,
-        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer)).ok();
         
       [self updateCount: adding];
@@ -145,7 +146,7 @@
   }
 
 - (void) setObject: (ESLevelDBType) object
-  forKeyedSubscript: (ESLevelDBType) key
+  forKeyedSubscript: (ESLevelDBKey) key
   {
   [self mutatingOperation:
     ^BOOL
@@ -154,7 +155,7 @@
       
       self.db->Put(
         writeOptions,
-        ESleveldb::Slice(key, self.serializer),
+        ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer)).ok();
         
       [self updateCount: adding];
@@ -168,7 +169,14 @@
   [self mutatingOperation:
     ^BOOL
       {
-      // TODO: Something clever.
+      BOOL adding = ([self objectForKey: key] != nil);
+      
+      self.db->Put(
+        writeOptions,
+        ESleveldb::KeySlice(key),
+        ESleveldb::Slice(value, self.serializer)).ok();
+        
+      [self updateCount: adding];
       
       return YES;
       }];
@@ -193,15 +201,14 @@
   [self commit: batch];
   }
 
-- (void) removeObjectForKey: (ESLevelDBType) key
+- (void) removeObjectForKey: (ESLevelDBKey) key
   {
   [self mutatingOperation:
     ^BOOL
       {
       BOOL removing = ([self objectForKey: key] != nil);
       
-      self.db->Delete(
-        writeOptions, ESleveldb::Slice(key, self.serializer)).ok();
+      self.db->Delete(writeOptions, ESleveldb::KeySlice(key)).ok();
         
       [self updateCount: -removing];
       
@@ -248,7 +255,7 @@
         NSInteger startingCount = 0;
         
         for(NSDictionary * change in batch.keysChanged)
-          for(ESLevelDBType changedKey in change)
+          for(ESLevelDBKey changedKey in change)
             {
             ESLevelDBType existing = [self objectForKey: changedKey];
               
@@ -263,7 +270,7 @@
           
         // Now go through them again and update the counts.
         for(NSDictionary * change in batch.keysChanged)
-          for(ESLevelDBType changedKey in change)
+          for(ESLevelDBKey changedKey in change)
             {
             NSInteger currentValue = [current[changedKey] integerValue];
             
@@ -287,7 +294,7 @@
           
         NSInteger finalCount = 0;
         
-        for(ESLevelDBType key in current)
+        for(ESLevelDBKey key in current)
           finalCount += [current[key] integerValue];
           
         BOOL result = self.db->Write(self.writeOptions, batch.batch).ok();

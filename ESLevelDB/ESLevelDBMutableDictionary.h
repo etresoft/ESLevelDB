@@ -13,10 +13,10 @@
 @protocol ESLevelDBMutableDictionary <NSObject>
 
 - (void) setObject: (ESLevelDBType) object
-  forKey: (ESLevelDBType) key;
+  forKey: (ESLevelDBKey) key;
 
 - (void) setObject: (ESLevelDBType) object
-  forKeyedSubscript: (ESLevelDBType) key;
+  forKeyedSubscript: (ESLevelDBKey) key;
 
 - (void) setValue: (ESLevelDBType) value forKey: (NSString *) key;
 
@@ -24,7 +24,7 @@
 
 - (void) setDictionary: (NSDictionary *) dictionary;
 
-- (void) removeObjectForKey: (ESLevelDBType) key;
+- (void) removeObjectForKey: (ESLevelDBKey) key;
 
 - (void) removeAllObjects;
 

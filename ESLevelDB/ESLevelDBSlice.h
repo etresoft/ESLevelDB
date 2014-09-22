@@ -46,6 +46,11 @@ namespace ESleveldb
         return [serializer deserialize: data() length: size()];
         }
 
+    protected:
+      
+      // A serializer.
+      ESLevelDBSerializer * serializer;
+      
     private:
     
       // Create a slice from an NSCoding object.
@@ -56,9 +61,6 @@ namespace ESleveldb
         
         return leveldb::Slice((const char *)[data bytes], [data length]);
         }
-      
-      // A serializer.
-      ESLevelDBSerializer * serializer;
     };
   }
 

@@ -21,9 +21,4 @@
   return nil;
   }
 
-- (ESLevelDBType) deserialize: (NSData *) data
-  {
-  return nil;
-  }
-
 @end

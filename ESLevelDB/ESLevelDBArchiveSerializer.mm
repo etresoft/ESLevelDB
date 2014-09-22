@@ -27,10 +27,4 @@
   return [NSKeyedUnarchiver unarchiveObjectWithData: objectData];
   }
 
-- (ESLevelDBType) deserialize: (NSData *) data
-  {
-  return
-    [self deserialize: (const char *)[data bytes] length: [data length]];
-  }
-
 @end
