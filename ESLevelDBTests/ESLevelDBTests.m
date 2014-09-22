@@ -165,7 +165,24 @@
 	NSArray * sortedOriginalKeys =
     [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
     
-	XCTAssertEqualObjects(sortedOriginalKeys, [db allKeys], @"");
+	XCTAssertEqualObjects(
+    sortedOriginalKeys, [db allKeys], @"allKeys failed");
+  }
+
+- (void) testAllKeysForObject
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"3";
+	db[@"cde"] = @"7";
+
+	NSArray * expected = @[@"abc", @"cd"];
+
+	XCTAssertEqualObjects(
+    expected, [db allKeysForObject: @"3"], @"allKeysForObject failed");
   }
 
 - (void) testEnumeration

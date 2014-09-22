@@ -190,7 +190,7 @@
   
 	for(iter->SeekToFirst(); iter->Valid(); iter->Next())
     {
-		ESleveldb::Slice key = iter->key();
+		ESleveldb::KeySlice key = iter->key();
     ESleveldb::Slice value = iter->value();
     
     if([object isEqual: static_cast<ESLevelDBType>(value)])
@@ -236,7 +236,7 @@
   
 	for(iter->SeekToFirst(); iter->Valid(); iter->Next())
     {
-		ESleveldb::Slice key = iter->key();
+		ESleveldb::KeySlice key = iter->key();
     ESleveldb::Slice value = iter->value();
     
     keys[index] = static_cast<ESLevelDBKey>(key);
