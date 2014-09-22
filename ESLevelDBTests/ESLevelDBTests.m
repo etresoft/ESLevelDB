@@ -185,6 +185,18 @@
     expected, [db allKeysForObject: @"3"], @"allKeysForObject failed");
   }
 
+- (void) testAllValues
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+
+	NSArray * expected = @[@"1", @"2", @"3", @"4"];
+
+	XCTAssertEqualObjects(expected, [db allValues], @"allValues");
+  }
+
 - (void) testEnumeration
   {
 	NSDictionary * keysAndValues =
