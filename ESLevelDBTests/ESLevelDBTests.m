@@ -120,6 +120,24 @@
   free(objects);
   }
 
+- (void) testObjectsForKeysNotFoundMarker
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"6";
+	db[@"cde"] = @"7";
+
+	NSArray * expected = @[@"3", @"no", @"6"];
+  NSArray * found =
+    [db objectsForKeys: @[@"abc", @"noone", @"cd"] notFoundMarker: @"no"];
+
+	XCTAssertEqualObjects(
+    expected, found, @"objectsForKeys:notFoundMarker failed");
+  }
+
 - (void) testSetStringForKey
   {
 	NSString * text = @"Hello";
