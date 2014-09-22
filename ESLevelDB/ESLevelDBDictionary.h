@@ -63,24 +63,24 @@
 
 // Enumerate a range [start, limit) of keys and objects.
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
 // Enumerator a range [start, limit) of keys and objects with options.
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
 // Get keys in range [start, limit).
 - (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit;
+  limit: (ESLevelDBKey) limit;
 
 // Get keys in range [start, limit) with options.
 - (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options;
 
 @end

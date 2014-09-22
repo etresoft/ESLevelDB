@@ -474,7 +474,7 @@
 
 // Enumerate a range [start, limit) of keys and objects.
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
   {
@@ -504,7 +504,7 @@
 
 // Enumerator a range [start, limit) of keys and objects with options.
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
@@ -513,8 +513,8 @@
     [[ESLevelDBEnumerator alloc] initWithView: self];
   
   enumerator.start = from;
-  enumerator.limit = limit;
   enumerator.options = options;
+  enumerator.limit = limit;
   
   BOOL stop = NO;
   
@@ -536,13 +536,13 @@
 
 // Get keys in range [start, limit).
 - (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   {
   NSMutableArray * keys = [NSMutableArray array];
   
   [self
     enumerateKeysAndObjectsFrom: from
-    to: limit
+    limit: limit
     usingBlock:
       ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
         {
@@ -554,15 +554,15 @@
 
 // Get keys in range [start, limit) with options.
 - (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  to: (ESLevelDBKey) limit
+  limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options
   {
   ESLevelDBEnumerator * enumerator =
     [[ESLevelDBEnumerator alloc] initWithView: self];
   
   enumerator.start = from;
-  enumerator.limit = limit;
   enumerator.options = options;
+  enumerator.limit = limit;
   
   NSMutableArray * keys = [NSMutableArray array];
   

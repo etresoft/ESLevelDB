@@ -331,7 +331,7 @@
   
   [db
     enumerateKeysAndObjectsFrom: @"ab"
-    to: @"cd"
+    limit: @"cd"
     usingBlock:
       ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
         {
@@ -345,6 +345,39 @@
 
   XCTAssertEqualObjects(
     @"5",
+    [found lastObject],
+    @"Last iterator result is %@ but should be 5", [found lastObject]);
+  }
+
+- (void) testReverseIteratorRange
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"6";
+	db[@"cde"] = @"7";
+	
+  __block NSMutableArray * found = [NSMutableArray array];
+  
+  [db
+    enumerateKeysAndObjectsFrom: @"ab"
+    limit: @"cd"
+    withOptions: NSEnumerationReverse
+    usingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        [found addObject: obj];
+        }];
+  
+  XCTAssertEqualObjects(
+    @"5",
+    [found firstObject],
+    @"First iterator result is %@ but should be 2", [found firstObject]);
+
+  XCTAssertEqualObjects(
+    @"2",
     [found lastObject],
     @"Last iterator result is %@ but should be 5", [found lastObject]);
   }

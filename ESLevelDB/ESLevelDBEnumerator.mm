@@ -45,12 +45,13 @@
     end->Seek(ESleveldb::KeySlice(limit));
     
     ESLevelDBKey found = ESleveldb::KeySlice(end->key());
-    
-    if([found isEqual: myLimit])
-      end->Next();
       
+    if(!(self.options & NSEnumerationReverse))
+      if([found isEqual: myLimit])
+        end->Next();
+        
     self.end = ESleveldb::KeySlice(end->key());
-    
+      
     delete end;
     }
   }
@@ -171,33 +172,36 @@
     if(self.end)
       myIter->Seek(ESleveldb::KeySlice(self.end));
     else
-      myIter->SeekToLast();
+      myIter->SeekToFirst();
     }
   
-  ESLevelDBType prev = ESleveldb::KeySlice(myIter->key());
-
-  if(self.start && ([prev isEqual: self.start]))
-    return nil;
-
   if(myIter->Valid())
     {
+    ESLevelDBKey current = ESleveldb::KeySlice(myIter->key());
+
+    if(self.start && ([current isEqual: self.start]))
+      return nil;
+
     myIter->Prev();
     
-    [self willChangeValueForKey: @"object"];
-    [self willChangeValueForKey: @"objectPtr"];
-     
-    self.ref = ESleveldb::KeySlice(myIter->key());
-    
-    // Force (as with a rubber hose) the extracted object into a pointer
-    // so that fast enumeration can access it.
-    CFTypeRef ref = (__bridge CFTypeRef)self.ref;
-    myObject = (__bridge id __unsafe_unretained)ref;
-    myObjectPtr = (id __unsafe_unretained *)& myObject;
-    
-    [self didChangeValueForKey: @"objectPtr"];
-    [self didChangeValueForKey: @"object"];
-    
-    return self.ref;
+    if(myIter->Valid())
+      {
+      [self willChangeValueForKey: @"object"];
+      [self willChangeValueForKey: @"objectPtr"];
+       
+      self.ref = ESleveldb::KeySlice(myIter->key());
+      
+      // Force (as with a rubber hose) the extracted object into a pointer
+      // so that fast enumeration can access it.
+      CFTypeRef ref = (__bridge CFTypeRef)self.ref;
+      myObject = (__bridge id __unsafe_unretained)ref;
+      myObjectPtr = (id __unsafe_unretained *)& myObject;
+      
+      [self didChangeValueForKey: @"objectPtr"];
+      [self didChangeValueForKey: @"object"];
+      
+      return self.ref;
+      }
     }
     
   return nil;
