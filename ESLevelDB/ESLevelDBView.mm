@@ -221,14 +221,9 @@
   return [values copy];
   }
 
-- (void) getObjects: (__strong ESLevelDBType []) objects
-  andKeys: (__strong ESLevelDBKey []) keys
+- (void) getObjects: (__unsafe_unretained id []) objects
+  andKeys: (__unsafe_unretained id []) keys
   {
-  *keys =
-    (__bridge ESLevelDBKey)malloc(sizeof(ESLevelDBKey) * [self count]);
-  *objects =
-    (__bridge ESLevelDBType)malloc(sizeof(ESLevelDBType) * [self count]);
-  
   leveldb::Iterator * iter =
     self.db->NewIterator(leveldb::ReadOptions());
   

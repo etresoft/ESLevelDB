@@ -19,8 +19,8 @@
 
 - (NSArray *) allValues;
  
-- (void) getObjects: (__strong ESLevelDBType []) objects
-  andKeys: (__strong ESLevelDBKey []) keys;
+- (void) getObjects: (__unsafe_unretained id []) objects
+  andKeys: (__unsafe_unretained id []) keys;
 
 - (ESLevelDBType) objectForKey: (ESLevelDBKey) key;
 

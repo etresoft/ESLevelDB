@@ -57,6 +57,69 @@
 
 #pragma mark - Tests
 
+
+- (void) testAllKeys
+  {
+	NSDictionary * keysAndValues =
+    [self populateWithUUIDsAndReturnDictionary];
+
+	NSArray * sortedOriginalKeys =
+    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
+    
+	XCTAssertEqualObjects(
+    sortedOriginalKeys, [db allKeys], @"allKeys failed");
+  }
+
+- (void) testAllKeysForObject
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"3";
+	db[@"cde"] = @"7";
+
+	NSArray * expected = @[@"abc", @"cd"];
+
+	XCTAssertEqualObjects(
+    expected, [db allKeysForObject: @"3"], @"allKeysForObject failed");
+  }
+
+- (void) testAllValues
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+
+	NSArray * expected = @[@"1", @"2", @"3", @"4"];
+
+	XCTAssertEqualObjects(expected, [db allValues], @"allValues");
+  }
+
+- (void) testGetObjectsAndKeys
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+
+  __unsafe_unretained id * keys =
+    (__unsafe_unretained id *)malloc(sizeof(id) * 4);
+  __unsafe_unretained id * objects =
+    (__unsafe_unretained id *)malloc(sizeof(id) * 4);
+  
+  [db getObjects: objects andKeys: keys];
+  
+	NSArray * expected = @[@"1", @"2", @"3", @"4"];
+
+	XCTAssertEqualObjects(expected, [db allValues], @"allValues");
+  
+  free(keys);
+  free(objects);
+  }
+
 - (void) testSetStringForKey
   {
 	NSString * text = @"Hello";
@@ -155,46 +218,6 @@
 	XCTAssertNil(
     [db objectForKey:key],
     @"dataForKey should return nil after removal of key");
-  }
-
-- (void) testAllKeys
-  {
-	NSDictionary * keysAndValues =
-    [self populateWithUUIDsAndReturnDictionary];
-
-	NSArray * sortedOriginalKeys =
-    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
-    
-	XCTAssertEqualObjects(
-    sortedOriginalKeys, [db allKeys], @"allKeys failed");
-  }
-
-- (void) testAllKeysForObject
-  {
-	db[@"a"] = @"1";
-	db[@"ab"] = @"2";
-	db[@"abc"] = @"3";
-	db[@"bc"] = @"4";
-	db[@"bcd"] = @"5";
-	db[@"cd"] = @"3";
-	db[@"cde"] = @"7";
-
-	NSArray * expected = @[@"abc", @"cd"];
-
-	XCTAssertEqualObjects(
-    expected, [db allKeysForObject: @"3"], @"allKeysForObject failed");
-  }
-
-- (void) testAllValues
-  {
-	db[@"a"] = @"1";
-	db[@"ab"] = @"2";
-	db[@"abc"] = @"3";
-	db[@"bc"] = @"4";
-
-	NSArray * expected = @[@"1", @"2", @"3", @"4"];
-
-	XCTAssertEqualObjects(expected, [db allValues], @"allValues");
   }
 
 - (void) testEnumeration
