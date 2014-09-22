@@ -296,8 +296,12 @@
 - (ESLevelDBType) valueForKey: (NSString *) key
   {
   if([key length])
+    {
     if([key characterAtIndex: 0] == '@')
-      return [self objectForKey: [key substringFromIndex: 1]];
+      return [super valueForKey: [key substringFromIndex: 1]];
+    else
+      return [self objectForKey: key];
+    }
     
   return nil;
   }

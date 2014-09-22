@@ -138,6 +138,36 @@
     expected, found, @"objectsForKeys:notFoundMarker failed");
   }
 
+- (void) testObjectsEnumerator
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"6";
+	db[@"cde"] = @"7";
+
+	NSArray * expected = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7"];
+  
+  NSMutableArray * found = [NSMutableArray array];
+  
+  NSEnumerator * enumerator = [db objectEnumerator];
+  
+  while(YES)
+    {
+    ESLevelDBType value = [enumerator nextObject];
+    
+    if(value)
+      [found addObject: value];
+    else
+      break;
+    }
+    
+	XCTAssertEqualObjects(
+    expected, found, @"objectEnumerator failed");
+  }
+
 - (void) testSetStringForKey
   {
 	NSString * text = @"Hello";
