@@ -29,6 +29,7 @@
 - (NSArray *) objectsForKeys: (NSArray *) keys
   notFoundMarker: (id) anObject;
 
+// TODO: Write test case.
 - (ESLevelDBType) valueForKey: (NSString *) key;
 
 - (NSEnumerator *) keyEnumerator;
@@ -42,22 +43,24 @@
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
+// TODO: Write test case.
 - (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator;
 
+// TODO: Write test case.
 - (NSArray *) keysSortedByValueUsingSelector: (SEL) comparator;
 
+// TODO: Write test case.
 - (NSArray *) keysSortedByValueWithOptions: (NSSortOptions) options
   usingComparator: (NSComparator) comparator;
 
+// TODO: Write test case.
 - (NSSet *) keysOfEntriesPassingTest:
   (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate;
 
+// TODO: Write test case.
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
   passingTest:
     (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate;
-
-// To support NSFastEnumeration.
-- (unsigned long *) mutationPtr;
 
 // To support leveldb's seekable enumerators.
 

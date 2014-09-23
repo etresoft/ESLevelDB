@@ -172,32 +172,26 @@
 		A59BD049196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
 		A59BD04F196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */; };
 		A59BD050196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */; };
-		A59BD053196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
-		A59BD054196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */; };
-		A59BD06C196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
-		A59BD06D196D63C500B11D63 /* ESLevelDBSlice.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */; };
-		A59BD074196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
-		A59BD075196EB59700B11D63 /* ESLevelDBValue.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD071196EB59700B11D63 /* ESLevelDBValue.h */; };
 		A59FB89D198AEB6500CD6072 /* ESLevelDBSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */; };
 		A59FB89F198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */; };
 		A59FB8A0198AEEF300CD6072 /* ESLevelDBArchiveSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89E198AEC6D00CD6072 /* ESLevelDBArchiveSerializer.mm */; };
 		A59FB8A1198AEF0000CD6072 /* ESLevelDBSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */; };
-		A5B6BD2319CC4C8A00C48C37 /* ESLevelDBKeySerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B6BD2119CC4C8A00C48C37 /* ESLevelDBKeySerializer.h */; };
 		A5B6BD2419CC4C8A00C48C37 /* ESLevelDBKeySerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B6BD2219CC4C8A00C48C37 /* ESLevelDBKeySerializer.m */; };
 		A5B6BD4319CFA08400C48C37 /* ESLevelDBKeySerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B6BD2219CC4C8A00C48C37 /* ESLevelDBKeySerializer.m */; };
+		A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */; };
+		A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1341419887C9700B5356C /* ESLevelDBType.h */; };
+		A5B6BD4719D19B7900C48C37 /* ESLevelDBArchiveSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */; };
+		A5B6BD4819D19B8D00C48C37 /* ESLevelDBKeySerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B6BD2119CC4C8A00C48C37 /* ESLevelDBKeySerializer.h */; };
 		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
-		A5C8BAFF197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
 		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
 		A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
 		A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
 		A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
 		A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; };
-		A5C8BB0D1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; };
 		A5C8BB0E1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
 		A5C8BB0F1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
 		A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB161975D1C30062A2BF /* snapshot.h */; };
 		A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB161975D1C30062A2BF /* snapshot.h */; };
-		A5D1340C1986F73C00B5356C /* ESLevelDBValueEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */; };
 		A5D1340D1986F73C00B5356C /* ESLevelDBValueEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */; };
 		A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */; };
 		A5D134111986F83500B5356C /* ESLevelDBValueEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */; };
@@ -693,14 +687,7 @@
 				A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */,
 				A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */,
 				A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
-				A5B6BD2319CC4C8A00C48C37 /* ESLevelDBKeySerializer.h in Headers */,
-				A5D1340C1986F73C00B5356C /* ESLevelDBValueEnumerator.h in Headers */,
-				A59BD075196EB59700B11D63 /* ESLevelDBValue.h in Headers */,
-				A5C8BAFF197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
-				A59BD054196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */,
 				573F182C178C856E00E66DED /* ESLevelDB.h in Headers */,
-				A59BD06D196D63C500B11D63 /* ESLevelDBSlice.h in Headers */,
-				A5C8BB0D1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,11 +699,12 @@
 				A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */,
 				A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
 				A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */,
-				A59BD074196EB59700B11D63 /* ESLevelDBValue.h in Headers */,
 				A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
-				A59BD053196C128200B11D63 /* ESLevelDBSnapshotPrivate.h in Headers */,
+				A5B6BD4819D19B8D00C48C37 /* ESLevelDBKeySerializer.h in Headers */,
+				A5B6BD4719D19B7900C48C37 /* ESLevelDBArchiveSerializer.h in Headers */,
 				663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */,
-				A59BD06C196D63C500B11D63 /* ESLevelDBSlice.h in Headers */,
+				A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */,
+				A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */,
 				A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

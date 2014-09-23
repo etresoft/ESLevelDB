@@ -26,9 +26,11 @@
 //	THE SOFTWARE.
 
 #import <Foundation/Foundation.h>
-#
+
 #import "ESLevelDBView.h"
 #import "ESLevelDBMutableDictionary.h"
+#import "ESLevelDBScratchPad.h"
+#import "ESLevelDBEnumerator.h"
 
 #define kESLevelDBErrorDomain @"com.etresoft.ESLevelDB"
 

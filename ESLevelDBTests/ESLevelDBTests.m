@@ -13,9 +13,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "ESLevelDB.h"
-#import "ESLevelDBScratchPad.h"
-#import "ESLevelDBEnumerator.h"
+#import "ESLevelDB/ESLevelDB.h"
 
 @interface ESLevelDBTests : XCTestCase
   {
@@ -120,6 +118,26 @@
   free(objects);
   }
 
+- (void) testObjectForKey
+  {
+	NSString * text = @"Hello";
+	NSString * key = @"key";
+	[db setObject: text forKey: key];
+	
+	XCTAssertEqualObjects(
+    text, [db objectForKey: key], @"Error retrieving string for key.");
+  }
+
+- (void) testObjectForKeyedSubscript
+  {
+	NSString * text = @"Hello";
+	NSString * key = @"key";
+	[db setObject: text forKey: key];
+	
+	XCTAssertEqualObjects(
+    text, db[key], @"Error retrieving string for key.");
+  }
+
 - (void) testObjectsForKeysNotFoundMarker
   {
 	db[@"a"] = @"1";
@@ -136,6 +154,24 @@
 
 	XCTAssertEqualObjects(
     expected, found, @"objectsForKeys:notFoundMarker failed");
+  }
+
+- (void) testKeyEnumerator
+  {
+	db[@"b"] = @"2";
+	db[@"a"] = @"1";
+  
+  NSEnumerator * enumerator = [db keyEnumerator];
+  
+	XCTAssertEqualObjects(
+    [enumerator nextObject],
+    @"a",
+    @"Iterator should start at the first key.");
+	
+	XCTAssertEqualObjects(
+    [enumerator nextObject],
+    @"b",
+    @"Iterator should progress to the second key.");
   }
 
 - (void) testObjectsEnumerator
@@ -168,14 +204,46 @@
     expected, found, @"objectEnumerator failed");
   }
 
-- (void) testSetStringForKey
+- (void) testEnumerateKeysAndObjectsUsingBlock
   {
-	NSString * text = @"Hello";
-	NSString * key = @"key";
-	[db setObject: text forKey: key];
+	NSDictionary * keysAndValues =
+    [self populateWithUUIDsAndReturnDictionary];
+	NSArray * sortedOriginalKeys =
+    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
 	
-	XCTAssertEqualObjects(
-    text, [db objectForKey: key], @"Error retrieving string for key.");
+	__block NSUInteger keyIndex = 0;
+  
+  [db
+    enumerateKeysAndObjectsUsingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+      {
+		  XCTAssertEqualObjects(
+        key,
+        sortedOriginalKeys[keyIndex],
+        @"enumerated key does not match");
+		  keyIndex++;
+      }];
+  }
+
+- (void) testEnumerateKeysAndObjectsWithOptionsUsingBlock
+  {
+	NSDictionary * keysAndValues =
+    [self populateWithUUIDsAndReturnDictionary];
+	NSArray * sortedOriginalKeys =
+    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
+	
+	NSMutableArray * reversedKeys = [NSMutableArray array];
+  
+  [db
+    enumerateKeysAndObjectsWithOptions: NSEnumerationReverse
+    usingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        [reversedKeys addObject: key];
+        }];
+
+	XCTAssertNotEqualObjects(
+    sortedOriginalKeys, reversedKeys, @"Error with reverse iteration.");
   }
 
 - (void) testSetDataForKey
@@ -268,48 +336,6 @@
     @"dataForKey should return nil after removal of key");
   }
 
-- (void) testEnumeration
-  {
-	NSDictionary * keysAndValues =
-    [self populateWithUUIDsAndReturnDictionary];
-	NSArray * sortedOriginalKeys =
-    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
-	
-	__block NSUInteger keyIndex = 0;
-  
-  [db
-    enumerateKeysAndObjectsUsingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
-      {
-		  XCTAssertEqualObjects(
-        key,
-        sortedOriginalKeys[keyIndex],
-        @"enumerated key does not match");
-		  keyIndex++;
-      }];
-  }
-
-- (void) testReverseEnumeration
-  {
-	NSDictionary * keysAndValues =
-    [self populateWithUUIDsAndReturnDictionary];
-	NSArray * sortedOriginalKeys =
-    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
-	
-	NSMutableArray * reversedKeys = [NSMutableArray array];
-  
-  [db
-    enumerateKeysAndObjectsWithOptions: NSEnumerationReverse
-    usingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
-        {
-        [reversedKeys addObject: key];
-        }];
-
-	XCTAssertNotEqualObjects(
-    sortedOriginalKeys, reversedKeys, @"Error with reverse iteration.");
-  }
-
 - (void) testSubscripting
   {
 	NSString * text = @"Hello";
@@ -340,24 +366,6 @@
   }
 
 #pragma mark - Tests - Iterators
-
-- (void) testIteratorStartsAtFirstKey
-  {
-	db[@"b"] = @"2";
-	db[@"a"] = @"1";
-  
-  NSEnumerator * enumerator = [db keyEnumerator];
-  
-	XCTAssertEqualObjects(
-    [enumerator nextObject],
-    @"a",
-    @"Iterator should start at the first key.");
-	
-	XCTAssertEqualObjects(
-    [enumerator nextObject],
-    @"b",
-    @"Iterator should progress to the second key.");
-  }
 
 - (void) testIteratorSeek
   {
