@@ -138,6 +138,8 @@
 // Support LevelDB's reverse iterator.
 - (id) decrement
   {
+  BOOL last = NO;
+  
   if(!self.iter)
     {
     self.iter = self.view.db->NewIterator(self.view.readOptions);
@@ -148,7 +150,11 @@
     if(self.end)
       self.iter->Seek(ESleveldb::KeySlice(self.end));
     else
-      self.iter->SeekToFirst();
+      {
+      self.iter->SeekToLast();
+      
+      last = YES;
+      }
     }
   
   if(self.iter->Valid())
@@ -158,7 +164,8 @@
     if(self.start && ([current isEqual: self.start]))
       return nil;
 
-    self.iter->Prev();
+    if(!last)
+      self.iter->Prev();
     
     if(self.iter->Valid())
       return [self setObjects: ESleveldb::KeySlice(self.iter->key())];
