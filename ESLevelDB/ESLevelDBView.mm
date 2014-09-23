@@ -339,13 +339,31 @@
 	  }
   }
 
-- (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) opts
+- (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) options
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL *stop)) block
   {
-  // According to the docs, I can just ignore this one for NSDictionary.
-  // TODO: I don't want to ignore this.
-  [self enumerateKeysAndObjectsUsingBlock: block];
+  ESLevelDBEnumerator * enumerator =
+    [[ESLevelDBEnumerator alloc] initWithView: self];
+  
+  enumerator.options = options;
+  
+  BOOL stop = NO;
+  
+	while(YES)
+    {
+    ESLevelDBKey key = [enumerator nextObject];
+    
+    if(!key)
+      break;
+      
+    ESLevelDBType value = self[key];
+    
+    block(key, value, & stop);
+    
+    if(stop)
+      break;
+	  }
   }
 
 - (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator

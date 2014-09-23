@@ -289,29 +289,25 @@
       }];
   }
 
-- (void) testEnumerationUsingStrings
+- (void) testReverseEnumeration
   {
 	NSDictionary * keysAndValues =
     [self populateWithUUIDsAndReturnDictionary];
 	NSArray * sortedOriginalKeys =
     [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
 	
-	__block NSUInteger keyIndex = 0;
+	NSMutableArray * reversedKeys = [NSMutableArray array];
   
   [db
-    enumerateKeysAndObjectsUsingBlock:
+    enumerateKeysAndObjectsWithOptions: NSEnumerationReverse
+    usingBlock:
       ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
         {
-        NSString * originalKey = sortedOriginalKeys[keyIndex];
-        XCTAssertEqualObjects(
-          key, originalKey, @"enumerated key does not match");
-        XCTAssertEqualObjects(
-          obj,
-          keysAndValues[originalKey],
-          @"enumerated value does not match");
-        
-        keyIndex++;
+        [reversedKeys addObject: key];
         }];
+
+	XCTAssertNotEqualObjects(
+    sortedOriginalKeys, reversedKeys, @"Error with reverse iteration.");
   }
 
 - (void) testSubscripting
