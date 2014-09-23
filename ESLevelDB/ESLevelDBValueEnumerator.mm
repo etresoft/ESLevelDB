@@ -4,92 +4,93 @@
  ** Copyright (c) 2014. All rights reserved.
  **********************************************************************/
 
+#import "ESLevelDBValueEnumerator.h"
+
 #import "leveldb/db.h"
 #import "leveldb/options.h"
 #import "leveldb/write_batch.h"
 
-#import "ESLevelDBValueEnumerator.h"
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
+#import "ESLevelDBKeySlice.h"
 #import "ESLevelDBView.h"
 #import "ESLevelDBViewPrivate.h"
-#import "ESLevelDBValueEnumeratorPrivate.h"
+#import "ESLevelDBEnumeratorPrivate.h"
 
 @implementation ESLevelDBValueEnumerator
-  {
-  ESLevelDBView * myView;
-  leveldb::Iterator * myIter;
-  }
-
-@synthesize object = myObject;
-@synthesize objectPtr = myObjectPtr;
-
-// Constructor with view.
-- (instancetype) initWithView: (ESLevelDBView *) view
-  {
-  self = [super init];
-  
-  if(self)
-    {
-    myIter = 0;
-    myView = view;
-    }
-    
-  return self;
-  }
-
-- (void) dealloc
-  {
-  delete myIter;
-  myIter = 0;
-  }
 
 - (NSArray *) allObjects
   {
   NSMutableArray * allObjects = [NSMutableArray array];
   
   leveldb::Iterator * allIter =
-    myView.db->NewIterator(myView.readOptions);
+    self.view.db->NewIterator(self.view.readOptions);
   
-  for(allIter->Seek(myIter->value()); allIter->Valid(); allIter->Next())
-    [allObjects addObject: ESleveldb::Slice(allIter->key())];
+  for(allIter->Seek(self.iter->key()); allIter->Valid(); allIter->Next())
+    [allObjects addObject: ESleveldb::Slice(allIter->value())];
     
   delete allIter;
   
   return [allObjects copy];
   }
 
-- (ESLevelDBType) nextObject
+- (id) increment
   {
-  if(!myIter)
+  if(!self.iter)
     {
-    myIter = myView.db->NewIterator(myView.readOptions);
+    self.iter = self.view.db->NewIterator(self.view.readOptions);
     
-    if(!myIter)
+    if(!self.iter)
       return nil;
       
-    myIter->SeekToFirst();
+    if(self.start)
+      self.iter->Seek(ESleveldb::KeySlice(self.start));
+    else
+      self.iter->SeekToFirst();
     }
   else
-    myIter->Next();
+    self.iter->Next();
     
-  if(myIter->Valid())
+  if(self.iter->Valid())
     {
-    [self willChangeValueForKey: @"object"];
-    [self willChangeValueForKey: @"objectPtr"];
-     
-    self.ref = ESleveldb::Slice(myIter->value());
+    ESLevelDBType next = ESleveldb::Slice(self.iter->value());
     
-    // Force (as with a rubber hose) the extracted object into a pointer
-    // so that fast enumeration can access it.
-    CFTypeRef ref = (__bridge CFTypeRef)self.ref;
-    myObject = (__bridge id __unsafe_unretained)ref;
-    myObjectPtr = (id __unsafe_unretained *)& myObject;
+    if(self.limit && ([next isEqual: self.limit]))
+      return nil;
+
+    return [self setObjects: next];
+    }
     
-    [self didChangeValueForKey: @"objectPtr"];
-    [self didChangeValueForKey: @"object"];
+  return nil;
+  }
+
+// Support LevelDB's reverse iterator.
+- (id) decrement
+  {
+  if(!self.iter)
+    {
+    self.iter = self.view.db->NewIterator(self.view.readOptions);
     
-    return self.ref;
+    if(!self.iter)
+      return nil;
+      
+    if(self.end)
+      self.iter->Seek(ESleveldb::KeySlice(self.end));
+    else
+      self.iter->SeekToFirst();
+    }
+  
+  if(self.iter->Valid())
+    {
+    ESLevelDBType current = ESleveldb::Slice(self.iter->value());
+
+    if(self.start && ([current isEqual: self.start]))
+      return nil;
+
+    self.iter->Prev();
+    
+    if(self.iter->Valid())
+      return [self setObjects: current];
     }
     
   return nil;

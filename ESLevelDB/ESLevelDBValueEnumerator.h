@@ -5,12 +5,10 @@
  **********************************************************************/
 
 #import <Foundation/Foundation.h>
+#import "ESLevelDBEnumerator.h"
 
 @class ESLevelDBView;
 
-@interface ESLevelDBValueEnumerator : NSEnumerator
-
-// Constructor with view.
-- (instancetype) initWithView: (ESLevelDBView *) view;
+@interface ESLevelDBValueEnumerator : ESLevelDBEnumerator
 
 @end

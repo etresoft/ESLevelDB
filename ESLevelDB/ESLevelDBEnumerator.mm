@@ -17,10 +17,9 @@
 #import "ESLevelDBEnumeratorPrivate.h"
 
 @implementation ESLevelDBEnumerator
-  {
-  ESLevelDBView * myView;
-  leveldb::Iterator * myIter;
-  }
+
+@synthesize view = myView;
+@synthesize iter = myIter;
 
 @synthesize object = myObject;
 @synthesize objectPtr = myObjectPtr;
@@ -40,7 +39,8 @@
     
     // See if the ending iterator actually exists. If it does, go to the
     // next key.
-    leveldb::Iterator * end = myView.db->NewIterator(myView.readOptions);
+    leveldb::Iterator * end =
+      self.view.db->NewIterator(self.view.readOptions);
     
     end->Seek(ESleveldb::KeySlice(limit));
     
@@ -87,9 +87,9 @@
   NSMutableArray * allObjects = [NSMutableArray array];
   
   leveldb::Iterator * allIter =
-    myView.db->NewIterator(myView.readOptions);
+    self.view.db->NewIterator(self.view.readOptions);
   
-  for(allIter->Seek(myIter->key()); allIter->Valid(); allIter->Next())
+  for(allIter->Seek(self.iter->key()); allIter->Valid(); allIter->Next())
     [allObjects addObject: ESleveldb::KeySlice(allIter->key())];
     
   delete allIter;
@@ -97,114 +97,94 @@
   return [allObjects copy];
   }
 
-- (ESLevelDBType) nextObject
+- (id) nextObject
   {
-  ESLevelDBType result = nil;
-  
   if(self.options & NSEnumerationReverse)
-    result = [self decrement];
-  else
-    result = [self increment];
-    
-  if(!result)
-    {
-    delete myIter;
-    myIter = 0;
-    }
-    
-  return result;
+    return [self decrement];
+  
+  return [self increment];
   }
 
-- (ESLevelDBKey) increment
+- (id) increment
   {
-  if(!myIter)
+  if(!self.iter)
     {
-    myIter = myView.db->NewIterator(myView.readOptions);
+    self.iter = self.view.db->NewIterator(self.view.readOptions);
     
-    if(!myIter)
+    if(!self.iter)
       return nil;
       
     if(self.start)
-      myIter->Seek(ESleveldb::KeySlice(self.start));
+      self.iter->Seek(ESleveldb::KeySlice(self.start));
     else
-      myIter->SeekToFirst();
+      self.iter->SeekToFirst();
     }
   else
-    myIter->Next();
+    self.iter->Next();
     
-  if(myIter->Valid())
+  if(self.iter->Valid())
     {
-    ESLevelDBKey next = ESleveldb::KeySlice(myIter->key());
+    ESLevelDBKey next = ESleveldb::KeySlice(self.iter->key());
     
     if(self.limit && ([next isEqual: self.limit]))
       return nil;
 
-    [self willChangeValueForKey: @"object"];
-    [self willChangeValueForKey: @"objectPtr"];
-     
-    self.ref = next;
-    
-    // Force (as with a rubber hose) the extracted object into a pointer
-    // so that fast enumeration can access it.
-    CFTypeRef ref = (__bridge CFTypeRef)self.ref;
-    myObject = (__bridge id __unsafe_unretained)ref;
-    myObjectPtr = (id __unsafe_unretained *)& myObject;
-    
-    [self didChangeValueForKey: @"objectPtr"];
-    [self didChangeValueForKey: @"object"];
-    
-    return self.ref;
+    return [self setObjects: next];
     }
     
   return nil;
   }
 
 // Support LevelDB's reverse iterator.
-- (ESLevelDBKey) decrement
+- (id) decrement
   {
-  if(!myIter)
+  if(!self.iter)
     {
-    myIter = myView.db->NewIterator(myView.readOptions);
+    self.iter = self.view.db->NewIterator(self.view.readOptions);
     
-    if(!myIter)
+    if(!self.iter)
       return nil;
       
     if(self.end)
-      myIter->Seek(ESleveldb::KeySlice(self.end));
+      self.iter->Seek(ESleveldb::KeySlice(self.end));
     else
-      myIter->SeekToFirst();
+      self.iter->SeekToFirst();
     }
   
-  if(myIter->Valid())
+  if(self.iter->Valid())
     {
-    ESLevelDBKey current = ESleveldb::KeySlice(myIter->key());
+    ESLevelDBKey current = ESleveldb::KeySlice(self.iter->key());
 
     if(self.start && ([current isEqual: self.start]))
       return nil;
 
-    myIter->Prev();
+    self.iter->Prev();
     
-    if(myIter->Valid())
-      {
-      [self willChangeValueForKey: @"object"];
-      [self willChangeValueForKey: @"objectPtr"];
-       
-      self.ref = ESleveldb::KeySlice(myIter->key());
-      
-      // Force (as with a rubber hose) the extracted object into a pointer
-      // so that fast enumeration can access it.
-      CFTypeRef ref = (__bridge CFTypeRef)self.ref;
-      myObject = (__bridge id __unsafe_unretained)ref;
-      myObjectPtr = (id __unsafe_unretained *)& myObject;
-      
-      [self didChangeValueForKey: @"objectPtr"];
-      [self didChangeValueForKey: @"object"];
-      
-      return self.ref;
-      }
+    if(self.iter->Valid())
+      return [self setObjects: ESleveldb::KeySlice(self.iter->key())];
     }
     
   return nil;
+  }
+
+// Set the internal objects.
+- (id) setObjects: (id) ref
+  {
+  [self willChangeValueForKey: @"object"];
+  [self willChangeValueForKey: @"objectPtr"];
+   
+  self.ref = ref;
+  
+  // Force (as with a rubber hose) the extracted object into a pointer
+  // so that fast enumeration can access it.
+  CFTypeRef key = (__bridge CFTypeRef)self.ref;
+  myObject = (__bridge id __unsafe_unretained)key;
+  myObjectPtr = (id __unsafe_unretained *)& myObject;
+  
+  [self didChangeValueForKey: @"objectPtr"];
+  [self didChangeValueForKey: @"object"];
+    
+  return self.ref;
   }
 
 @end
