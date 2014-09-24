@@ -174,6 +174,25 @@
     expected, found, @"objectsForKeys:notFoundMarker failed");
   }
 
+- (void) testValueForKey
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+	db[@"bcd"] = @"5";
+	db[@"cd"] = @"6";
+	db[@"cde"] = @"7";
+
+	XCTAssertEqualObjects(
+    @"5", [db valueForKey: @"bcd"], @"valueForKey: failed");
+
+	XCTAssertEqualObjects(
+    db.serializer,
+    [db valueForKey: @"@serializer"],
+    @"valueForKey: failed");
+  }
+
 - (void) testKeyEnumerator
   {
 	db[@"b"] = @"2";

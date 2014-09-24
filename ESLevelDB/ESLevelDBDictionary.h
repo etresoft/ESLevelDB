@@ -72,15 +72,4 @@
   usingBlock:
     (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
-// TODO: Write test case.
-// Get keys in range [start, limit).
-- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  limit: (ESLevelDBKey) limit;
-
-// TODO: Write test case.
-// Get keys in range [start, limit) with options.
-- (NSArray *) keysOfEntriesFrom: (ESLevelDBKey) from
-  limit: (ESLevelDBKey) limit
-  withOptions: (NSEnumerationOptions) options;
-
 @end
