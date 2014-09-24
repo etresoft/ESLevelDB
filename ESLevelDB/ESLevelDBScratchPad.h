@@ -32,6 +32,8 @@
 @interface ESLevelDBScratchPad :
   ESLevelDBSnapshot <ESLevelDBMutableDictionary>
 
+@property (assign) NSUInteger deltaCount;
+
 // Commit the batch.
 - (BOOL) commit;
 

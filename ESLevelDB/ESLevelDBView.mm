@@ -236,6 +236,8 @@
     
     keys[index] = static_cast<ESLevelDBKey>(key);
     objects[index] = static_cast<ESLevelDBType>(value);
+    
+    ++index;
 	  }
 
 	delete iter;
@@ -368,12 +370,28 @@
 
 - (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator
   {
-  return [[self allKeys] sortedArrayUsingComparator: comparator];
+  return
+    [[self allKeys]
+      sortedArrayUsingComparator:
+        ^NSComparisonResult(id key1, id key2)
+          {
+          return comparator(self[key1], self[key2]);
+          }];
   }
 
 - (NSArray *) keysSortedByValueUsingSelector: (SEL) comparator
   {
-  return [[self allKeys] sortedArrayUsingSelector: comparator];
+  return
+    [[self allKeys]
+      sortedArrayUsingComparator:
+        ^NSComparisonResult(id key1, id key2)
+          {
+          id obj1 = self[key1];
+          id obj2 = self[key2];
+          id result = [obj1 performSelector: comparator withObject: obj2];
+            
+          return (NSComparisonResult)(long)result;
+          }];
   }
 
 - (NSArray *) keysSortedByValueWithOptions: (NSSortOptions) options
@@ -381,33 +399,46 @@
   {
   return
     [[self allKeys]
-      sortedArrayWithOptions: options usingComparator: comparator];
+      sortedArrayWithOptions: options
+      usingComparator:
+        ^NSComparisonResult(id key1, id key2)
+          {
+          return comparator(self[key1], self[key2]);
+          }];
   }
 
 - (NSSet *) keysOfEntriesPassingTest:
   (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate
   {
-  return
-    [NSSet setWithArray:
-      [[self allKeys]
-        objectsAtIndexes:
-          [[self allKeys]
-            indexesOfObjectsPassingTest:
-              (BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate]]];
+  NSMutableSet * entriesPassingTest = [NSMutableSet set];
+  
+  [self
+    enumerateKeysAndObjectsUsingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        if(predicate(key, obj, stop))
+          [entriesPassingTest addObject: key];
+        }];
+
+  return [entriesPassingTest copy];
   }
 
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
   passingTest:
     (BOOL (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) predicate
   {
-  return
-    [NSSet setWithArray:
-      [[self allKeys]
-        objectsAtIndexes:
-          [[self allKeys]
-            indexesOfObjectsWithOptions: options
-            passingTest:
-              (BOOL (^)(id obj, NSUInteger idx, BOOL *stop))predicate]]];
+  NSMutableSet * entriesPassingTest = [NSMutableSet set];
+  
+  [self
+    enumerateKeysAndObjectsWithOptions: options
+    usingBlock:
+      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+        {
+        if(predicate(key, obj, stop))
+          [entriesPassingTest addObject: key];
+        }];
+
+  return [entriesPassingTest copy];
   }
 
 // To support NSFastEnumeration.

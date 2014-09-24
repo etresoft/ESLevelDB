@@ -19,6 +19,8 @@
 
 @implementation ESLevelDBScratchPad
 
+@synthesize deltaCount = myDeltaCount;
+
 @synthesize parentDB = myParentDB;
 @synthesize batch = myBatch;
 @synthesize keysChanged = myKeysChanged;
@@ -51,9 +53,21 @@
   delete myBatch;
   }
 
+- (NSUInteger) count
+  {
+  return [self.parentDB count] + self.deltaCount;
+  }
+  
 - (BOOL) commit
   {
-  return [self.parentDB commit: self];
+  if([self.parentDB commit: self])
+    {
+    self.deltaCount = 0;
+    
+    return YES;
+    }
+    
+  return NO;
   }
 
 - (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBKey) key
@@ -166,10 +180,11 @@
 - (void) removeAllObjects
   {
   [self removeObjectsForKeys: [self.parentDB allKeys]];
+  
   [self.keysChanged
     enumerateObjectsUsingBlock:
       ^(id obj, NSUInteger idx, BOOL * stop)
-      {
+        {
         for(id key in obj)
           {
           NSString * operation = obj[key];
@@ -177,7 +192,7 @@
           if([operation isEqualToString: kESLevelDBScratchPadKeyAdded])
             [self removeObjectForKey: key];
           }
-      }];
+        }];
   }
 
 - (void) removeObjectsForKeys: (NSArray *) keys
