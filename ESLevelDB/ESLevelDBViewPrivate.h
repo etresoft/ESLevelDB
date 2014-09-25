@@ -9,8 +9,6 @@
 
 #import "ESLevelDBView.h"
 
-#define kCountKey @"ESLevelDB_recordcount"
-
 // A read-only view of a LevelDB database suitable for a snapshot or the
 // database itself.
 @interface ESLevelDBView ()
