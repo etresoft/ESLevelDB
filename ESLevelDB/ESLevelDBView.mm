@@ -33,11 +33,9 @@
   unsigned long immutable;
   }
 
-@synthesize count = myCount;
-
 @synthesize serializer = mySerializer;
 
-@synthesize fastCount = myFastCount;
+@synthesize count = myCount;
 
 @synthesize queue = myQueue;
 
@@ -60,7 +58,6 @@
     {
     myDb = db;
     mySerializer = [ESLevelDBArchiveSerializer new];
-    myFastCount = NO;
     immutable = [super hash];
     
     // I will need to calculate the count at least once.
@@ -104,42 +101,18 @@
     
   // I should probably do this in a block, but I don't want to lock up too
   // much in the block.
-  __block NSUInteger newCount = myCount;
+  __block NSUInteger newCount = 0;
   
   dispatch_sync(
     self.queue,
     ^{
-      // Get the count from the database itself. If I can't find one, then
-      // fall back to iteration.
-      BOOL hasCount = NO;
+      leveldb::Iterator * iter =
+        self.db->NewIterator(leveldb::ReadOptions());
       
-      if(self.fastCount)
-        {
-        NSNumber * count =
-          (NSNumber *)[self objectForKey: (ESLevelDBKey)kCountKey];
-      
-        if(count)
-          {
-          newCount = [count unsignedIntegerValue];
-          
-          hasCount = YES;
-          }
-        }
-
-      // If I didn't have a count in the database or I am not using fast
-      // count at all, iterate for the count.
-      if(!hasCount)
-        {
-        newCount = 0;
+      for(iter->SeekToFirst(); iter->Valid(); iter->Next())
+        ++newCount;
         
-        leveldb::Iterator * iter =
-          self.db->NewIterator(leveldb::ReadOptions());
-        
-        for(iter->SeekToFirst(); iter->Valid(); iter->Next())
-          ++newCount;
-          
-        delete iter;
-        }
+      delete iter;
     });
   
   // Update the count, if necessary.

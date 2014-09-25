@@ -120,6 +120,7 @@
   }
 
 #pragma mark - NSObject interface
+
 - (NSUInteger) hash
   {
   return myHash;
@@ -132,15 +133,11 @@
   [self mutatingOperation:
     ^BOOL
       {
-      BOOL adding = ([self objectForKey: key] != nil);
-      
       self.db->Put(
         writeOptions,
         ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer)).ok();
         
-      [self updateCount: adding];
-      
       return YES;
       }];
   }
@@ -151,15 +148,11 @@
   [self mutatingOperation:
     ^BOOL
       {
-      BOOL adding = ([self objectForKey: key] != nil);
-      
       self.db->Put(
         writeOptions,
         ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer)).ok();
         
-      [self updateCount: adding];
-      
       return YES;
       }];
   }
@@ -169,24 +162,14 @@
   [self mutatingOperation:
     ^BOOL
       {
-      BOOL exists = ([self objectForKey: key] != nil);
-      
       if(value)
-        {
         self.db->Put(
           writeOptions,
           ESleveldb::KeySlice(key),
           ESleveldb::Slice(value, self.serializer)).ok();
-          
-        if(!exists)
-          [self updateCount: 1];
-        }
+
       else
-        {
         self.db->Delete(writeOptions, ESleveldb::KeySlice(key));
-        
-        [self updateCount: -exists];
-        }
         
       return YES;
       }];
@@ -216,12 +199,8 @@
   [self mutatingOperation:
     ^BOOL
       {
-      BOOL removing = ([self objectForKey: key] != nil);
-      
       self.db->Delete(writeOptions, ESleveldb::KeySlice(key)).ok();
         
-      [self updateCount: -removing];
-      
       return YES;
       }];
   }
@@ -309,9 +288,6 @@
           
         BOOL result = self.db->Write(self.writeOptions, batch.batch).ok();
         
-        if(result)
-          [self updateCount: finalCount - startingCount];
-          
         return result;
         }];
   }
@@ -342,28 +318,6 @@
     });
     
   return result;
-  }
-
-- (void) setCount: (NSInteger) count
-  {
-  if(self.fastCount)
-    [self
-      setObject: [NSNumber numberWithInteger: count] forKey: kCountKey];
-  }
-
-- (void) updateCount: (NSInteger) count
-  {
-  if(self.fastCount)
-    {
-    NSInteger currentCount =
-      [(NSNumber *)[self objectForKey: kCountKey] integerValue];
-    
-    currentCount += count;
-    
-    [self
-      setObject: [NSNumber numberWithInteger: currentCount]
-      forKey: kCountKey];
-    }
   }
   
 @end

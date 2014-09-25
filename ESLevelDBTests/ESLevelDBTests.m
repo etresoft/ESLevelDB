@@ -812,29 +812,34 @@
 	XCTAssertEqualObjects(
     text,
     [db objectForKey:key],
-    @"stringForKey should have returned the original text");
+    @"Failed removeObjectForKey: "
+    "stringForKey should have returned the original text");
 	
 	[db removeObjectForKey: key];
 	
 	XCTAssertNil(
     [db objectForKey:key],
-    @"stringForKey should return nil after removal of key");
+    @"Failed removeObjectForKey: "
+    "stringForKey should return nil after removal of key");
     
 	XCTAssertNil(
     [db objectForKey:key],
-    @"dataForKey should return nil after removal of key");
+    @"Failed removeObjectForKey: "
+    "dataForKey should return nil after removal of key");
   }
 
 #pragma mark - NSFastEnumeration
 
 - (void) testFastEnumeration
   {
+  NSDate * date = [NSDate date];
+  
 	// Create some test data using NSKeyedArchiver:
 	[db
     setObject:
       @{
         @"key1" : @"This is a key",
-        @"key2" : [NSDate date],
+        @"key2" : date,
         @"key3" : @4.5
       }
     forKey: @"dict 1"];
@@ -848,12 +853,34 @@
       }
     forKey: @"dict 2"];
 	
+  NSArray * expectedValues =
+    @[
+      @"key1", @"This is a key",
+      @"key2", date,
+      @"key3", @4.5,
+      @"key1", @"This is another key",
+      @"key2", [db[@"dict 1"][@"key2"] dateByAddingTimeInterval: -1],
+      @"key3", @4.51
+    ];
+    
+  NSMutableArray * foundValues = [NSMutableArray array];
+  
   for(NSString * key in db)
     {
-    NSLog(@"%@.key1: %@", key, db[key][@"key1"]);
-    NSLog(@"%@.key2: %@", key, db[key][@"key2"]);
-    NSLog(@"%@.key3: %@", key, db[key][@"key3"]);
+    [foundValues addObject: @"key1"];
+    [foundValues addObject: db[key][@"key1"]];
+    [foundValues addObject: @"key2"];
+    [foundValues addObject: db[key][@"key2"]];
+    [foundValues addObject: @"key3"];
+    [foundValues addObject: db[key][@"key3"]];
     }
+
+  XCTAssertEqualObjects(
+    expectedValues,
+    foundValues,
+    @"Failed fast enumeration expected %@ but returned %@",
+    expectedValues,
+    foundValues);
   }
 
 #pragma mark - Other tests
@@ -862,14 +889,14 @@
   {
 	XCTAssertNil(
     [db objectForKey: @"made up key"],
-    @"objectForKey: should return nil if a key doesn't exist");
+    @"Failed objectForKey: should return nil if a key doesn't exist");
   }
 
 - (void) testSubscriptingNilForUnknownKey
   {
 	XCTAssertNil(
     db[@"no such key as this key"],
-    @"Subscripting access should return nil for an unknown key.");
+    @"Failed subscripting access should return nil for an unknown key.");
   }
 
 - (void) testLargeValue
@@ -882,29 +909,40 @@
 	XCTAssertEqualObjects(
     data,
     [db objectForKey:key],
-    @"Data read from database does not match original.");
+    @"Failed large value data read from database does not match original.");
   }
 
-/* - (void) testcount
+- (void) testCount
   {
 	[self populateWithUUIDsAndReturnDictionary];
   
-  XCTAssertEqual(64, [db count], @"Count is %ld, should be 64", [db count]);
+  XCTAssertEqual(
+    64,
+    [db count],
+    @"Failed count expected 64 but returned %ld",
+    [db count]);
   
 	ESLevelDBScratchPad * batch = [db batch];
   
 	[batch setObject: @"1" forKey: @"a"];
 
   XCTAssertEqual(
-    65, [batch count], @"Count is %ld, should be 65", [batch count]);
+    65,
+    [batch count],
+    @"Failed count expected 65 but returned %ld",
+    [batch count]);
 
 	[batch removeAllObjects];
 	[batch setObject: @"2" forKey: @"b"];
 	[batch removeObjectForKey: @"b"];
 	[batch commit];
   
-  XCTAssertEqual(0, [db count], @"Count is %ld, should be 0", [db count]);
-  } */
+  XCTAssertEqual(
+    0,
+    [db count],
+    @"Failed count expected 0 but returend %ld",
+    [db count]);
+  }
 
 #pragma mark - LevelDB seekable iterators
 

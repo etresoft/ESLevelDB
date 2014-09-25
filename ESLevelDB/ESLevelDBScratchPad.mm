@@ -55,7 +55,7 @@
 
 - (NSUInteger) count
   {
-  return [self.parentDB count] + self.deltaCount;
+  return [super count] + self.deltaCount;
   }
   
 - (BOOL) commit
@@ -85,11 +85,16 @@
   dispatch_sync(
     self.queue,
     ^{
+      BOOL exists = ([self objectForKey: key] != nil);
+      
       self.batch->Put(
         ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer));
         
       [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+      
+      if(!exists)
+        ++self.deltaCount;
     });
   }
 
@@ -109,11 +114,16 @@
   dispatch_sync(
     self.queue,
     ^{
+      BOOL exists = ([self objectForKey: key] != nil);
+
       self.batch->Put(
         ESleveldb::KeySlice(key),
         ESleveldb::Slice(object, self.serializer));
         
       [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+      
+      if(!exists)
+        ++self.deltaCount;
     });
   }
 
@@ -132,11 +142,16 @@
     ^{
       for(ESLevelDBKey key in dictionary)
         {
+        BOOL exists = ([self objectForKey: key] != nil);
+        
         self.batch->Put(
           ESleveldb::KeySlice(key),
           ESleveldb::Slice(dictionary[key], self.serializer));
         
         [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+
+        if(!exists)
+          ++self.deltaCount;
         }
     });
   }
@@ -152,6 +167,8 @@
         
         [self.keysChanged
           addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+          
+        --self.deltaCount;
         }
       
       for(ESLevelDBKey key in dictionary)
@@ -161,6 +178,8 @@
           ESleveldb::Slice(dictionary[key], self.serializer));
         
         [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyAdded}];
+        
+        ++self.deltaCount;
         }
     });
   }
@@ -172,9 +191,14 @@
       raise: NSInvalidArgumentException
       format: NSLocalizedString(@"Nil key provided", NULL)];
     
+  BOOL exists = ([self objectForKey: key] != nil);
+
   self.batch->Delete(ESleveldb::KeySlice(key));
   
   [self.keysChanged addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+  
+  if(exists)
+    --self.deltaCount;
   }
 
 - (void) removeAllObjects
@@ -202,10 +226,15 @@
     ^{
       for(ESLevelDBKey key in keys)
         {
+        BOOL exists = ([self objectForKey: key] != nil);
+        
         self.batch->Delete(ESleveldb::KeySlice(key));
         
         [self.keysChanged
           addObject: @{key: kESLevelDBScratchPadKeyRemoved}];
+          
+        if(exists)
+          --self.deltaCount;
         }
     });
   }

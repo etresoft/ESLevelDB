@@ -17,7 +17,4 @@
 // Serializer.
 @property (strong) ESLevelDBSerializer * serializer;
 
-// Does this view support a fast count?
-@property (assign) BOOL fastCount;
-
 @end
