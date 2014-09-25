@@ -63,8 +63,14 @@
 	NSArray * sortedOriginalKeys =
     [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
     
+  NSArray * allKeys = [db allKeys];
+  
 	XCTAssertEqualObjects(
-    sortedOriginalKeys, [db allKeys], @"Failed allKeys");
+    sortedOriginalKeys,
+    allKeys,
+    @"Failed allKeys: expected %@ but returned %@",
+    sortedOriginalKeys,
+    allKeys);
   }
 
 - (void) testAllKeysForObject
@@ -79,8 +85,14 @@
 
 	NSArray * expected = @[@"abc", @"cd"];
 
+  NSArray * allKeysForObject = [db allKeysForObject: @"3"];
+  
 	XCTAssertEqualObjects(
-    expected, [db allKeysForObject: @"3"], @"Failed allKeysForObject:");
+    expected,
+    allKeysForObject,
+    @"Failed allKeysForObject: expected %@ but returned %@",
+    expected,
+    allKeysForObject);
   }
 
 - (void) testAllValues
@@ -92,7 +104,14 @@
 
 	NSArray * expected = @[@"1", @"2", @"3", @"4"];
 
-	XCTAssertEqualObjects(expected, [db allValues], @"Failed allValues");
+  NSArray * allKeys = [db allValues];
+  
+	XCTAssertEqualObjects(
+    expected,
+    allKeys,
+    @"Failed allValues expected %@ but returned %@",
+    expected,
+    allKeys);
   }
 
 - (void) testGetObjectsAndKeys
@@ -117,17 +136,37 @@
   NSUInteger i = 0;
   
   for(id obj in expectedKeys)
-    if(![obj isEqual: keys[i++]])
+    {
+    if(![obj isEqual: keys[i]])
+      {
       keysMatch = NO;
-  
+      NSLog(
+        @"Failed getObjects:andKeys: expected key %@ but found %@",
+        obj,
+        keys[i]);
+      }
+      
+    ++i;
+    }
+    
   BOOL objectsMatch = YES;
   
   i = 0;
   
   for(id obj in expectedObjects)
-    if(![obj isEqual: objects[i++]])
+    {
+    if(![obj isEqual: objects[i]])
+      {
       objectsMatch = NO;
-  
+      NSLog(
+        @"Failed getObjects:andKeys: expected object %@ but found %@",
+        obj,
+        objects[i]);
+      }
+    
+    ++i;
+    }
+    
   free(keys);
   free(objects);
 
@@ -142,8 +181,14 @@
 	NSString * key = @"key";
 	[db setObject: text forKey: key];
 	
+  ESLevelDBType objectForKey = [db objectForKey: key];
+  
 	XCTAssertEqualObjects(
-    text, [db objectForKey: key], @"Error retrieving string for key.");
+    text,
+    objectForKey,
+    @"Failed objectForKey: expected %@ but returned %@",
+    text,
+    objectForKey);
   }
 
 - (void) testObjectForKeyedSubscript
@@ -152,8 +197,14 @@
 	NSString * key = @"key";
 	[db setObject: text forKey: key];
 	
+  ESLevelDBType object = db[key];
+  
 	XCTAssertEqualObjects(
-    text, db[key], @"Error retrieving string for key.");
+    text,
+    object,
+    @"Failed setObject:forKey: expected %@ but found %@",
+    text,
+    object);
   }
 
 - (void) testObjectsForKeysNotFoundMarker
@@ -171,7 +222,11 @@
     [db objectsForKeys: @[@"abc", @"noone", @"cd"] notFoundMarker: @"no"];
 
 	XCTAssertEqualObjects(
-    expected, found, @"objectsForKeys:notFoundMarker failed");
+    expected,
+    found,
+    @"Failed objectsForKeys:notFoundMarker: expected %@ but returned %@",
+    expected,
+    found);
   }
 
 - (void) testValueForKey
@@ -187,10 +242,14 @@
 	XCTAssertEqualObjects(
     @"5", [db valueForKey: @"bcd"], @"valueForKey: failed");
 
+  ESLevelDBSerializer * serializer = [db valueForKey: @"@serializer"];
+  
 	XCTAssertEqualObjects(
     db.serializer,
-    [db valueForKey: @"@serializer"],
-    @"valueForKey: failed");
+    serializer,
+    @"Failed valueForKey: expected %@ but returned %@",
+    db.serializer,
+    serializer);
   }
 
 - (void) testKeyEnumerator
@@ -200,15 +259,23 @@
   
   NSEnumerator * enumerator = [db keyEnumerator];
   
+  ESLevelDBKey key = [enumerator nextObject];
+  
 	XCTAssertEqualObjects(
-    [enumerator nextObject],
     @"a",
-    @"Iterator should start at the first key.");
+    key,
+    @"Failed keyEnumerator expected %@ but returned %@",
+    @"a",
+    key);
 	
+  key = [enumerator nextObject];
+
 	XCTAssertEqualObjects(
-    [enumerator nextObject],
     @"b",
-    @"Iterator should progress to the second key.");
+    key,
+    @"Failed keyEnumerator expected %@ but returned %@",
+    @"b",
+    key);
   }
 
 - (void) testObjectsEnumerator
@@ -238,7 +305,11 @@
     }
     
 	XCTAssertEqualObjects(
-    expected, found, @"objectEnumerator failed");
+    expected,
+    found,
+    @"Failed objectEnumerator expected %@ but returned %@",
+    expected,
+    found);
   }
 
 - (void) testEnumerateKeysAndObjectsUsingBlock
@@ -250,37 +321,55 @@
 	
 	__block NSUInteger keyIndex = 0;
   
+  NSMutableArray * found = [NSMutableArray array];
+  
   [db
     enumerateKeysAndObjectsUsingBlock:
       ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
       {
-		  XCTAssertEqualObjects(
-        key,
-        sortedOriginalKeys[keyIndex],
-        @"enumerated key does not match");
+      [found addObject: key];
 		  keyIndex++;
       }];
+    
+  XCTAssertEqualObjects(
+    sortedOriginalKeys,
+    found,
+    @"Failed enumerateKeysAndObjectsUsingBlock: "
+    "expected %@ but returned %@",
+    sortedOriginalKeys,
+    found);
   }
 
 - (void) testEnumerateKeysAndObjectsWithOptionsUsingBlock
   {
 	NSDictionary * keysAndValues =
     [self populateWithUUIDsAndReturnDictionary];
-	NSArray * sortedOriginalKeys =
-    [keysAndValues.allKeys sortedArrayUsingSelector: @selector(compare:)];
-	
-	NSMutableArray * reversedKeys = [NSMutableArray array];
-  
+	NSArray * reversedKeys =
+    [[keysAndValues allKeys]
+      sortedArrayWithOptions: 0
+      usingComparator:
+        ^NSComparisonResult(id obj1, id obj2)
+        {
+        return -[obj1 compare: obj2];
+        }];
+    
+	NSMutableArray * found = [NSMutableArray array];
+
   [db
     enumerateKeysAndObjectsWithOptions: NSEnumerationReverse
     usingBlock:
       ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
         {
-        [reversedKeys addObject: key];
+        [found addObject: key];
         }];
 
-	XCTAssertNotEqualObjects(
-    sortedOriginalKeys, reversedKeys, @"Error with reverse iteration.");
+	XCTAssertEqualObjects(
+    reversedKeys,
+    found,
+    @"Failed enumerateKeysAndObjectsWithOptions:usingBlock: "
+    "expected %@ but returned %@",
+    reversedKeys,
+    found);
   }
 
 - (void) testKeysSortedByValueUsingComparator
@@ -305,7 +394,11 @@
         }];
   
 	XCTAssertEqualObjects(
-    sortedKeys, expectedKeys, @"Failed keysSortedByValueUsingComparator:.");
+    expectedKeys,
+    sortedKeys,
+    @"Failed keysSortedByValueUsingComparator: expected %@ but returned %@",
+    expectedKeys,
+    sortedKeys);
   }
 
 - (void) testKeysSortedByValueUsingSelector
@@ -325,7 +418,11 @@
     [db keysSortedByValueUsingSelector: @selector(compare:)];
     
 	XCTAssertEqualObjects(
-    sortedKeys, expectedKeys, @"Failed keysSortedByValueUsingSelector:.");
+    expectedKeys,
+    sortedKeys,
+    @"Failed keysSortedByValueUsingSelector: expected %@ but returned %@",
+    expectedKeys,
+    sortedKeys);
   }
 
 - (void) testKeysSortedByValueWithOptionsUsingComparator
@@ -350,9 +447,12 @@
          }];
     
 	XCTAssertEqualObjects(
-    sortedKeys,
     expectedKeys,
-    @"Failed keysSortedByValueWithOptions:usingComparator:.");
+    sortedKeys,
+    @"Failed keysSortedByValueWithOptions:usingComparator: "
+    "expected %@ but returned %@",
+    expectedKeys,
+    sortedKeys);
   }
 
 - (void) testKeysOfEntriesPassingTest
@@ -384,7 +484,12 @@
     if([passingKeys containsObject: key])
       --nonMatchingEntries;
     
-	XCTAssert(nonMatchingEntries == 0, @"Failed keysOfEntriesPassingTest:");
+	XCTAssert(
+    nonMatchingEntries == 0,
+    @"Failed keysOfEntriesPassingTest: "
+    "expected %d matches but returned %ld",
+    0,
+    nonMatchingEntries);
   }
 
 - (void) testKeysOfEntriesWithOptionsPassingTest
@@ -434,12 +539,20 @@
     if([passingKeys containsObject: key])
       --nonMatchingEntries;
     
-	XCTAssert(nonMatchingEntries == 0, @"Failed keysOfEntriesPassingText:");
+	XCTAssert(
+    nonMatchingEntries == 0,
+    @"Failed keysOfEntriesPassingTest: "
+    "expected %d matches but returned %ld",
+    0,
+    nonMatchingEntries);
 
   XCTAssertEqualObjects(
     expectedKeysReversed,
     keysReversed,
-    @"Failed keysOfEntriesWithOptions:passingTest: options failed");
+    @"Failed keysOfEntriesWithOptions:passingTest: "
+    "expected %@ but returned %@",
+    expectedKeys,
+    keysReversed);
   }
 
 - (void) testEnumerateKeysAndObjectsFromLimitUsingBlock
@@ -463,15 +576,25 @@
         [found addObject: obj];
         }];
   
+  id firstObject = [found firstObject];
+  
   XCTAssertEqualObjects(
     @"2",
-    [found firstObject],
-    @"First iterator result is %@ but should be 2", [found firstObject]);
+    firstObject,
+    @"Failed enumerateKeysAndObjectsFrom:limit:usingBlock: "
+    "expected %@ but returned %@",
+    @"2",
+    firstObject);
 
+  id lastObject = [found lastObject];
+  
   XCTAssertEqualObjects(
     @"5",
-    [found lastObject],
-    @"Last iterator result is %@ but should be 5", [found lastObject]);
+    lastObject,
+    @"Failed enumerateKeysAndObjectsFrom:limit:usingBlock: "
+    "expected %@ but returned %@",
+    @"5",
+    lastObject);
   }
 
 - (void) testEnumerateKeysAndObjectsFromLimitWithOptionsUsingBlock
@@ -496,15 +619,25 @@
         [found addObject: obj];
         }];
   
+  id firstObject = [found firstObject];
+  
   XCTAssertEqualObjects(
     @"5",
-    [found firstObject],
-    @"First iterator result is %@ but should be 2", [found firstObject]);
+    firstObject,
+    @"Failed enumerateKeysAndObjectsFrom:limit:withOptions:usingBlock: "
+    "expected %@ but returned %@",
+    @"5",
+    firstObject);
 
+  id lastObject = [found lastObject];
+  
   XCTAssertEqualObjects(
     @"2",
-    [found lastObject],
-    @"Last iterator result is %@ but should be 5", [found lastObject]);
+    lastObject,
+    @"Failed enumerateKeysAndObjectsFrom:limit:withOptions:usingBlock: "
+    "expected %@ but returned %@",
+    @"2",
+    lastObject);
   }
 
 #pragma mark - ESLevelDBMutableDictionary test cases.
@@ -519,9 +652,16 @@
 	
 	NSData * fetched = (NSData *)[db objectForKey: key];
   
-	XCTAssertNotNil(fetched, @"Key for data not found.");
-	XCTAssertEqualObjects(
-    data, fetched, @"Fetched data doesn't match original data.");
+	XCTAssertNotNil(
+    fetched,
+    @"Failed setObject:forKey: expected non-nill but returned nil");
+	
+  XCTAssertEqualObjects(
+    data,
+    fetched,
+    @"Failed setObject:forKey: expected %@ but returned %@",
+    data,
+    fetched);
   }
 
 - (void) testSetObjectForKeyedSubscript
@@ -530,10 +670,138 @@
 	NSString * key = @"key";
 	db[key] = text;
 	
-	XCTAssertEqualObjects(text, db[key], @"Error retrieving string for key.");
+  ESLevelDBType value = db[key];
+  
+	XCTAssertEqualObjects(
+    text,
+    value,
+    @"Failed setObject:forKeyedSubscript: expected %@ but returned %@",
+    text,
+    value);
   }
 
-// TODO: Missing test cases.
+- (void) testSetValueForKey
+  {
+	db[@"a"] = @"1";
+	db[@"ab"] = @"2";
+	db[@"abc"] = @"3";
+	db[@"bc"] = @"4";
+  
+	[db setValue: @"5" forKey: @"bcd"];
+	[db setValue: nil forKey: @"a"];
+	[db setValue: nil forKey: @"ab"];
+	
+  NSArray * expectedKeys = @[@"abc", @"bc", @"bcd"];
+  
+  NSArray * foundKeys = [db allKeys];
+  
+  XCTAssertEqualObjects(
+    expectedKeys,
+    foundKeys,
+    @"Failed setValue:forKeys: expected %@ but returned %@",
+    expectedKeys,
+    foundKeys);
+  }
+
+- (void) testAddEntriesFromDictionary
+  {
+	db[@"a"] = @1;
+	db[@"ab"] = @2;
+	db[@"abc"] = @3;
+	db[@"bc"] = @4;
+  
+  [db
+    addEntriesFromDictionary:
+      @{
+        @"bcd" : @5,
+        @"cde" : @6,
+        @"f"   : @7
+      }];
+  
+  NSArray * expectedKeys =
+    @[@"a", @"ab", @"abc", @"bc", @"bcd", @"cde", @"f"];
+  
+  NSArray * foundKeys = [db allKeys];
+  
+  XCTAssertEqualObjects(
+    expectedKeys,
+    foundKeys,
+    @"Failed addEntriesFromDictionary: expected %@ but returned %@",
+    expectedKeys,
+    foundKeys);
+  }
+
+- (void) testSetDictionary
+  {
+	db[@"a"] = @1;
+	db[@"ab"] = @2;
+	db[@"abc"] = @3;
+	db[@"bc"] = @4;
+  
+  [db
+    setDictionary:
+      @{
+        @"bcd" : @5,
+        @"cde" : @6,
+        @"f"   : @7
+      }];
+  
+  NSArray * expectedKeys = @[@"bcd", @"cde", @"f"];
+  
+  NSArray * foundKeys = [db allKeys];
+  
+  XCTAssertEqualObjects(
+    expectedKeys,
+    foundKeys,
+    @"Failed setDictionary: expected %@ but returned %@",
+    expectedKeys,
+    foundKeys);
+  }
+
+- (void) testRemoveAllObjects
+  {
+	db[@"a"] = @1;
+	db[@"ab"] = @2;
+	db[@"abc"] = @3;
+	db[@"bc"] = @4;
+  
+  [db removeAllObjects];
+  
+  NSArray * expectedKeys = @[];
+  
+  NSArray * foundKeys = [db allKeys];
+  
+  XCTAssertEqualObjects(
+    expectedKeys,
+    foundKeys,
+    @"Failed removeAllObjects expected %@ but returned %@",
+    expectedKeys,
+    foundKeys);
+  }
+
+- (void) testRemoveObjectsForKeys
+  {
+	db[@"a"] = @1;
+	db[@"ab"] = @2;
+	db[@"abc"] = @3;
+	db[@"bc"] = @4;
+  db[@"cd"] = @5;
+  db[@"cde"] = @6;
+  db[@"f"] = @7;
+  
+  [db removeObjectsForKeys: @[@"cde", @"f"]];
+  
+  NSArray * expectedKeys = @[@"a", @"ab", @"abc", @"bc", @"cd"];
+  
+  NSArray * foundKeys = [db allKeys];
+  
+  XCTAssertEqualObjects(
+    expectedKeys,
+    foundKeys,
+    @"Failed removeObjectsForKeys: expected %@ but returned %@",
+    expectedKeys,
+    foundKeys);
+  }
 
 - (void) testRemoveObjectForKey
   {

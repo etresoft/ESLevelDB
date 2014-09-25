@@ -18,21 +18,16 @@
 - (void) setObject: (ESLevelDBType) object
   forKeyedSubscript: (ESLevelDBKey) key;
 
-// TODO: Write test case.
 - (void) setValue: (ESLevelDBType) value forKey: (NSString *) key;
 
-// TODO: Write test case.
 - (void) addEntriesFromDictionary: (NSDictionary *) dictionary;
 
-// TODO: Write test case.
 - (void) setDictionary: (NSDictionary *) dictionary;
 
 - (void) removeObjectForKey: (ESLevelDBKey) key;
 
-// TODO: Write test case.
 - (void) removeAllObjects;
 
-// TODO: Write test case.
 - (void) removeObjectsForKeys: (NSArray *) keys;
 
 @end

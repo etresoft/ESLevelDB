@@ -29,7 +29,6 @@
 - (NSArray *) objectsForKeys: (NSArray *) keys
   notFoundMarker: (id) anObject;
 
-// TODO: Write test case.
 - (ESLevelDBType) valueForKey: (NSString *) key;
 
 - (NSEnumerator *) keyEnumerator;

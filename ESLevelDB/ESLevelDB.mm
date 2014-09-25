@@ -169,15 +169,25 @@
   [self mutatingOperation:
     ^BOOL
       {
-      BOOL adding = ([self objectForKey: key] != nil);
+      BOOL exists = ([self objectForKey: key] != nil);
       
-      self.db->Put(
-        writeOptions,
-        ESleveldb::KeySlice(key),
-        ESleveldb::Slice(value, self.serializer)).ok();
+      if(value)
+        {
+        self.db->Put(
+          writeOptions,
+          ESleveldb::KeySlice(key),
+          ESleveldb::Slice(value, self.serializer)).ok();
+          
+        if(!exists)
+          [self updateCount: 1];
+        }
+      else
+        {
+        self.db->Delete(writeOptions, ESleveldb::KeySlice(key));
         
-      [self updateCount: adding];
-      
+        [self updateCount: -exists];
+        }
+        
       return YES;
       }];
   }
