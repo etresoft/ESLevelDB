@@ -145,16 +145,7 @@
 - (void) setObject: (ESLevelDBType) object
   forKeyedSubscript: (ESLevelDBKey) key
   {
-  [self mutatingOperation:
-    ^BOOL
-      {
-      self.db->Put(
-        writeOptions,
-        ESleveldb::KeySlice(key),
-        ESleveldb::Slice(object, self.serializer)).ok();
-        
-      return YES;
-      }];
+  [self setObject: object forKey: key];
   }
 
 - (void) setValue: (ESLevelDBType) value forKey: (NSString *) key
@@ -237,58 +228,7 @@
     [self mutatingOperation:
       ^BOOL
         {
-        // Create a list of all keys being modified. Initialize each with
-        // 1 if it exists, 0 othewise.
-        NSMutableDictionary * current = [NSMutableDictionary dictionary];
-        
-        NSInteger startingCount = 0;
-        
-        for(NSDictionary * change in batch.keysChanged)
-          for(ESLevelDBKey changedKey in change)
-            {
-            ESLevelDBType existing = [self objectForKey: changedKey];
-              
-            NSInteger currentValue = (existing != nil);
-            
-            startingCount += currentValue;
-            
-            [current
-              setObject: [NSNumber numberWithInteger: currentValue]
-              forKey: changedKey];
-            }
-          
-        // Now go through them again and update the counts.
-        for(NSDictionary * change in batch.keysChanged)
-          for(ESLevelDBKey changedKey in change)
-            {
-            NSInteger currentValue = [current[changedKey] integerValue];
-            
-            NSString * operation = change[changedKey];
-            
-            if([operation isEqualToString: kESLevelDBScratchPadKeyAdded])
-              {
-              if(currentValue == 0)
-                currentValue = 1;
-              }
-            else
-              {
-              if(currentValue == 1)
-                currentValue = 0;
-              }
-            
-            [current
-              setObject: [NSNumber numberWithInteger: currentValue]
-              forKey: changedKey];
-            }
-          
-        NSInteger finalCount = 0;
-        
-        for(ESLevelDBKey key in current)
-          finalCount += [current[key] integerValue];
-          
-        BOOL result = self.db->Write(self.writeOptions, batch.batch).ok();
-        
-        return result;
+        return self.db->Write(self.writeOptions, batch.batch).ok();
         }];
   }
 
