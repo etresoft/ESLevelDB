@@ -15,7 +15,7 @@
 		663190B115DD798A001AC21A /* ESLevelDBFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; };
 		663190B715DD798A001AC21A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 663190B515DD798A001AC21A /* InfoPlist.strings */; };
 		663190BA15DD798A001AC21A /* ESLevelDBTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663190B915DD798A001AC21A /* ESLevelDBTests.m */; };
-		663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* ESLevelDB.h */; };
+		663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* ESLevelDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		663190C615DD7A8D001AC21A /* ESLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* ESLevelDB.mm */; };
 		6698E04815F82D3000B74390 /* ESLevelDBFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; };
 		A513F053196881E4007F3905 /* builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F039196881E4007F3905 /* builder.cc */; };
@@ -166,8 +166,8 @@
 		A513F17D19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17E19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17F19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
-		A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; };
-		A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; };
+		A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A59BD048196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
 		A59BD049196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
 		A59BD04F196C10D900B11D63 /* ESLevelDBScratchPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */; };
@@ -178,16 +178,27 @@
 		A59FB8A1198AEF0000CD6072 /* ESLevelDBSerializer.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */; };
 		A5B6BD2419CC4C8A00C48C37 /* ESLevelDBKeySerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B6BD2219CC4C8A00C48C37 /* ESLevelDBKeySerializer.m */; };
 		A5B6BD4319CFA08400C48C37 /* ESLevelDBKeySerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B6BD2219CC4C8A00C48C37 /* ESLevelDBKeySerializer.m */; };
-		A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */; };
-		A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1341419887C9700B5356C /* ESLevelDBType.h */; };
+		A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1341419887C9700B5356C /* ESLevelDBType.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5B6BD4719D19B7900C48C37 /* ESLevelDBArchiveSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */; };
 		A5B6BD4819D19B8D00C48C37 /* ESLevelDBKeySerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B6BD2119CC4C8A00C48C37 /* ESLevelDBKeySerializer.h */; };
-		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; };
-		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
-		A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; };
+		A5B6BD4919D4F8EB00C48C37 /* ESLevelDBScratchPad.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD4A19D4F8FB00C48C37 /* ESLevelDBValueEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */; };
+		A5B6BD4B19D4F8FE00C48C37 /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD4C19D4F91300C48C37 /* ESLevelDBKeySerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5B6BD2119CC4C8A00C48C37 /* ESLevelDBKeySerializer.h */; };
+		A5B6BD4D19D4F91800C48C37 /* ESLevelDBArchiveSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */; };
+		A5B6BD4E19D4F91F00C48C37 /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD4F19D4F92400C48C37 /* ESLevelDBType.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1341419887C9700B5356C /* ESLevelDBType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD5019D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD5119D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD5219D4FB9000C48C37 /* ESLevelDBMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5B6BD5319D4FB9100C48C37 /* ESLevelDBMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
 		A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
-		A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; };
+		A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5C8BB0E1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
 		A5C8BB0F1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
 		A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB161975D1C30062A2BF /* snapshot.h */; };
@@ -685,9 +696,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */,
+				A5B6BD4D19D4F91800C48C37 /* ESLevelDBArchiveSerializer.h in Headers */,
+				A5B6BD5319D4FB9100C48C37 /* ESLevelDBMutableDictionary.h in Headers */,
+				A5B6BD4F19D4F92400C48C37 /* ESLevelDBType.h in Headers */,
 				A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */,
+				A5B6BD4E19D4F91F00C48C37 /* ESLevelDBSerializer.h in Headers */,
+				A5B6BD4B19D4F8FE00C48C37 /* ESLevelDBEnumerator.h in Headers */,
 				A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
+				A5B6BD4919D4F8EB00C48C37 /* ESLevelDBScratchPad.h in Headers */,
 				573F182C178C856E00E66DED /* ESLevelDB.h in Headers */,
+				A5B6BD4A19D4F8FB00C48C37 /* ESLevelDBValueEnumerator.h in Headers */,
+				A5B6BD4C19D4F91300C48C37 /* ESLevelDBKeySerializer.h in Headers */,
+				A5B6BD5119D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -697,6 +717,7 @@
 			files = (
 				A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */,
 				A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */,
+				A5B6BD5219D4FB9000C48C37 /* ESLevelDBMutableDictionary.h in Headers */,
 				A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
 				A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */,
 				A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
@@ -706,6 +727,7 @@
 				A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */,
 				A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */,
 				A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
+				A5B6BD5019D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,7 +798,7 @@
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = "Adam Preble";
+				ORGANIZATIONNAME = Etresoft;
 			};
 			buildConfigurationList = 6631908C15DD798A001AC21A /* Build configuration list for PBXProject "ESLevelDB" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1069,7 +1091,6 @@
 				PRODUCT_NAME = ESLevelDB;
 				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/ESLevelDB;
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				VALID_ARCHS = "armv7 armv7s i386";
 			};
 			name = Debug;
@@ -1093,7 +1114,6 @@
 				PRODUCT_NAME = ESLevelDB;
 				PUBLIC_HEADERS_FOLDER_PATH = ../../Headers/ESLevelDB;
 				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s i386";
 			};
