@@ -1,6 +1,6 @@
 # ESLevelDB
 
-This is a fork from Adam Preble's APLevelDB. It no longer shares much code from APLevelDB. Most of the files are new. What follows is the APLevelDB description updated for ESLevelDB.
+This project is based on Adam Preble's APLevelDB. It no longer shares much code from APLevelDB so it really can't be called a fork. Most of the files are new. What follows is the APLevelDB description updated for ESLevelDB.
 
 A stylish Objective-C wrapper for [LevelDB][].  What's LevelDB?  It describes itself as: "a fast key-value storage library written at Google that provides an ordered mapping from string keys to string values."  ESLevelDB is made available under the [New BSD License][].
 
