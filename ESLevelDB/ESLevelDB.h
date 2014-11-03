@@ -47,9 +47,6 @@
 // Constructor.
 - (id) initWithPath: (NSString *) path error: (NSError **) errorOut;
 
-// Save to a path, if constructed via NSDictionary.
-- (BOOL) save: (NSString * ) path error: (NSError **) errorOut;
-
 // Batch write/atomic update support.
 - (ESLevelDBScratchPad *) batchView;
 

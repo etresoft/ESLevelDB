@@ -167,48 +167,6 @@
   return copy;
   }
 
-// Save to a path, if constructed via NSDictionary.
-- (BOOL) save: (NSString * ) path error: (NSError **) errorOut
-  {
-  if(self.db)
-    return YES;
-    
-  leveldb::DB * db = [self openLevelDB: path error: errorOut];
-  
-  if(!db)
-    return NO;
-    
-  // Save the NSDictionary data.
-  NSMutableArray * keys = [NSMutableArray array];
-  NSMutableArray * values = [NSMutableArray array];
-  
-  [self
-    enumerateKeysAndObjectsUsingBlock:
-      ^(id key, id obj, BOOL * stop)
-        {
-        [keys addObject: key];
-        [values addObject: obj];
-        }];
-  
-  BOOL result = [self connectToLevelDB: std::shared_ptr<leveldb::DB>(db)];
-  
-  if(result)
-    {
-    [self setup];
-
-    for(NSUInteger i = 0; i < [keys count]; ++i)
-      {
-      // Remove the old objects manually from the superclass.
-      [super removeObjectForKey: keys[i]];
-      
-      // Store in the database.
-      self[keys[i]] = values[i];
-      }
-    }
-  
-  return result;
-  }
-
 // Batch write/atomic update support:
 - (ESLevelDBScratchPad *) batchView
   {
@@ -378,9 +336,6 @@
 // LevelDB doesn't support this, but it is important for Cocoa.
 - (NSUInteger) count
   {
-  if(!self.db)
-    return [super count];
-    
   // If my database hasn't changed, just return the last count.
   if(self.lastHash == [self hash])
     return myCount;
@@ -428,10 +383,6 @@
 // Return the object for a key.
 - (id) objectForKey: (id) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super objectForKey: key];
-    
   leveldb::ReadOptions options = leveldb::ReadOptions();
   
   ESLevelDBType value;
@@ -450,10 +401,6 @@
 // Return a key enumerator.
 - (NSEnumerator *) keyEnumerator
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super keyEnumerator];
-    
   return [[ESLevelDBEnumerator alloc] initWithDB: self];
   }
 
@@ -463,10 +410,6 @@
 // Return all keys.
 - (NSArray *) allKeys
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super allKeys];
-    
 	NSMutableArray * keys = [NSMutableArray array];
   
   id key = nil;
@@ -482,10 +425,6 @@
 // Return all keys for a single object.
 - (NSArray *) allKeysForObject: (id) object
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super allKeysForObject: object];
-    
 	NSMutableArray * keys = [NSMutableArray array];
   
   id value = nil;
@@ -502,10 +441,6 @@
 // Return all values.
 - (NSArray *) allValues
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super allValues];
-    
 	NSMutableArray * values = [NSMutableArray array];
   
   id value = nil;
@@ -522,10 +457,6 @@
 - (void) getObjects: (__unsafe_unretained id []) objects
   andKeys: (__unsafe_unretained id []) keys
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self getObjects: objects andKeys: keys];
-    
   NSUInteger index = 0;
   
   id key = nil;
@@ -547,10 +478,6 @@
 // Return an object for a key using array subscript notation.
 - (ESLevelDBType) objectForKeyedSubscript: (id) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self objectForKeyedSubscript: key];
-    
   return [self objectForKey: key];
   } */
 
@@ -560,10 +487,6 @@
 - (NSArray *) objectsForKeys: (NSArray *) keys
   notFoundMarker: (id) object
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self objectsForKeys: keys notFoundMarker: object];
-
   NSMutableArray * objects = [NSMutableArray array];
   
   for(ESLevelDBKey key in keys)
@@ -583,10 +506,6 @@
 // Return the "value" for a key.
 - (id) valueForKey: (NSString *) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self valueForKey: key];
-
   if([key length])
     {
     if([key characterAtIndex: 0] == '@')
@@ -601,9 +520,6 @@
 // Return an object enumerator.
 - (NSEnumerator *) objectEnumerator
   {
-  if(!self.db)
-    return [super objectEnumerator];
-    
   return [[ESLevelDBValueEnumerator alloc] initWithDB: self];
   }
 
@@ -612,10 +528,6 @@
 - (void) enumerateKeysAndObjectsUsingBlock:
   (void (^)(id key, id obj, BOOL * stop)) block
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self enumerateKeysAndObjectsUsingBlock: block];
-
   NSEnumerator * enumerator = [self keyEnumerator];
   
   BOOL stop = NO;
@@ -639,11 +551,6 @@
 - (void) enumerateKeysAndObjectsWithOptions: (NSEnumerationOptions) options
   usingBlock: (void (^)(id key, id obj, BOOL * stop)) block
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return
-      [self enumerateKeysAndObjectsWithOptions: options usingBlock: block];
-    
   ESLevelDBEnumerator * enumerator =
     [[ESLevelDBEnumerator alloc] initWithDB: self];
   
@@ -671,10 +578,6 @@
 // Return sorted keys using a comparator.
 - (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self keysSortedByValueUsingComparator: comparator];
-
   return
     [[self allKeys]
       sortedArrayUsingComparator:
@@ -688,10 +591,6 @@
 // Return sorted keys using a comparator selector.
 - (NSArray *) keysSortedByValueUsingSelector: (SEL) comparator
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self keysSortedByValueUsingSelector: selector];
-
   return
     [[self allKeys]
       sortedArrayUsingComparator:
@@ -710,12 +609,6 @@
 - (NSArray *) keysSortedByValueWithOptions: (NSSortOptions) options
   usingComparator: (NSComparator) comparator
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return 
-      [self 
-        keysSortedByValueWithOptions: options usingComparator: comparator];
-
   return
     [[self allKeys]
       sortedArrayWithOptions: options
@@ -731,10 +624,6 @@
 - (NSSet *) keysOfEntriesPassingTest:
   (BOOL (^)(id key, id obj, BOOL * stop)) predicate
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self keysOfEntriesPassingTest: predicate];
-
   NSMutableSet * entriesPassingTest = [NSMutableSet set];
   
   [self
@@ -753,10 +642,6 @@
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
   passingTest: (BOOL (^)(id key, id obj, BOOL * stop)) predicate
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self keysOfEntriesWithOptions: options passingTest: predicate];
-
   NSMutableSet * entriesPassingTest = [NSMutableSet set];
   
   [self
@@ -776,10 +661,6 @@
 // Set an object for a key.
 - (void) setObject: (id) object forKey: (id<NSCopying>) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super setObject: object forKey: key];
-    
   [self mutatingOperation:
     ^BOOL
       {
@@ -795,10 +676,6 @@
 // Remove an object and key.
 - (void) removeObjectForKey: (ESLevelDBKey) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super removeObjectForKey: key];
-    
   [self mutatingOperation:
     ^BOOL
       {
@@ -814,10 +691,6 @@
 // Set and object and key using array subscript notation.
 - (void) setObject: (id) object forKeyedSubscript: (id<NSCopying>) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [self setObject: object forKeyedSubscript: key];
-
   [self setObject: object forKey: key];
   } */
 
@@ -825,10 +698,6 @@
 // Set a "value" for a key.
 - (void) setValue: (id) value forKey: (NSString *) key
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super setValue: value forKey: key];
-    
   [self mutatingOperation:
     ^BOOL
       {
@@ -848,10 +717,6 @@
 // Add entries from another dictionary.
 - (void) addEntriesFromDictionary: (NSDictionary *) dictionary
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super addEntriesFromDictionary: dictionary];
-    
   // Use an atomic operation.
   ESLevelDBScratchPad * batch = [self batchView];
   
@@ -863,10 +728,6 @@
 // Set all entries form another dictionary.
 - (void) setDictionary: (NSDictionary *) dictionary
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super setDictionary: dictionary];
-    
   // Use an atomic operation.
   ESLevelDBScratchPad * batch = [self batchView];
   
@@ -879,10 +740,6 @@
 // Remove all objects.
 - (void) removeAllObjects
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super removeAllObjects];
-    
   // Use an atomic operation.
   ESLevelDBScratchPad * batch = [self batchView];
   
@@ -894,10 +751,6 @@
 // Remove all objects and keys from a given array of keys.
 - (void) removeObjectsForKeys: (NSArray *) keys
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return [super removeObjectsForKeys: keys];
-    
   // Use an atomic operation.
   ESLevelDBScratchPad * batch = [self batchView];
   
@@ -914,12 +767,6 @@
 - (NSUInteger) countByEnumeratingWithState: (NSFastEnumerationState *) state
   objects: (id __unsafe_unretained []) stackbuf count: (NSUInteger) length
   {
-  // Use base class if not connected to a leveldb database.
-  if(!self.db)
-    return
-      [super
-        countByEnumeratingWithState: state objects: stackbuf count: length];
-
   // I guess the framework initializes this to zero for me.
   if(state->state == 0)
     {
