@@ -7,12 +7,12 @@
 #import <Foundation/Foundation.h>
 #import "ESLevelDBType.h"
 
-@class ESLevelDBView;
+@class ESLevelDB;
 
 @interface ESLevelDBEnumerator : NSEnumerator
 
-// Constructor with view.
-- (instancetype) initWithView: (ESLevelDBView *) view;
+// Constructor with database.
+- (instancetype) initWithDB: (ESLevelDB *) db;
 
 // The start of this range, if applicable.
 @property (strong) ESLevelDBKey start;

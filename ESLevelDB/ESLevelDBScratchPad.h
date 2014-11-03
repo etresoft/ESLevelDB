@@ -27,12 +27,10 @@
 #import <Foundation/Foundation.h>
 
 #import "ESLevelDBSnapshot.h"
-#import "ESLevelDBMutableDictionary.h"
 
-@interface ESLevelDBScratchPad :
-  ESLevelDBSnapshot <ESLevelDBMutableDictionary>
+@interface ESLevelDBScratchPad : ESLevelDBSnapshot
 
-@property (assign) NSUInteger deltaCount;
+@property (assign) NSInteger deltaCount;
 
 // Commit the batch.
 - (BOOL) commit;

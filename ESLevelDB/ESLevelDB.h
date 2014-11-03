@@ -27,29 +27,48 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ESLevelDBView.h"
-#import "ESLevelDBMutableDictionary.h"
-#import "ESLevelDBScratchPad.h"
-#import "ESLevelDBEnumerator.h"
+#import "ESLevelDBType.h"
 
 #define kESLevelDBErrorDomain @"com.etresoft.ESLevelDB"
 
-@class ESLevelDBSnapshot;
 @class ESLevelDBScratchPad;
+@class ESLevelDBSnapshot;
+@class ESLevelDBSerializer;
 
-@interface ESLevelDB : ESLevelDBView <ESLevelDBMutableDictionary>
+@interface ESLevelDB : NSMutableDictionary
+
+// Serializer.
+@property (strong) ESLevelDBSerializer * serializer;
 
 // Factory constructor with path.
-+ (ESLevelDB *) levelDBWithPath: (NSString *) path
++ (instancetype) levelDBWithPath: (NSString *) path
   error: (NSError **) errorOut;
 
+// Constructor.
+- (id) initWithPath: (NSString *) path error: (NSError **) errorOut;
+
+// Save to a path, if constructed via NSDictionary.
+- (BOOL) save: (NSString * ) path error: (NSError **) errorOut;
+
 // Batch write/atomic update support.
-- (ESLevelDBScratchPad *) batch;
+- (ESLevelDBScratchPad *) batchView;
 
-// Commit a batch.
-- (BOOL) commit: (ESLevelDBScratchPad *) batch;
+// Read-only snapshot support.
+- (ESLevelDBSnapshot *) snapshotView;
 
-// Snapshot support.
-- (ESLevelDBSnapshot *) snapshot;
+// To support leveldb's seekable enumerators.
+
+// Enumerate a range [start, limit) of keys and objects.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  limit: (ESLevelDBKey) limit
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
+
+// Enumerator a range [start, limit) of keys and objects with options.
+- (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
+  limit: (ESLevelDBKey) limit
+  withOptions: (NSEnumerationOptions) options
+  usingBlock:
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
 
 @end

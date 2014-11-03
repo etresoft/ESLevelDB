@@ -14,6 +14,8 @@
 
 #import <XCTest/XCTest.h>
 #import "ESLevelDB/ESLevelDB.h"
+#import "ESLevelDB/ESLevelDBScratchPad.h"
+#import "ESLevelDB/ESLevelDBEnumerator.h"
 
 @interface ESLevelDBTests : XCTestCase
   {
@@ -922,7 +924,7 @@
     @"Failed count expected 64 but returned %ld",
     [db count]);
   
-	ESLevelDBScratchPad * batch = [db batch];
+	ESLevelDBScratchPad * batch = [db batchView];
   
 	[batch setObject: @"1" forKey: @"a"];
 
@@ -940,7 +942,7 @@
   XCTAssertEqual(
     0,
     [db count],
-    @"Failed count expected 0 but returend %ld",
+    @"Failed count expected 0 but returned %ld",
     [db count]);
   }
 
@@ -953,7 +955,7 @@
 	db[@"abc"] = @"3";
 	
   ESLevelDBEnumerator * enumerator =
-    [[ESLevelDBEnumerator alloc] initWithView: db];
+    [[ESLevelDBEnumerator alloc] initWithDB: db];
 
   enumerator.start = @"ab";
   
@@ -970,7 +972,7 @@
 	db[@"abc"] = @"3";
 	
   ESLevelDBEnumerator * enumerator =
-    [[ESLevelDBEnumerator alloc] initWithView: db];
+    [[ESLevelDBEnumerator alloc] initWithDB: db];
 
   enumerator.start = @"aa";
   
@@ -989,7 +991,7 @@
 	db[@"abc"] = @"3";
 	
   ESLevelDBEnumerator * enumerator =
-    [[ESLevelDBEnumerator alloc] initWithView: db];
+    [[ESLevelDBEnumerator alloc] initWithDB: db];
 
   enumerator.start = @"ab";
   
@@ -1006,7 +1008,7 @@
   {
 	[db setObject:@"3" forKey:@"c"];
 	
-	ESLevelDBScratchPad * batch = [db batch];
+	ESLevelDBScratchPad * batch = [db batchView];
 	
   [batch setObject: @"1" forKey: @"a"];
 	[batch setObject: @"2" forKey: @"b"];
@@ -1022,7 +1024,7 @@
   {
 	[db setObject: @"3" forKey: @"c"];
 
-	ESLevelDBScratchPad * batch = [db batch];
+	ESLevelDBScratchPad * batch = [db batchView];
 	
   [batch setObject: @"1" forKey: @"a"];
 	[batch setObject: @"2" forKey: @"b"];
@@ -1041,7 +1043,7 @@
   {
 	[db setObject: @"3" forKey: @"c"];
 
-	ESLevelDBScratchPad * batch = [db batch];
+	ESLevelDBScratchPad * batch = [db batchView];
   
 	[batch setObject: @"1" forKey: @"a"];
 	[batch removeAllObjects];
@@ -1066,7 +1068,7 @@
 	
 	[db setObject: @"3" forKey: @"c"];
 	
-	ESLevelDBScratchPad * batch = [db batch];
+	ESLevelDBScratchPad * batch = [db batchView];
 
 	// Batch a few writes immediately:
 	[batch setObject: @"1" forKey: @"a"];

@@ -7,17 +7,17 @@
 #import "leveldb/db.h"
 #import "leveldb/options.h"
 
-#import "ESLevelDBView.h"
+#import "ESLevelDB.h"
 
 // A read-only view of a LevelDB database suitable for a snapshot or the
 // database itself.
-@interface ESLevelDBView ()
+@interface ESLevelDB ()
 
 // I'll need this.
 @property (readonly) dispatch_queue_t queue;
 
 // The LevelDB database object.
-@property (assign) leveldb::DB * db;
+@property (assign) std::shared_ptr<leveldb::DB> * db;
 
 // Read options.
 @property (assign) leveldb::ReadOptions readOptions;
@@ -25,7 +25,13 @@
 // I need to know if the database changes.
 @property (readonly) NSUInteger lastHash;
 
-// Constructor.
-- (instancetype) initWithDb: (leveldb::DB *) db;
+// Is this class immutable?
+@property (assign) BOOL immutable;
+
+// Copy constructor.
+- (instancetype) initWithESLevelDB: (ESLevelDB *) db;
+
+// Commit a batch.
+- (BOOL) commit: (ESLevelDBScratchPad *) batch;
 
 @end

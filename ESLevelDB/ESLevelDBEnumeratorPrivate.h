@@ -10,7 +10,7 @@
 
 @interface ESLevelDBEnumerator ()
 
-@property (strong) ESLevelDBView * view;
+@property (strong) ESLevelDB * db;
 @property (assign) leveldb::Iterator * iter;
 
 // Keep a pointer to the current object so its address can be used by

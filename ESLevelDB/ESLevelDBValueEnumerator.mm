@@ -13,8 +13,8 @@
 #import "ESLevelDBType.h"
 #import "ESLevelDBSlice.h"
 #import "ESLevelDBKeySlice.h"
-#import "ESLevelDBView.h"
-#import "ESLevelDBViewPrivate.h"
+#import "ESLevelDB.h"
+#import "ESLevelDBPrivate.h"
 #import "ESLevelDBEnumeratorPrivate.h"
 
 @implementation ESLevelDBValueEnumerator
@@ -24,7 +24,7 @@
   NSMutableArray * allObjects = [NSMutableArray array];
   
   leveldb::Iterator * allIter =
-    self.view.db->NewIterator(self.view.readOptions);
+    (*self.db.db)->NewIterator(self.db.readOptions);
   
   for(allIter->Seek(self.iter->key()); allIter->Valid(); allIter->Next())
     [allObjects addObject: ESleveldb::Slice(allIter->value())];
@@ -38,7 +38,7 @@
   {
   if(!self.iter)
     {
-    self.iter = self.view.db->NewIterator(self.view.readOptions);
+    self.iter = (*self.db.db)->NewIterator(self.db.readOptions);
     
     if(!self.iter)
       return nil;
@@ -69,7 +69,7 @@
   {
   if(!self.iter)
     {
-    self.iter = self.view.db->NewIterator(self.view.readOptions);
+    self.iter = (*self.db.db)->NewIterator(self.db.readOptions);
     
     if(!self.iter)
       return nil;

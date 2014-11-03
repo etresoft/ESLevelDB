@@ -17,7 +17,7 @@
 		663190BA15DD798A001AC21A /* ESLevelDBTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 663190B915DD798A001AC21A /* ESLevelDBTests.m */; };
 		663190C515DD7A8D001AC21A /* ESLevelDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 663190C315DD7A8D001AC21A /* ESLevelDB.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		663190C615DD7A8D001AC21A /* ESLevelDB.mm in Sources */ = {isa = PBXBuildFile; fileRef = 663190C415DD7A8D001AC21A /* ESLevelDB.mm */; };
-		6698E04815F82D3000B74390 /* ESLevelDBFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; };
+		6698E04815F82D3000B74390 /* ESLevelDBFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6631909315DD798A001AC21A /* ESLevelDBFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A513F053196881E4007F3905 /* builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F039196881E4007F3905 /* builder.cc */; };
 		A513F055196881E4007F3905 /* builder.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F039196881E4007F3905 /* builder.cc */; };
 		A513F056196881E4007F3905 /* c.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F03A196881E4007F3905 /* c.cc */; };
@@ -189,15 +189,7 @@
 		A5B6BD4D19D4F91800C48C37 /* ESLevelDBArchiveSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */; };
 		A5B6BD4E19D4F91F00C48C37 /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5B6BD4F19D4F92400C48C37 /* ESLevelDBType.h in Headers */ = {isa = PBXBuildFile; fileRef = A5D1341419887C9700B5356C /* ESLevelDBType.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5B6BD5019D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5B6BD5119D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5B6BD5219D4FB9000C48C37 /* ESLevelDBMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5B6BD5319D4FB9100C48C37 /* ESLevelDBMutableDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB03197543640062A2BF /* ESLevelDBView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
-		A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB04197543640062A2BF /* ESLevelDBView.mm */; };
 		A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A5C8BB0E1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
 		A5C8BB0F1975CE3B0062A2BF /* ESLevelDBEnumerator.mm in Sources */ = {isa = PBXBuildFile; fileRef = A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */; };
@@ -347,6 +339,7 @@
 		A513F16C19688D44007F3905 /* snappy.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = snappy.cc; path = ../snappy/snappy.cc; sourceTree = "<group>"; };
 		A513F16D19688D44007F3905 /* snappy-c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-c.h"; path = "../snappy/snappy-c.h"; sourceTree = "<group>"; };
 		A513F16E19688D44007F3905 /* snappy-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-internal.h"; path = "../snappy/snappy-internal.h"; sourceTree = "<group>"; };
+		A53EF15819F9206D008B58C6 /* ESLevelDBPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBPrivate.h; sourceTree = "<group>"; };
 		A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshot.h; sourceTree = "<group>"; };
 		A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBSnapshot.mm; sourceTree = "<group>"; };
 		A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBScratchPad.h; sourceTree = "<group>"; };
@@ -364,12 +357,7 @@
 		A5B6BD2119CC4C8A00C48C37 /* ESLevelDBKeySerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBKeySerializer.h; sourceTree = "<group>"; };
 		A5B6BD2219CC4C8A00C48C37 /* ESLevelDBKeySerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESLevelDBKeySerializer.m; sourceTree = "<group>"; };
 		A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSerializer.h; sourceTree = "<group>"; };
-		A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDictionary.h; sourceTree = "<group>"; };
-		A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBMutableDictionary.h; sourceTree = "<group>"; };
 		A5C8BB021973FAFA0062A2BF /* ESLevelDBArchiveSerializer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBArchiveSerializer.h; sourceTree = "<group>"; };
-		A5C8BB03197543640062A2BF /* ESLevelDBView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBView.h; sourceTree = "<group>"; };
-		A5C8BB04197543640062A2BF /* ESLevelDBView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBView.mm; sourceTree = "<group>"; };
-		A5C8BB09197545300062A2BF /* ESLevelDBViewPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBViewPrivate.h; sourceTree = "<group>"; };
 		A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBEnumerator.h; sourceTree = "<group>"; };
 		A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBEnumerator.mm; sourceTree = "<group>"; };
 		A5C8BB161975D1C30062A2BF /* snapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snapshot.h; path = ../leveldb/db/snapshot.h; sourceTree = "<group>"; };
@@ -467,7 +455,6 @@
 		6631909C15DD798A001AC21A /* ESLevelDB */ = {
 			isa = PBXGroup;
 			children = (
-				A59BD05F196C137600B11D63 /* Categories */,
 				A5D1341419887C9700B5356C /* ESLevelDBType.h */,
 				A5C8BAFB197371210062A2BF /* ESLevelDBSerializer.h */,
 				A59FB89C198AEB6500CD6072 /* ESLevelDBSerializer.mm */,
@@ -478,25 +465,21 @@
 				A59BD071196EB59700B11D63 /* ESLevelDBValue.h */,
 				A59BD06A196D63C500B11D63 /* ESLevelDBSlice.h */,
 				A5C8C07319CB8C51005BD308 /* ESLevelDBKeySlice.h */,
-				A5C8BB001973F6BD0062A2BF /* ESLevelDBDictionary.h */,
-				A5C8BB011973F6F90062A2BF /* ESLevelDBMutableDictionary.h */,
 				A5C8BB0A1975CE3B0062A2BF /* ESLevelDBEnumerator.h */,
 				A5D1340919866CC100B5356C /* ESLevelDBEnumeratorPrivate.h */,
 				A5C8BB0B1975CE3B0062A2BF /* ESLevelDBEnumerator.mm */,
 				A5D1340A1986F73C00B5356C /* ESLevelDBValueEnumerator.h */,
 				A5D1340E1986F78800B5356C /* ESLevelDBValueEnumeratorPrivate.h */,
 				A5D1340B1986F73C00B5356C /* ESLevelDBValueEnumerator.mm */,
-				A5C8BB03197543640062A2BF /* ESLevelDBView.h */,
-				A5C8BB09197545300062A2BF /* ESLevelDBViewPrivate.h */,
-				A5C8BB04197543640062A2BF /* ESLevelDBView.mm */,
+				663190C315DD7A8D001AC21A /* ESLevelDB.h */,
+				A53EF15819F9206D008B58C6 /* ESLevelDBPrivate.h */,
+				663190C415DD7A8D001AC21A /* ESLevelDB.mm */,
 				A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */,
 				A59BD052196C128200B11D63 /* ESLevelDBSnapshotPrivate.h */,
 				A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */,
 				A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */,
 				A59BD055196C12C300B11D63 /* ESLevelDBScratchPadPrivate.h */,
 				A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */,
-				663190C315DD7A8D001AC21A /* ESLevelDB.h */,
-				663190C415DD7A8D001AC21A /* ESLevelDB.mm */,
 				6631909D15DD798A001AC21A /* Supporting Files */,
 			);
 			path = ESLevelDB;
@@ -681,13 +664,6 @@
 			name = snappy;
 			sourceTree = "<group>";
 		};
-		A59BD05F196C137600B11D63 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Categories;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -697,9 +673,7 @@
 			files = (
 				A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */,
 				A5B6BD4D19D4F91800C48C37 /* ESLevelDBArchiveSerializer.h in Headers */,
-				A5B6BD5319D4FB9100C48C37 /* ESLevelDBMutableDictionary.h in Headers */,
 				A5B6BD4F19D4F92400C48C37 /* ESLevelDBType.h in Headers */,
-				A5C8BB06197543640062A2BF /* ESLevelDBView.h in Headers */,
 				A5B6BD4E19D4F91F00C48C37 /* ESLevelDBSerializer.h in Headers */,
 				A5B6BD4B19D4F8FE00C48C37 /* ESLevelDBEnumerator.h in Headers */,
 				A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
@@ -707,7 +681,6 @@
 				573F182C178C856E00E66DED /* ESLevelDB.h in Headers */,
 				A5B6BD4A19D4F8FB00C48C37 /* ESLevelDBValueEnumerator.h in Headers */,
 				A5B6BD4C19D4F91300C48C37 /* ESLevelDBKeySerializer.h in Headers */,
-				A5B6BD5119D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -716,8 +689,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C8BB171975D1C30062A2BF /* snapshot.h in Headers */,
-				A5C8BB05197543640062A2BF /* ESLevelDBView.h in Headers */,
-				A5B6BD5219D4FB9000C48C37 /* ESLevelDBMutableDictionary.h in Headers */,
 				A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
 				A5D1340F1986F81000B5356C /* ESLevelDBValueEnumerator.h in Headers */,
 				A5C8BAFE197371210062A2BF /* ESLevelDBSerializer.h in Headers */,
@@ -727,7 +698,6 @@
 				A5B6BD4519D19B5F00C48C37 /* ESLevelDBType.h in Headers */,
 				A5B6BD4419D19B4500C48C37 /* ESLevelDBScratchPad.h in Headers */,
 				A5C8BB0C1975CE3B0062A2BF /* ESLevelDBEnumerator.h in Headers */,
-				A5B6BD5019D4FB8700C48C37 /* ESLevelDBDictionary.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -797,7 +767,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = Etresoft;
 			};
 			buildConfigurationList = 6631908C15DD798A001AC21A /* Build configuration list for PBXProject "ESLevelDB" */;
@@ -906,7 +876,6 @@
 				A513F14919688218007F3905 /* perf_count.cc in Sources */,
 				A513F11019688218007F3905 /* comparator.cc in Sources */,
 				A513F15019688218007F3905 /* status.cc in Sources */,
-				A5C8BB08197543640062A2BF /* ESLevelDBView.mm in Sources */,
 				A59FB89D198AEB6500CD6072 /* ESLevelDBSerializer.mm in Sources */,
 				A513F10819688218007F3905 /* cache2.cc in Sources */,
 				A513F10D19688218007F3905 /* coding.cc in Sources */,
@@ -973,7 +942,6 @@
 				A513F14719688218007F3905 /* perf_count.cc in Sources */,
 				A513F10E19688218007F3905 /* comparator.cc in Sources */,
 				A513F14E19688218007F3905 /* status.cc in Sources */,
-				A5C8BB07197543640062A2BF /* ESLevelDBView.mm in Sources */,
 				A513F10619688218007F3905 /* cache2.cc in Sources */,
 				A513F10B19688218007F3905 /* coding.cc in Sources */,
 				A513F10119688218007F3905 /* cache.cc in Sources */,

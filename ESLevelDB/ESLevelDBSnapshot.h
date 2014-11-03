@@ -24,9 +24,11 @@
 //	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //	THE SOFTWARE.
 
-#import "ESLevelDBView.h"
+#import <Foundation/Foundation.h>
 
-@interface ESLevelDBSnapshot : ESLevelDBView
+#import "ESLevelDB.h"
+
+@interface ESLevelDBSnapshot : ESLevelDB
 
 @end
 

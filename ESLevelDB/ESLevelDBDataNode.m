@@ -4,15 +4,8 @@
  ** Copyright (c) 2014. All rights reserved.
  **********************************************************************/
 
-#import "leveldb/db.h"
-#import "leveldb/options.h"
-#import "leveldb/write_batch.h"
+#import "ESLevelDBDataNode.h"
 
-@class ESLevelDB;
-
-@interface ESLevelDBSnapshot ()
-
-@property (assign) const leveldb::Snapshot * snapshot;
+@implementation ESLevelDBDataNode
 
 @end
-

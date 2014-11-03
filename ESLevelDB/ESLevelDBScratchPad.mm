@@ -15,13 +15,13 @@
 #import "ESLevelDBKeySlice.h"
 #import "ESLevelDBSerializer.h"
 #import "ESLevelDB.h"
-#import "ESLevelDBViewPrivate.h"
+#import "ESLevelDBPrivate.h"
 
 @implementation ESLevelDBScratchPad
 
 @synthesize deltaCount = myDeltaCount;
 
-@synthesize parentDB = myParentDB;
+@synthesize parentDb = myParentDb;
 @synthesize batch = myBatch;
 @synthesize keysChanged = myKeysChanged;
 
@@ -36,11 +36,11 @@
 // Constructor.
 - (instancetype) initWithESLevelDB: (ESLevelDB *) db
   {
-  self = [super initWithDb: db.db];
+  self = [super initWithESLevelDB: db];
   
   if(self)
     {
-    myParentDB = db;
+    myParentDb = db;
     myBatch = new leveldb::WriteBatch();
     }
     
@@ -60,14 +60,7 @@
   
 - (BOOL) commit
   {
-  if([self.parentDB commit: self])
-    {
-    self.deltaCount = 0;
-    
-    return YES;
-    }
-    
-  return NO;
+  return [self.parentDb commit: self];
   }
 
 - (void) setObject: (ESLevelDBType) object forKey: (ESLevelDBKey) key
@@ -161,7 +154,7 @@
   dispatch_sync(
     self.queue,
     ^{
-      for(ESLevelDBKey key in [self.parentDB allKeys])
+      for(ESLevelDBKey key in [self allKeys])
         {
         self.batch->Delete(ESleveldb::KeySlice(key));
         
@@ -203,7 +196,7 @@
 
 - (void) removeAllObjects
   {
-  [self removeObjectsForKeys: [self.parentDB allKeys]];
+  [self removeObjectsForKeys: [self allKeys]];
   
   [self.keysChanged
     enumerateObjectsUsingBlock:

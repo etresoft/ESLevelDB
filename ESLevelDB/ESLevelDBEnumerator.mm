@@ -12,13 +12,13 @@
 
 #import "ESLevelDBType.h"
 #import "ESLevelDBKeySlice.h"
-#import "ESLevelDBView.h"
-#import "ESLevelDBViewPrivate.h"
+#import "ESLevelDB.h"
+#import "ESLevelDBPrivate.h"
 #import "ESLevelDBEnumeratorPrivate.h"
 
 @implementation ESLevelDBEnumerator
 
-@synthesize view = myView;
+@synthesize db = myDb;
 @synthesize iter = myIter;
 
 @synthesize object = myObject;
@@ -40,7 +40,7 @@
     // See if the ending iterator actually exists. If it does, go to the
     // next key.
     leveldb::Iterator * end =
-      self.view.db->NewIterator(self.view.readOptions);
+      (*self.db.db)->NewIterator(self.db.readOptions);
     
     end->Seek(ESleveldb::KeySlice(limit));
     
@@ -61,15 +61,15 @@
   return myLimit;
   }
 
-// Constructor with view.
-- (instancetype) initWithView: (ESLevelDBView *) view
+// Constructor with database.
+- (instancetype) initWithDB: (ESLevelDB *) db
   {
   self = [super init];
   
   if(self)
     {
     myIter = 0;
-    myView = view;
+    myDb = db;
     }
     
   return self;
@@ -79,7 +79,7 @@
   {
   delete myIter;
   myIter = 0;
-  myView = nil;
+  myDb = nil;
   }
 
 - (NSArray *) allObjects
@@ -87,7 +87,7 @@
   NSMutableArray * allObjects = [NSMutableArray array];
   
   leveldb::Iterator * allIter =
-    self.view.db->NewIterator(self.view.readOptions);
+    (*self.db.db)->NewIterator(self.db.readOptions);
   
   for(allIter->Seek(self.iter->key()); allIter->Valid(); allIter->Next())
     [allObjects addObject: ESleveldb::KeySlice(allIter->key())];
@@ -109,7 +109,7 @@
   {
   if(!self.iter)
     {
-    self.iter = self.view.db->NewIterator(self.view.readOptions);
+    self.iter = (*self.db.db)->NewIterator(self.db.readOptions);
     
     if(!self.iter)
       return nil;
@@ -142,7 +142,7 @@
   
   if(!self.iter)
     {
-    self.iter = self.view.db->NewIterator(self.view.readOptions);
+    self.iter = (*self.db.db)->NewIterator(self.db.readOptions);
     
     if(!self.iter)
       return nil;
