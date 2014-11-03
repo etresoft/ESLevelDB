@@ -6,9 +6,9 @@ A stylish Objective-C wrapper for [LevelDB][].  What's LevelDB?  It describes it
 
 ESLevelDB is comprised of a number of classes, `ESLevelDB` and `ESLevelDBScratchPad` are likely to be the most commonly used.  It is written to be compiled under ARC.  ESLevelDB was written by [John Daniel][] and adapted from [Adam Preble][]'s [APLevelDB][].
 
-The key difference between this project an APLevelDB is that APLevelDB is an Objective-C wrapper around LevelDB. ESLevelDB is designed to be a Core Data replacement. It looks and acts like an NSMutableDictionary that gets automatically persisted. 
+The key difference between this project an APLevelDB is that APLevelDB is an Objective-C wrapper around LevelDB. ESLevelDB is designed to be a Core Data replacement. It is a subclass of NSMutableDictionary that gets automatically persisted. 
 
-There are some caveats for LevelDB's design, but not many. For example, although any object that conforms to the NSSecureCoding protocol could be used for values and keys, in practice, NSString is used. Primarily this due to LevelDB's support for seekable iterators. The default object serialization is not stable with respect to sorting so something had to give. There are a few new capabilities and methods for those seekable iterators. ESLevelDB includes an extensive test suite. 
+There are some caveats for LevelDB's design, but not many. For example, although any object that conforms to the NSSecureCoding protocol could be used for values and keys, in practice, NSString is used. Primarily this due to LevelDB's support for seekable iterators. The default object serialization is not stable with respect to sorting so something had to give. There are a few new capabilities and methods for those seekable iterators. ESLevelDB includes an extensive test suite. ESLevelDB is an NSMutableDictionary and can be used as such. It does not support the NSMutableDictionary or NSDictionary constructors - long story about class clusters.
 
 ESLevelDB is a work in progress. It works well for simple objects. It still needs logic to support persisting changes to objects. Currently you would have to store a new object to write. It doesn't support iCloud yet, but it will.
 
