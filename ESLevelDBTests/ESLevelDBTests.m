@@ -133,7 +133,7 @@
 	NSArray * expectedKeys = @[@"a", @"ab", @"abc", @"bc"];
 	NSArray * expectedObjects = @[@"1", @"2", @"3", @"4"];
 
-  BOOL keysMatch = YES;
+  bool keysMatch = YES;
   
   NSUInteger i = 0;
   
@@ -151,7 +151,7 @@
     ++i;
     }
     
-  BOOL objectsMatch = YES;
+  bool objectsMatch = YES;
   
   i = 0;
   
@@ -573,7 +573,7 @@
     enumerateKeysAndObjectsFrom: @"ab"
     limit: @"cd"
     usingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+      ^(ESLevelDBKey key, ESLevelDBType obj, bool * stop)
         {
         [found addObject: obj];
         }];
@@ -616,7 +616,7 @@
     limit: @"cd"
     withOptions: NSEnumerationReverse
     usingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+      ^(ESLevelDBKey key, ESLevelDBType obj, bool * stop)
         {
         [found addObject: obj];
         }];

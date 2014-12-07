@@ -26,12 +26,12 @@
 @property (readonly) NSUInteger lastHash;
 
 // Is this class immutable?
-@property (assign) BOOL immutable;
+@property (assign) bool immutable;
 
 // Copy constructor.
 - (instancetype) initWithESLevelDB: (ESLevelDB *) db;
 
 // Commit a batch.
-- (BOOL) commit: (ESLevelDBScratchPad *) batch;
+- (bool) commit: (ESLevelDBScratchPad *) batch;
 
 @end

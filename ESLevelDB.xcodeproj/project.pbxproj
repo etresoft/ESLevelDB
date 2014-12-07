@@ -166,6 +166,12 @@
 		A513F17D19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17E19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
 		A513F17F19688D44007F3905 /* snappy.cc in Sources */ = {isa = PBXBuildFile; fileRef = A513F16C19688D44007F3905 /* snappy.cc */; };
+		A53F3EFC1A12C28B004E185C /* ESlevelDBArray.h in Headers */ = {isa = PBXBuildFile; fileRef = A53F3EF61A12C28B004E185C /* ESlevelDBArray.h */; };
+		A53F3EFD1A12C28B004E185C /* ESLevelDBDataNode.h in Headers */ = {isa = PBXBuildFile; fileRef = A53F3EF71A12C28B004E185C /* ESLevelDBDataNode.h */; };
+		A53F3EFE1A12C28B004E185C /* ESLevelDBDataNode.m in Sources */ = {isa = PBXBuildFile; fileRef = A53F3EF81A12C28B004E185C /* ESLevelDBDataNode.m */; };
+		A53F3EFF1A12C28B004E185C /* ESLevelDBDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = A53F3EF91A12C28B004E185C /* ESLevelDBDataSource.h */; };
+		A53F3F001A12C28B004E185C /* ESLevelDBDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A53F3EFA1A12C28B004E185C /* ESLevelDBDataSource.m */; };
+		A53F3F011A12C28B004E185C /* ESLevelDBDataSourceDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = A53F3EFB1A12C28B004E185C /* ESLevelDBDataSourceDelegate.h */; };
 		A59BD046196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A59BD048196C0F8B00B11D63 /* ESLevelDBSnapshot.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */; };
@@ -340,6 +346,12 @@
 		A513F16D19688D44007F3905 /* snappy-c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-c.h"; path = "../snappy/snappy-c.h"; sourceTree = "<group>"; };
 		A513F16E19688D44007F3905 /* snappy-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "snappy-internal.h"; path = "../snappy/snappy-internal.h"; sourceTree = "<group>"; };
 		A53EF15819F9206D008B58C6 /* ESLevelDBPrivate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBPrivate.h; sourceTree = "<group>"; };
+		A53F3EF61A12C28B004E185C /* ESlevelDBArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESlevelDBArray.h; sourceTree = "<group>"; };
+		A53F3EF71A12C28B004E185C /* ESLevelDBDataNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDataNode.h; sourceTree = "<group>"; };
+		A53F3EF81A12C28B004E185C /* ESLevelDBDataNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESLevelDBDataNode.m; sourceTree = "<group>"; };
+		A53F3EF91A12C28B004E185C /* ESLevelDBDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDataSource.h; sourceTree = "<group>"; };
+		A53F3EFA1A12C28B004E185C /* ESLevelDBDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESLevelDBDataSource.m; sourceTree = "<group>"; };
+		A53F3EFB1A12C28B004E185C /* ESLevelDBDataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBDataSourceDelegate.h; sourceTree = "<group>"; };
 		A59BD044196C0F8B00B11D63 /* ESLevelDBSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESLevelDBSnapshot.h; sourceTree = "<group>"; };
 		A59BD045196C0F8B00B11D63 /* ESLevelDBSnapshot.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ESLevelDBSnapshot.mm; sourceTree = "<group>"; };
 		A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ESLevelDBScratchPad.h; sourceTree = "<group>"; };
@@ -480,6 +492,12 @@
 				A59BD04A196C0FA200B11D63 /* ESLevelDBScratchPad.h */,
 				A59BD055196C12C300B11D63 /* ESLevelDBScratchPadPrivate.h */,
 				A59BD04C196C10D900B11D63 /* ESLevelDBScratchPad.mm */,
+				A53F3EF61A12C28B004E185C /* ESlevelDBArray.h */,
+				A53F3EF71A12C28B004E185C /* ESLevelDBDataNode.h */,
+				A53F3EF81A12C28B004E185C /* ESLevelDBDataNode.m */,
+				A53F3EF91A12C28B004E185C /* ESLevelDBDataSource.h */,
+				A53F3EFA1A12C28B004E185C /* ESLevelDBDataSource.m */,
+				A53F3EFB1A12C28B004E185C /* ESLevelDBDataSourceDelegate.h */,
 				6631909D15DD798A001AC21A /* Supporting Files */,
 			);
 			path = ESLevelDB;
@@ -672,8 +690,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5C8BB181975D1C30062A2BF /* snapshot.h in Headers */,
+				A53F3F011A12C28B004E185C /* ESLevelDBDataSourceDelegate.h in Headers */,
 				A5B6BD4D19D4F91800C48C37 /* ESLevelDBArchiveSerializer.h in Headers */,
 				A5B6BD4F19D4F92400C48C37 /* ESLevelDBType.h in Headers */,
+				A53F3EFF1A12C28B004E185C /* ESLevelDBDataSource.h in Headers */,
+				A53F3EFD1A12C28B004E185C /* ESLevelDBDataNode.h in Headers */,
 				A5B6BD4E19D4F91F00C48C37 /* ESLevelDBSerializer.h in Headers */,
 				A5B6BD4B19D4F8FE00C48C37 /* ESLevelDBEnumerator.h in Headers */,
 				A59BD047196C0F8B00B11D63 /* ESLevelDBSnapshot.h in Headers */,
@@ -681,6 +702,7 @@
 				573F182C178C856E00E66DED /* ESLevelDB.h in Headers */,
 				A5B6BD4A19D4F8FB00C48C37 /* ESLevelDBValueEnumerator.h in Headers */,
 				A5B6BD4C19D4F91300C48C37 /* ESLevelDBKeySerializer.h in Headers */,
+				A53F3EFC1A12C28B004E185C /* ESlevelDBArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -865,6 +887,7 @@
 				A513F15519688218007F3905 /* throttle.cc in Sources */,
 				A513F14119688218007F3905 /* murmurhash.cc in Sources */,
 				A513F07B196881E4007F3905 /* memtable.cc in Sources */,
+				A53F3F001A12C28B004E185C /* ESLevelDBDataSource.m in Sources */,
 				A513F11A19688218007F3905 /* db_list.cc in Sources */,
 				A513F0CB1968820A007F3905 /* table.cc in Sources */,
 				A513F12819688218007F3905 /* flexcache.cc in Sources */,
@@ -885,6 +908,7 @@
 				A513F0FD19688218007F3905 /* bloom.cc in Sources */,
 				A513F13219688218007F3905 /* histogram.cc in Sources */,
 				A5D1340D1986F73C00B5356C /* ESLevelDBValueEnumerator.mm in Sources */,
+				A53F3EFE1A12C28B004E185C /* ESLevelDBDataNode.m in Sources */,
 				A513F0B11968820A007F3905 /* block.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,22 +9,15 @@
 #import "ESLevelDBDataSourceDelegate.h"
 #import "ESLevelDB.h"
 
-#define kMinKeyPart 0.00000000000000000001
-#define kMaxKeyPart 99999999999999999999.0
-
 @interface ESLevelDBDataSource ()
 
-@property (strong) ESLevelDBDataNode * root;
-@property (strong) NSMutableDictionary * keyLookup;
-@property (strong) NSMutableDictionary * valueLookup;
+@property (strong) NSMutableArray * backingStore;
 
 @end
 
 @implementation ESLevelDBDataSource
 
-@synthesize root = myRoot;
-@synthesize keyLookup = myKeyLookup;
-@synthesize valueLookup = myValueLookup;
+@synthesize backingStore = myBackingStore;
 
 // Constructor.
 - (id) init
@@ -33,199 +26,139 @@
   
   if(self)
     {
-    myRoot = [ESLevelDBDataNode new];
-    
-    myRoot.children = [NSMutableArray new];
-    
-    myValueLookup = [NSMutableDictionary new];
+    myBackingStore = [NSMutableArray new];
     }
     
   return self;
   }
 
-// Get the number of children of an item by absolute location. Returns
-// number of top-level items if path is nil.
-- (NSInteger) numberOfItemsAtIndexPath: (NSIndexPath *) path
+#pragma mark - Required NSArray overrides
+
+// Return the number of objects in the array.
+- (NSUInteger) count
   {
   __block NSUInteger count = 0;
   
   dispatch_sync(
     self.db.queue,
     ^{
-      count = [self nodeAtPath: path].children.count;
+      count = self.backingStore.count;
     });
-  
-  return count;
-  }
-
-// Get the number of children at an item. Returns number of top-level items
-// if the item is nil.
-- (NSInteger) numberOfItemsInItem: (ESLevelDBType) item
-  {
-  __block NSUInteger count = 0;
-  
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      if(!item)
-        count = self.root.children.count;
-      else
-        count = [self.valueLookup[item] count];
-    });
-  
-  return count;
-  }
-
-// Get the item at an absolute location. Returns nil if path is nil or
-// if there is no item at path.
-- (ESLevelDBType) itemAtIndexPath: (NSIndexPath *) path
-  {
-  __block ESLevelDBType result = nil;
-  
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      result = [self nodeAtPath: path].value;
-    });
-  
-  return result;
-  }
-
-// Get the children of an item at an absolute location. Returns all
-// top-level items if the path is nil.
-- (NSArray *) itemsAtIndexPath: (NSIndexPath *) path
-  {
-  __block NSArray * children = nil;
-  
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      children = [self nodeAtPath: path].children;
-    });
-  
-  return children;
-  }
-
-// Get the children of an item. Returns all items if the item is nil.
-// Retuns nil if the item isn't valid.
-- (NSArray *) itemsOfItem: (ESLevelDBType) item
-  {
-  if(!item)
-    return self.root.children;
     
-  __block NSArray * children = nil;
+  return count;
+  }
+
+// Return the value at an index.
+- (id) objectAtIndex: (NSUInteger) index
+  {
+  __block id object = nil;
   
   dispatch_sync(
     self.db.queue,
     ^{
-      children = [self.valueLookup[item] children];
+      object = [[self.backingStore objectAtIndex: index] value];
     });
-  
-  return children;
+    
+  return object;
   }
 
-// Replace an item at a given path.
-- (void) set: (ESLevelDBType) item at: (NSIndexPath *) path
+#pragma mark - Required NSMutableArray overrides
+
+// Insert an object at the specified index.
+- (void) insertObject: (id) anObject atIndex: (NSUInteger) index
   {
   dispatch_sync(
     self.db.queue,
     ^{
-      [self setNodeAt: path with: item];
-    });
-  }
-
-// Replace a given item.
-- (void) replace: (ESLevelDBType) oldItem with: (ESLevelDBType) newItem
-  {
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      [self replaceNode: self.valueLookup[newItem] with: newItem];
-    });
-  }
-
-// Adds a new item at a path. If path is nil, adds a new top-level
-// item.
-- (void) add: (ESLevelDBType) item at: (NSIndexPath *) path
-  {
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      [self add: item toParentNode: [self nodeAtPath: path]];
-    });
-  }
-
-// Adds a new item to a parent. If parent is nil, adds a new top-level
-// item.
-- (void) add: (ESLevelDBType) item to: (ESLevelDBType) parent
-  {
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      [self add: item toParentNode: self.valueLookup[parent]];
-    });
-  }
-
-// Adds a new item at an absolute location.
-- (void) insert: (ESLevelDBType) item atIndexPath: (NSIndexPath *) path
-  {
-  dispatch_sync(
-    self.db.queue,
-    ^{
-      NSUInteger index = 0;
+      ESLevelDBDataNode * node = [ESLevelDBDataNode new];
       
-      ESLevelDBDataNode * parentNode = self.root;
+      // Generate a key and insert the key and object into the database.
+      node.key = [self generateKeyAtIndex: index forObject: anObject];
+      node.value = anObject;
       
-      if(path.length)
-        {
-        index = [path indexAtPosition: path.length - 1];
-      
-        NSIndexPath * parentPath = [path indexPathByRemovingLastIndex];
-      
-        parentNode = [self nodeAtPath: parentPath];
-        }
-        
-      [self insert: item at: index inParentNode: parentNode];
+      [self.backingStore insertObject: node atIndex: index];
     });
   }
 
-// Adds a new item to a parent at a given, relative location.
-- (void) insert: (ESLevelDBType) item
-  at: (NSUInteger) position in: (ESLevelDBType) parent
+// Remove an object at the specified index.
+- (void) removeObjectAtIndex: (NSUInteger) index
   {
   dispatch_sync(
     self.db.queue,
     ^{
-      ESLevelDBDataNode * parentNode = self.root;
-
-      if(parent)
-        parentNode = self.valueLookup[parent];
-        
-      [self insert: item at: position inParentNode: parentNode];
+      // Remove the node from the database.
+      [self removeNode: [self.backingStore objectAtIndex: index]];
+      
+      [self.backingStore removeObjectAtIndex: index];
     });
   }
 
-// Remove an item at a given path.
-- (void) removeItemAt: (NSIndexPath *) path
+// Add an object to the end of the array.
+- (void) addObject: (id) anObject
   {
   dispatch_sync(
     self.db.queue,
     ^{
-      [self removeNode: [self nodeAtPath: path]];
+      ESLevelDBDataNode * node = [ESLevelDBDataNode new];
+      
+      // Generate a key and insert the key and object into the database.
+      node.key = [self generateKeyForObject: anObject];
+      node.value = anObject;
+      
+      [self.backingStore addObject: node];
     });
   }
 
-// Remove an item.
-- (void) removeItem: (ESLevelDBType) item
+// Remove the last object.
+- (void) removeLastObject
   {
   dispatch_sync(
     self.db.queue,
     ^{
-      [self removeNode: self.valueLookup[item]];
+      // Remove the node from the database.
+      [self removeNode: [self.backingStore lastObject]];
+
+      [self.backingStore removeLastObject];
     });
   }
 
-#pragma mark - Handle remote update
+// Replace an object at a given index with another object.
+- (void) replaceObjectAtIndex: (NSUInteger) index withObject: (id) anObject
+  {
+  dispatch_sync(
+    self.db.queue,
+    ^{
+      ESLevelDBDataNode * node = [ESLevelDBDataNode new];
+      
+      // Generate a key and insert the key and object into the database.
+      node.key = [self generateKeyAtIndex: index forObject: anObject];
+      node.value = anObject;
+      
+      // Remove the node from the database.
+      [self removeNode: [self.backingStore objectAtIndex: index]];
+      
+      [self.backingStore replaceObjectAtIndex: index withObject: node];
+    });
+  }
+
+#pragma mark - Helper methods
+
+- (NSString *) generateKeyAtIndex: (NSUInteger) index
+  forObject: (id) anObject
+  {
+  return nil;
+  }
+
+- (NSString *) generateKeyForObject: (id) anObject
+  {
+  return nil;
+  }
+
+- (void) removeNode: (ESLevelDBDataNode *) node
+  {
+  }
+
+#pragma mark - Handle remote updates
 
 // Add a value at a given key from a remote peer.
 - (void) peerAddValue: (ESLevelDBType) value forKey: (ESLevelDBKey) key
@@ -257,153 +190,6 @@
     });
   }
 
-#pragma mark - Helper routines.
-
-- (ESLevelDBDataNode *) nodeAtPath: (NSIndexPath *) path
-  {
-  ESLevelDBDataNode * node = self.root;
-
-  for(NSUInteger i = 0; i < path.length; ++i)
-    {
-    NSUInteger index = [path indexAtPosition: i];
-    
-    if(index >= node.children.count)
-      return nil;
-      
-    node = node.children[index];
-    }
-    
-  return node;
-  }
-
-// Set a node value.
-- (void) setNode: (ESLevelDBDataNode *) node with: (ESLevelDBType) item
-  {
-  if(node)
-    {
-    [self willUpdate: node with: item];
-    
-    self.db[node.key] = item;
-    
-    [self.valueLookup removeObjectForKey: node.value];
-    
-    node.value = item;
-
-    self.valueLookup[item] = node;
-    
-    [self didUpdate: node with: item];
-    }
-  }
-
-// Replace a node value.
-- (void) replaceNode: (ESLevelDBDataNode *) node with: (ESLevelDBType) item
-  {
-  if(node)
-    {
-    [self willUpdate: node with: item];
-    
-    self.db[node.key] = item;
-    
-    [self.valueLookup removeObjectForKey: node.value];
-    
-    node.value = item;
-
-    self.valueLookup[item] = node;
-    
-    [self didUpdate: node with: item];
-    }
-  }
-
-// Adds a new item to a parent. If parent is nil, adds a new top-level
-// item.
-- (void) add: (ESLevelDBType) item
-  toParentNode: (ESLevelDBDataNode *) parentNode
-  {
-  if(!parentNode)
-    parentNode = self.root;
-  
-  ESLevelDBDataNode * lastNode = parentNode.children.lastObject;
-  
-  ESLevelDBDataNode * node = [ESLevelDBDataNode new];
-  
-  if(lastNode)
-    node.key = [self keyBetween: lastNode.key and: nil];
-  else
-    // TODO: Create a new key in parent.
-    node.key = [self keyBetween: nil and: parentNode.key];
-  
-  // TODO: What if key is nil.
-  
-  node.value = item;
-  
-  [parentNode.children addObject: node];
-  
-  self.db[node.key] = item;
-  
-  self.keyLookup[node.key] = node;
-  self.valueLookup[item] = node;
-
-  // TODO: Call delegate.
-  }
-
-// Adds a new item to a parent at a given, relative location.
-- (void) insert: (ESLevelDBType) item
-  at: (NSUInteger) position inParentNode: (ESLevelDBDataNode *) parentNode
-  {
-  if(!parentNode)
-    parentNode = self.root;
-
-  ESLevelDBDataNode * node = [ESLevelDBDataNode new];
-  
-  ESLevelDBDataNode * predecessor =
-    parentNode.children.count > position
-      ? parentNode.children[position]
-      : nil;
-
-  ESLevelDBDataNode * successor =
-    parentNode.children.count > (position + 1)
-      ? parentNode.children[position + 1]
-      : nil;
-  
-  if(predecessor && successor)
-    node.key = [self keyBetween: predecessor.key and: successor.key];
-  else if(predecessor)
-    node.key = [self keyBetween: predecessor.key and: nil];
-  else if(successor)
-    node.key = [self keyBetween: nil and: successor.key];
-  else
-    // TODO: Create a new key in parent.
-    node.key = [self keyBetween: nil and: parentNode.key];
- 
-  // TODO: What if key is nil?
-  
-  node.value = item;
-  
-  [parentNode.children insertObject: node atIndex: position];
-  
-  self.db[node.key] = item;
-  
-  self.keyLookup[node.key] = node;
-  self.valueLookup[item] = node;
-
-  // TODO: Call delegate.
-  }
-
-// Remove an item from a parent at an index.
-- (void) removeNode: (ESLevelDBDataNode *) node
-  {
-  if(node)
-    {
-    [self.db removeObjectForKey: node.key];
-  
-    [node.parent.children removeObject: node];
-    
-    [self.keyLookup removeObjectForKey: node.key];
-    [self.valueLookup removeObjectForKey: node.value];
-
-    // TODO: Call delegate.
-    }
-  }
 
 // Return a key between two others.
 // TODO: What about /path/to/deep/key and nil?
@@ -574,7 +360,7 @@
 
 - (void) willInsert: (ESLevelDBDataNode *) node
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:willInsert:at:with:)];
     
@@ -585,7 +371,7 @@
 
 - (void) didInsert: (ESLevelDBDataNode *) node
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:didInsert:at:with:)];
     
@@ -596,7 +382,7 @@
 
 - (void) willRemove: (ESLevelDBDataNode *) node
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:willRemove:at:with:)];
     
@@ -607,7 +393,7 @@
 
 - (void) didRemove: (ESLevelDBDataNode *) node at: (NSIndexPath *) path
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:didRemove:at:with:)];
     
@@ -619,7 +405,7 @@
 - (void) willUpdate: (ESLevelDBDataNode *) node
   with: (ESLevelDBType) value
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:willUpdate:at:with:)];
     
@@ -634,7 +420,7 @@
 - (void) didUpdate: (ESLevelDBDataNode *) node
   with: (ESLevelDBType) value
   {
-  BOOL responds =
+  bool responds =
     [self.delegate
       respondsToSelector: @selector(dataSource:didUpdate:at:with:)];
     

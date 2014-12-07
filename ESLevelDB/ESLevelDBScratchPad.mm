@@ -58,7 +58,7 @@
   return [super count] + self.deltaCount;
   }
   
-- (BOOL) commit
+- (bool) commit
   {
   return [self.parentDb commit: self];
   }
@@ -78,7 +78,7 @@
   dispatch_sync(
     self.queue,
     ^{
-      BOOL exists = ([self objectForKey: key] != nil);
+      bool exists = [self objectForKey: key];
       
       self.batch->Put(
         ESleveldb::KeySlice(key),
@@ -107,7 +107,7 @@
   dispatch_sync(
     self.queue,
     ^{
-      BOOL exists = ([self objectForKey: key] != nil);
+      bool exists = [self objectForKey: key];
 
       self.batch->Put(
         ESleveldb::KeySlice(key),
@@ -135,7 +135,7 @@
     ^{
       for(ESLevelDBKey key in dictionary)
         {
-        BOOL exists = ([self objectForKey: key] != nil);
+        bool exists = [self objectForKey: key];
         
         self.batch->Put(
           ESleveldb::KeySlice(key),
@@ -184,7 +184,7 @@
       raise: NSInvalidArgumentException
       format: NSLocalizedString(@"Nil key provided", NULL)];
     
-  BOOL exists = ([self objectForKey: key] != nil);
+  bool exists = [self objectForKey: key];
 
   self.batch->Delete(ESleveldb::KeySlice(key));
   
@@ -219,7 +219,7 @@
     ^{
       for(ESLevelDBKey key in keys)
         {
-        BOOL exists = ([self objectForKey: key] != nil);
+        bool exists = [self objectForKey: key];
         
         self.batch->Delete(ESleveldb::KeySlice(key));
         

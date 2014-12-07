@@ -33,6 +33,6 @@
 @property (assign) NSInteger deltaCount;
 
 // Commit the batch.
-- (BOOL) commit;
+- (bool) commit;
 
 @end

@@ -6,9 +6,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ESLevelDBType.h"
-
-// Implement as much of the NSArray interface as possible.
+// An NSMutable.
 @protocol ESLevelDBArray <NSObject, NSFastEnumeration>
 
 // LevelDB doesn't support this, but it is important for Cocoa.

@@ -138,7 +138,7 @@
 // Support LevelDB's reverse iterator.
 - (id) decrement
   {
-  BOOL last = NO;
+  bool last = NO;
   
   if(!self.iter)
     {

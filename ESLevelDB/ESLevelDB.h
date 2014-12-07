@@ -35,6 +35,10 @@
 @class ESLevelDBSnapshot;
 @class ESLevelDBSerializer;
 
+// This class is an NSMutableDictionary subclass that uses ESLevelDB as a
+// backing store. NSMutableDictionary is designed to keep all objects in
+// memory so this class has additional overrides to avoid keeping all
+// objects in memory.
 @interface ESLevelDB : NSMutableDictionary
 
 // Serializer.
@@ -59,13 +63,13 @@
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
   limit: (ESLevelDBKey) limit
   usingBlock:
-    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, bool * stop)) block;
 
 // Enumerator a range [start, limit) of keys and objects with options.
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
   limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options
   usingBlock:
-    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block;
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, bool * stop)) block;
 
 @end

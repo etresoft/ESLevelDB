@@ -183,7 +183,7 @@
 - (void) enumerateKeysAndObjectsFrom: (ESLevelDBKey) from
   limit: (ESLevelDBKey) limit
   usingBlock:
-    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, bool * stop)) block
   {
   ESLevelDBEnumerator * enumerator =
     [[ESLevelDBEnumerator alloc] initWithDB: self];
@@ -191,7 +191,7 @@
   enumerator.start = from;
   enumerator.limit = limit;
   
-  BOOL stop = NO;
+  bool stop = NO;
   
 	while(YES)
     {
@@ -214,7 +214,7 @@
   limit: (ESLevelDBKey) limit
   withOptions: (NSEnumerationOptions) options
   usingBlock:
-    (void (^)(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)) block
+    (void (^)(ESLevelDBKey key, ESLevelDBType obj, bool * stop)) block
   {
   ESLevelDBEnumerator * enumerator =
     [[ESLevelDBEnumerator alloc] initWithDB: self];
@@ -223,7 +223,7 @@
   enumerator.options = options;
   enumerator.limit = limit;
   
-  BOOL stop = NO;
+  bool stop = NO;
   
 	while(YES)
     {
@@ -291,7 +291,7 @@
   }
 
 // Finish connecting to the leveldb database.
-- (BOOL) connectToLevelDB: (std::shared_ptr<leveldb::DB>) db
+- (bool) connectToLevelDB: (std::shared_ptr<leveldb::DB>) db
   {
   myDb = new std::shared_ptr<leveldb::DB>(db);
   mySerializer = [ESLevelDBArchiveSerializer new];
@@ -421,130 +421,11 @@
 	return [keys copy];
   } 
 
-/* NSDictionary should handle this.
-// Return all keys for a single object.
-- (NSArray *) allKeysForObject: (id) object
-  {
-	NSMutableArray * keys = [NSMutableArray array];
-  
-  id value = nil;
-  NSEnumerator * enumerator = [self objectEnumerator];
-  
-  while(value = [enumerator nextObject])
-    if([object isEqual: value])
-      [keys addObject: value];
-  
-  return [keys copy];
-  } */
-
-/* NSDictionary should handle this.
-// Return all values.
-- (NSArray *) allValues
-  {
-	NSMutableArray * values = [NSMutableArray array];
-  
-  id value = nil;
-  NSEnumerator * enumerator = [self objectEnumerator];
-  
-  while(value = [enumerator nextObject])
-    [values addObject: value];
-  
-  return [values copy];
-  } */
-
-/* NSDictionary should handle this.
-// Return all objects and keys into pre-allocated arrays.
-- (void) getObjects: (__unsafe_unretained id []) objects
-  andKeys: (__unsafe_unretained id []) keys
-  {
-  NSUInteger index = 0;
-  
-  id key = nil;
-  NSEnumerator * enumerator = [self keyEnumerator];
-  
-  while(key = [enumerator nextObject])
-    {
-    if(keys)
-      keys[index] = key;
-    
-    if(objects)
-      objects[index] = self[key];
-    
-    ++index;
-    }
-  } */
-
-/* NSDictionary should handle this.
-// Return an object for a key using array subscript notation.
-- (ESLevelDBType) objectForKeyedSubscript: (id) key
-  {
-  return [self objectForKey: key];
-  } */
-
-/* NSDictionary should handle this.
-// Return all objects for a given array of keys with a specific not-found
-// marker.
-- (NSArray *) objectsForKeys: (NSArray *) keys
-  notFoundMarker: (id) object
-  {
-  NSMutableArray * objects = [NSMutableArray array];
-  
-  for(ESLevelDBKey key in keys)
-    {
-    ESLevelDBType value = [self objectForKey: key];
-    
-    if(!value)
-      value = object;
-      
-    [objects addObject: value];
-    }
-    
-  return [objects copy];
-  } */
-
-/* NSDictionary should handle this.
-// Return the "value" for a key.
-- (id) valueForKey: (NSString *) key
-  {
-  if([key length])
-    {
-    if([key characterAtIndex: 0] == '@')
-      return [super valueForKey: [key substringFromIndex: 1]];
-    else
-      return [self objectForKey: key];
-    }
-    
-  return nil;
-  } */
-
 // Return an object enumerator.
 - (NSEnumerator *) objectEnumerator
   {
   return [[ESLevelDBValueEnumerator alloc] initWithDB: self];
   }
-
-/* NSDictionary should handle this.
-// Enumerate keys and objects using a block.
-- (void) enumerateKeysAndObjectsUsingBlock:
-  (void (^)(id key, id obj, BOOL * stop)) block
-  {
-  NSEnumerator * enumerator = [self keyEnumerator];
-  
-  BOOL stop = NO;
-  
-	while(YES)
-    {
-    ESLevelDBKey key = [enumerator nextObject];
-    
-    if(!key)
-      break;
-    
-    block(key, self[key], & stop);
-    
-    if(stop)
-      break;
-	  }
-  } */
 
 // NSDictionary does not handle enumeration options, but I will.
 // Enumerate keys and objects using a block with options.
@@ -574,69 +455,6 @@
 	  }
   } 
 
-/* NSDictionary should handle this.
-// Return sorted keys using a comparator.
-- (NSArray *) keysSortedByValueUsingComparator: (NSComparator) comparator
-  {
-  return
-    [[self allKeys]
-      sortedArrayUsingComparator:
-        ^NSComparisonResult(id key1, id key2)
-          {
-          return comparator(self[key1], self[key2]);
-          }];
-  } */
-
-/* NSDictionary should handle this.
-// Return sorted keys using a comparator selector.
-- (NSArray *) keysSortedByValueUsingSelector: (SEL) comparator
-  {
-  return
-    [[self allKeys]
-      sortedArrayUsingComparator:
-        ^NSComparisonResult(id key1, id key2)
-          {
-          id obj1 = self[key1];
-          id obj2 = self[key2];
-          id result = [obj1 performSelector: comparator withObject: obj2];
-            
-          return (NSComparisonResult)(long)result;
-          }];
-  } */
-
-/* NSDictionary should handle this.
-// Return sorted keys using a comparator with options.
-- (NSArray *) keysSortedByValueWithOptions: (NSSortOptions) options
-  usingComparator: (NSComparator) comparator
-  {
-  return
-    [[self allKeys]
-      sortedArrayWithOptions: options
-      usingComparator:
-        ^NSComparisonResult(id key1, id key2)
-          {
-          return comparator(self[key1], self[key2]);
-          }];
-  } */
-
-/* NSDictionary should handle this.
-// Return a set of keys passing a predicate test.
-- (NSSet *) keysOfEntriesPassingTest:
-  (BOOL (^)(id key, id obj, BOOL * stop)) predicate
-  {
-  NSMutableSet * entriesPassingTest = [NSMutableSet set];
-  
-  [self
-    enumerateKeysAndObjectsUsingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
-        {
-        if(predicate(key, obj, stop))
-          [entriesPassingTest addObject: key];
-        }];
-
-  return [entriesPassingTest copy];
-  } */
-
 // NSDictionary does not support enumeration options, but I will.
 // Return a set of keys passing a predicate test with options.
 - (NSSet *) keysOfEntriesWithOptions: (NSEnumerationOptions) options
@@ -662,7 +480,7 @@
 - (void) setObject: (id) object forKey: (id<NSCopying>) key
   {
   [self mutatingOperation:
-    ^BOOL
+    ^bool
       {
       (*self.db)->Put(
         self.writeOptions,
@@ -677,7 +495,7 @@
 - (void) removeObjectForKey: (ESLevelDBKey) key
   {
   [self mutatingOperation:
-    ^BOOL
+    ^bool
       {
       (*self.db)->Delete(self.writeOptions, ESleveldb::KeySlice(key)).ok();
         
@@ -686,33 +504,6 @@
   }
 
 #pragma mark - NSMutableDictionary overrides
-
-/* NSMutableDictionary should handle this.
-// Set and object and key using array subscript notation.
-- (void) setObject: (id) object forKeyedSubscript: (id<NSCopying>) key
-  {
-  [self setObject: object forKey: key];
-  } */
-
-/* NSMutableDictionary should handle this.
-// Set a "value" for a key.
-- (void) setValue: (id) value forKey: (NSString *) key
-  {
-  [self mutatingOperation:
-    ^BOOL
-      {
-      if(value)
-        self.db->Put(
-          self.writeOptions,
-          ESleveldb::KeySlice(key),
-          ESleveldb::Slice(value, self.serializer)).ok();
-
-      else
-        self.db->Delete(self.writeOptions, ESleveldb::KeySlice(key));
-        
-      return YES;
-      }];
-  } */
 
 // Add entries from another dictionary.
 - (void) addEntriesFromDictionary: (NSDictionary *) dictionary
@@ -839,11 +630,11 @@
 #pragma mark - Batch support
 
 // Commit a batch.
-- (BOOL) commit: (ESLevelDBScratchPad *) batch
+- (bool) commit: (ESLevelDBScratchPad *) batch
   {
   return
     [self mutatingOperation:
-      ^BOOL
+      ^bool
         {
         return (*self.db)->Write(self.writeOptions, batch.batch).ok();
         }];
@@ -851,9 +642,9 @@
 
 #pragma mark - Private support
 
-- (BOOL) mutatingOperation: (BOOL (^)(void)) operation
+- (bool) mutatingOperation: (bool (^)(void)) operation
   {
-  __block BOOL result = NO;
+  __block bool result = NO;
   
   dispatch_sync(
     self.queue,

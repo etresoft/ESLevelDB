@@ -43,7 +43,7 @@ You can iterate over the entire database:
 
 	[db 
 	  enumerateKeysAndObjectsUsingBlock:
-	    ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop) 
+	    ^(ESLevelDBKey key, ESLevelDBType obj, bool * stop) 
 	      {
 		    NSLog(@"key = %@, value = %@", key, value);
 	      }];	
@@ -59,7 +59,7 @@ One of LevelDB's most useful features is that its keys are ordered. Using `ESLev
     enumerateKeysAndObjectsFrom: @"ab"
     limit: @"cd"
     usingBlock:
-      ^(ESLevelDBKey key, ESLevelDBType obj, BOOL * stop)
+      ^(ESLevelDBKey key, ESLevelDBType obj, bool * stop)
         {
         [found addObject: obj];
         }];
